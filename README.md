@@ -3,7 +3,8 @@
 
 1. The term **repository** is used as a synonym for a data or software project stored in a revision control system. To begin with we limit ourselves to GIT.
 2. The term **user** is referring to a library patron registrered in our user database
-3. The term **system** is referring to 
+3. The term **system** is referring to the repository-mirror system
+4. A **release** is a named version or tag which can be manipulated using git tag commands
 
 ## Ideas
 
@@ -26,7 +27,7 @@ A true mirror (if we are not to push things to the origin, I believe). Not sure 
 
 https://help.github.com/articles/duplicating-a-repository/
 
-### 3. LDAD authentication and authorization
+### 3. LDAP authentication and authorization
 
 Should be easy to add an external contributor through Active Directory
 
@@ -34,8 +35,17 @@ https://httpd.apache.org/docs/2.4/mod/mod_authnz_ldap.html
 
 That should relieve us from user management
 
-### 4. Workflow
+### 4. activemq
 
-0. One or more responsible library user(s) is registered as contact person in user database: AD/LDAP
-1. An external repository is registered by the user
-2. The system 
+http://activemq.apache.org/
+
+## Workflow
+
+0. One or more responsible library user(s) register as contact person(s) in our user database: AD/LDAP
+1. An external repository is registered by the user who must also provide credentials for the remove git repository
+2. The user selects a named release for us to retrieve. 
+3. The system queues the cloning of the repository and pulls the selected release.
+4. Upon successful cloning (3 above), the system queues loading and indexing of data
+5. If failure in 3 above, messages should be passed to those who can do something about it
+6. Upon successful loading in 4. above, the data become available in a staging environment.
+
