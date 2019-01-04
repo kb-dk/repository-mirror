@@ -1,7 +1,7 @@
 
 # Tools for the mirroring of repositories 
 
-## Components
+## Ideas
 
 ### 1. Git Large File Storage (LFS): Sounds promising
 
@@ -30,4 +30,6 @@ https://httpd.apache.org/docs/2.4/mod/mod_authnz_ldap.html
 
 That should relieve us from user management
 
-### 4. 
+### 4. Workflow
+
+1. 
