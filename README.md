@@ -1,14 +1,18 @@
 
 # Tools for the mirroring of repositories 
 
+1. The term **repository** is used as a synonym for a data or software project stored in a revision control system. To begin with we limit ourselves to GIT.
+2. The term **user** is referring to a library patron registrered in our user database
+3. The term **system** is referring to 
+
 ## Ideas
 
-### 1. Git Large File Storage (LFS): Sounds promising
+### 1. Git Large File Storage (LFS)
 
 "Git Large File Storage (LFS) replaces large files such as audio
 samples, videos, datasets, and graphics with text pointers inside Git,
 while storing the file contents on a remote server like GitHub.com or
-GitHub Enterprise."
+GitHub Enterprise" Sounds promising :^)
 
 https://git-lfs.github.com/
 
@@ -32,4 +36,6 @@ That should relieve us from user management
 
 ### 4. Workflow
 
-1. 
+0. One or more responsible library user(s) is registered as contact person in user database: AD/LDAP
+1. An external repository is registered by the user
+2. The system 
