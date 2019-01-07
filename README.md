@@ -18,14 +18,15 @@ Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorizat
 
 We do not need this, unless the repository is private
 
-### 2. The user selects a named release for to retrieve
+### 2. The user selects a commit or a named release to retrieve
 
-The task should include a destination status
+Depending on the destination status the user need to enter slightly different data
 
-1. staging 
-2. production
+1. **staging** - The user may choose the FRONT or any commit 
 
-which determines which backend to address
+2. **production** - The use chooses a named commit for publication
+
+The two statuses stores data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
 
 ### 3. The system queues the clone and pull operations
 
