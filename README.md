@@ -29,7 +29,7 @@ which determines which backend to address
 
 ### 3. The system queues the clone and pull operations
 
-Getting data from the repository according to 2 above
+Getting data from the repository according to 2 above. Running asynchronously using [ActiveMQ](#4-activemq)
 
 ### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
 
