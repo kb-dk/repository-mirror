@@ -4,7 +4,7 @@
 1. The term **repository** is used as a synonym for a data or software project stored in a revision control system. To begin with we limit ourselves to GIT.
 2. The term **user** is referring to a library patron registrered in our user database. This **user** is responsible for the **repository**
 3. The term **system** is referring to the repository-mirror system
-4. A **release** is a named version (or a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition
+4. A **release** is a named version (a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition. A branch is dynamic and change until frozen and merged with its master branch.
 
 ## Workflow
 
