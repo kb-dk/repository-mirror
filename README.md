@@ -37,6 +37,8 @@ Getting data from the repository according to 2 above. Running asynchronously us
 2. Ask for documents to index themselves
 3. Store the index documents in index (Solr)
 
+Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
+
 ### 5. If failure in 3 above, messages should be passed to those who can do something about it
 
 Task should be stored somewhere for re-execution
