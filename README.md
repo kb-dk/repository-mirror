@@ -14,11 +14,11 @@
 
 Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorization)
 
-### 1. An external repository is registered by the user who must also provide credentials for the remove git repository
+### 1. An external repository is registered by the user who must also provide credentials for the remote git repository
 
 We do not need this, unless the repository is private
 
-### 2. The user selects a named release for to retrieve
+### 2. The user selects a named release to retrieve
 
 The task should include a destination status
 
@@ -30,11 +30,12 @@ which determines which backend to address
 ### 3. The system queues the clone and pull operations
 
 Getting data from the repository according to 2 above. Running asynchronously using [ActiveMQ](#4-activemq)
+Multiple jobs per repository should not be permitted. The system should ensure this is impossible.
 
 ### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
 
 1. Store in database (eXist)
-2. Ask for documents to index themselves
+2. Ask for documents to index
 3. Store the index documents in index (Solr)
 
 Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
