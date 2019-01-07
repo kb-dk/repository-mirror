@@ -41,12 +41,22 @@ http://activemq.apache.org/
 
 ## Workflow
 
-0. One or more responsible library users register as a content providers in our user database: AD/LDAP
-1. An external repository is registered by the user who must also provide credentials for the remove git repository
-2. The user selects a named release for us to retrieve, and a status (staging or production). 
-3. The system queues the cloning of the repository and pulls the selected release.
-4. Upon successful cloning (3 above), the system queues loading and indexing of data
-5. If failure in 3 above, messages should be passed to those who can do something about it
-6. Upon successful loading in 4. above, the data become available in the environment selected in 2 above.
-7. If failure, go to 5.
+### 0. One or more responsible library users register as a content providers
+
+Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorization)
+
+### 1. An external repository is registered by the user who must also provide credentials for the remove git repository
+
+We do not need this, unless the repository is private
+
+### 2. The user selects a named release for us to retrieve, and a status (staging or production). 
+
+### 3. The system queues the clone and pulls of data from the repository
+
+
+
+### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
+### 5. If failure in 3 above, messages should be passed to those who can do something about it
+### 6. Upon successful loading in 4. above, the data become available in the environment selected in 2 above.
+### 7. If failure, go to 5.
 
