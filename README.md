@@ -24,7 +24,7 @@ Depending on the destination status the user need to enter slightly different da
 
 1. **staging** - The user may choose the HEAD or any commit in any branch
 
-2. **production** - The use chooses a named commit for publication
+2. **production** - The use chooses a named release for publication
 
 The two statuses stores data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
 
