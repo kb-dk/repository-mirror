@@ -2,7 +2,7 @@
 # Tools for the mirroring of repositories 
 
 1. The term **repository** is used as a synonym for a data or software project stored in a revision control system. To begin with we limit ourselves to GIT.
-2. The term **user** is referring to a library patron registrered in our user database. This **user** is responsible for the **repository**
+2. The term **user** is referring to a library patron registrered in our user database. This **user** is an editor responsible for the **repository**
 3. The term **system** is referring to the repository-mirror system
 4. A **release** is a named version (a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition. A branch is dynamic and change until frozen and merged with its master branch.
 
@@ -18,14 +18,15 @@ Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorizat
 
 We do not need this, unless the repository is private
 
-### 2. The user selects a named release to retrieve
+### 2. The user selects a commit or a named release to retrieve
 
-The task should include a destination status
+Depending on the destination status the user need to enter slightly different data
 
-1. staging 
-2. production
+1. **staging** - The user may choose the HEAD or any commit in any branch
 
-which determines which backend to address
+2. **production** - The use chooses a named commit for publication
+
+The two statuses stores data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
 
 ### 3. The system queues the clone and pull operations
 
