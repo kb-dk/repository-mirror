@@ -49,14 +49,30 @@ Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorizat
 
 We do not need this, unless the repository is private
 
-### 2. The user selects a named release for us to retrieve, and a status (staging or production). 
+### 2. The user selects a named release for to retrieve
 
-### 3. The system queues the clone and pulls of data from the repository
+The task should include a destination status
 
+1. staging 
+2. production
 
+which determines which backend to address
+
+### 3. The system queues the clone and pull operations
+
+Getting data from the repository according to 2 above
 
 ### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
+
+1. Store in database (eXist)
+2. Ask for documents to index themselves
+3. Store the index documents in index (Solr)
+
 ### 5. If failure in 3 above, messages should be passed to those who can do something about it
-### 6. Upon successful loading in 4. above, the data become available in the environment selected in 2 above.
+
+Task should be stored somewhere for re-execution
+
+### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
+
 ### 7. If failure, go to 5.
 
