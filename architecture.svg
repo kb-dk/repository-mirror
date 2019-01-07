@@ -1,0 +1,141 @@
+<?xml version="1.0" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.6a -->
+<!-- CreationDate: 2019-01-07 13:57:01 -->
+<!-- Magnification: 1.05 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="623pt" height="560pt"
+	viewBox="1830 573 9882 8882">
+<g fill="none">
+<!-- Ellipse -->
+<ellipse cx="10777" cy="6412" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Ellipse -->
+<ellipse cx="8212" cy="9247" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3012" y="585" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="6215" y="2960" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2761" y="669" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5886" y="3070" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2511" y="752" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5557" y="3179" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2260" y="836" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5228" y="3289" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2093" y="919" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5009" y="3454" width="1480" height="2521" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="1842" y="1003" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 9855,6435 9855,4590 11700,4590 11700,6435" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4680" y="3563" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 7290,9270 7290,7425 9135,7425 9135,9270" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,1530 4322,1530 4327,1531 4336,1533 4349,1535 4369,1538 4394,1542 4426,1548
+ 4464,1554 4508,1562 4557,1571 4610,1580 4667,1590 4726,1601 4787,1613 4848,1625
+ 4909,1637 4969,1649 5028,1661 5084,1673 5139,1685 5191,1697 5240,1709 5287,1721
+ 5331,1733 5372,1745 5411,1757 5448,1769 5483,1781 5515,1794 5546,1806 5575,1819
+ 5602,1832 5629,1846 5654,1860 5678,1875 5705,1893 5731,1912 5756,1932 5780,1954
+ 5803,1976 5826,2001 5847,2027 5868,2054 5889,2084 5909,2116 5930,2151 5950,2187
+ 5970,2226 5990,2266 6010,2309 6029,2352 6049,2397 6067,2441 6084,2484 6101,2525
+ 6115,2563 6128,2598 6139,2627 6148,2652 6155,2671 6165,2700" fill="#ffffff"
+	stroke="#000000" stroke-width="8px" stroke-linejoin="bevel"/>
+<!-- Forward arrow to point 0,0 -->
+<polygon points=""
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp0">
+	<path clip-rule="evenodd" d="M 1830,573 H 11712 V 9455 H 1830 z
+		M 5070,1700 5046,1664 5081,1641 4904,1629 4901,1642z"/>
+</clipPath>
+<polyline points=" 5625,6255 5625,6257 5626,6261 5628,6269 5630,6281 5633,6299 5638,6321 5644,6350
+ 5650,6384 5658,6423 5668,6467 5678,6514 5689,6565 5700,6618 5713,6673 5725,6728
+ 5738,6783 5751,6837 5765,6890 5778,6942 5792,6991 5805,7038 5819,7083 5832,7126
+ 5846,7167 5860,7205 5873,7242 5887,7276 5902,7309 5916,7340 5931,7369 5947,7397
+ 5963,7424 5980,7450 5997,7476 6015,7500 6035,7525 6056,7550 6077,7573 6100,7597
+ 6124,7620 6150,7643 6177,7665 6206,7688 6238,7710 6271,7733 6306,7756 6344,7780
+ 6383,7804 6425,7828 6470,7853 6516,7878 6564,7903 6613,7929 6663,7954 6713,7979
+ 6762,8003 6810,8027 6856,8048 6898,8068 6936,8086 6970,8102 6998,8115 7021,8125
+ 7038,8133 7065,8145" id="p0"/>
+</defs>
+<use xlink:href="#p0" fill="#ffffff"/>
+<use xlink:href="#p0" clip-path="url(#cp0)"
+	stroke="#000000" stroke-width="8px" stroke-linejoin="bevel"/>
+<!-- Forward arrow to point 4909,1637 -->
+<polygon points=" 5081,1641 4928,1641 5070,1700 5046,1664 5081,1641"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp1">
+	<path clip-rule="evenodd" d="M 1830,573 H 11712 V 9455 H 1830 z
+		M 5070,1700 5046,1664 5081,1641 4904,1629 4901,1642z"/>
+</clipPath>
+<polyline points=" 9405,8100 9407,8099 9412,8098 9421,8095 9435,8090 9455,8084 9481,8076 9514,8066
+ 9552,8053 9595,8039 9643,8023 9695,8006 9749,7988 9805,7969 9862,7950 9919,7930
+ 9974,7911 10028,7891 10080,7872 10130,7853 10177,7835 10222,7817 10263,7799 10303,7782
+ 10339,7766 10373,7749 10405,7733 10434,7717 10462,7702 10487,7686 10511,7670
+ 10534,7653 10555,7637 10575,7620 10598,7599 10619,7578 10639,7555 10657,7532
+ 10674,7507 10690,7481 10705,7453 10719,7423 10732,7391 10744,7357 10755,7321
+ 10766,7282 10777,7242 10787,7200 10796,7156 10804,7112 10812,7069 10819,7027
+ 10825,6987 10831,6951 10835,6919 10839,6893 10841,6872 10845,6840" id="p1"/>
+</defs>
+<use xlink:href="#p1" fill="#ffffff"/>
+<use xlink:href="#p1" clip-path="url(#cp1)"
+	stroke="#000000" stroke-width="8px" stroke-linejoin="bevel"/>
+<!-- Forward arrow to point 0,0 -->
+<polyline points=""
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Text -->
+<text xml:space="preserve" x="5940" y="1305" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Clone</text>
+<!-- Text -->
+<text xml:space="preserve" x="5940" y="1530" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Pull</text>
+<!-- Text -->
+<text xml:space="preserve" x="2385" y="1504" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="132" text-anchor="middle">Repository</text>
+<!-- Text -->
+<text xml:space="preserve" x="10755" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Index</text>
+<!-- Text -->
+<text xml:space="preserve" x="10755" y="5445" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">SOLR</text>
+<!-- Text -->
+<text xml:space="preserve" x="8190" y="8055" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Database</text>
+<!-- Text -->
+<text xml:space="preserve" x="8190" y="8280" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">eXist</text>
+<!-- Text -->
+<text xml:space="preserve" x="5670" y="7695" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Udate</text>
+<!-- Text -->
+<text xml:space="preserve" x="10845" y="8010" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Indexing</text>
+<!-- Ellipse -->
+<ellipse cx="10777" cy="4567" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Ellipse -->
+<ellipse cx="8212" cy="7402" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="5393" y="4166" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="180" text-anchor="middle">Clone</text>
+</g>
+</svg>
