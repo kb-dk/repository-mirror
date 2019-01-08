@@ -5,6 +5,7 @@
 2. The term **user** is referring to a library patron registrered in our user database. The **user**(s) is(are) the editor(s) responsible for the **repository**
 3. The term **system** is referring to the repository-mirror system
 4. A **release** is a named version (a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition. A branch is dynamic and change until frozen and merged with its master branch.
+5. Here we refer to **commit** is including all revisions up to and including the identified commit in the given branch.
 
 ## Workflow
 
