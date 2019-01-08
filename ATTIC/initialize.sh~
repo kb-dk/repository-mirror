@@ -1,3 +1,0 @@
-#!/bin/bash
-
-mvn archetype:generate -DgroupId=dk.kb.repositoryMirror -DartifactId=java-web-project -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
