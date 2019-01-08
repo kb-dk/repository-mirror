@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.6a -->
-<!-- CreationDate: 2019-01-08 08:56:52 -->
-<!-- Magnification: 1.05 -->
+<!-- CreationDate: 2019-01-08 09:03:56 -->
+<!-- Magnification: 0.787 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="663pt" height="600pt"
-	viewBox="1830 573 10515 9519">
+	width="497pt" height="435pt"
+	viewBox="1830 573 10515 9204">
 <g fill="none">
 <!-- Line -->
-<rect x="4500" y="2295" width="7785" height="7785" rx="105" fill="#bfbfbf"
+<rect x="4500" y="2655" width="7425" height="7110" rx="105" fill="#bfbfbf"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Ellipse -->
 <ellipse cx="8212" cy="9247" rx="922" ry="202" fill="#ffffff"
@@ -61,7 +61,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp0">
-	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 10092 H 1830 z
+	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 9777 H 1830 z
 		M 7067,8087 7064,8129 7021,8126 7154,8245 7165,8236z"/>
 </clipPath>
 </defs>
@@ -73,7 +73,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp1">
-	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 10092 H 1830 z
+	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 9777 H 1830 z
 		M 10614,6849 10656,6849 10656,6891 10765,6750 10755,6740z"/>
 </clipPath>
 </defs>
@@ -85,7 +85,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp2">
-	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 10092 H 1830 z
+	<path clip-rule="evenodd" d="M 1830,573 H 12345 V 9777 H 1830 z
 		M 5279,2905 5273,2947 5231,2940 5354,3069 5364,3061z"/>
 </clipPath>
 </defs>
@@ -109,13 +109,13 @@
 <!-- Text -->
 <text xml:space="preserve" x="8190" y="8280" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">eXist</text>
 <!-- Text -->
-<text xml:space="preserve" x="12330" y="2070" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">System</text>
-<!-- Text -->
 <text xml:space="preserve" x="5670" y="7695" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Update</text>
 <!-- Text -->
 <text xml:space="preserve" x="10845" y="8010" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Indexing</text>
 <!-- Text -->
 <text xml:space="preserve" x="5355" y="4545" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Repository</text>
+<!-- Text -->
+<text xml:space="preserve" x="12330" y="2295" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">System</text>
 <!-- Ellipse -->
 <ellipse cx="8212" cy="7402" rx="922" ry="202" fill="#ffffff"
 	stroke="#000000" stroke-width="8px"/>
