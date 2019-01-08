@@ -2,7 +2,7 @@
 # Tools for the mirroring of repositories 
 
 1. The term **repository** is used as a synonym for a data or software project stored in a revision control system. To begin with we limit ourselves to GIT.
-2. The term **user** is referring to a library patron registrered in our user database. This **user** is an editor responsible for the **repository**
+2. The term **user** is referring to a library patron registrered in our user database. This **user** is the editor(s) responsible for the **repository**
 3. The term **system** is referring to the repository-mirror system
 4. A **release** is a named version (a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition. A branch is dynamic and change until frozen and merged with its master branch.
 
@@ -20,11 +20,11 @@ We do not need this, unless the repository is private
 
 ### 2. The user selects a commit or a named release to retrieve
 
-Depending on the destination status the user need to enter slightly different data
+Depending on the destination status the user needs to enter slightly different data
 
 1. **staging** - The user may choose the HEAD or any commit in any branch
 
-2. **production** - The use chooses a named release for publication
+2. **production** - The user chooses a named release for publication
 
 The two statuses stores data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
 
@@ -36,8 +36,10 @@ Multiple jobs per repository should not be permitted. The system should ensure t
 ### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
 
 1. Store in database (eXist)
-2. Ask for documents to index
+2. Request indexing service for index documents
 3. Store the index documents in index (Solr)
+
+Most of this software is already written and available in [Solr and Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 
 Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
 
@@ -67,7 +69,7 @@ ones to a remote server.
 
 ### 2. Duplicating/mirroring repository
 
-A true mirror (if we are not to push things to the origin, I believe). Not sure that helps
+A true mirror (if we are synchronising without pushing things to the origin, I believe). Not sure that helps
 
 https://help.github.com/articles/duplicating-a-repository/
 
