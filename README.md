@@ -8,7 +8,7 @@
 
 ## Workflow
 
-![Workflow](architecture.svg)
+![Workflow](architecture/architecture.svg)
 
 ### 0. One or more responsible library users register as a content providers
 
