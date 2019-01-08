@@ -27,7 +27,7 @@ Depending on the destination status the user needs to enter slightly different d
 
 2. **production** - The user chooses a named release for publication
 
-The two statuses stores data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
+The two statuses store data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
 
 ### 3. The system queues the clone and pull operations
 
