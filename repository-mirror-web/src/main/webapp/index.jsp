@@ -13,10 +13,10 @@
     <body>
       <h1>Importér data til tekstportalen</h1>
       <div>
-	<form method="get" action="submission.jsp">
+	<form method="get" action="submission/">
 	  <div  class="form-group">
 	    <fieldset id="status">
-	      <legend for="target">Vælg status</legend>
+	      <legend for="target">Vælg destination</legend>
 	      <select id="target" name="status">
 		<jsp:element name="option" value="staging">
 		  <jsp:attribute name="selected">true</jsp:attribute>
