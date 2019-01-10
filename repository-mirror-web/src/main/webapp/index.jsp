@@ -2,7 +2,7 @@
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <html>
     <head>
-      <title>Importér data</title>
+      <title>Importér data til tekstportalen</title>
       <style type="text/css">
 	.form-group { 
 	float: left; 
@@ -11,7 +11,7 @@
       </style>
     </head>
     <body>
-      <h1>Importér data</h1>
+      <h1>Importér data til tekstportalen</h1>
       <div>
 	<form method="get" action="submission.jsp">
 	  <div  class="form-group">
@@ -30,10 +30,10 @@
 	  </div>
 	  <div class="form-group">
 	    <fieldset id="repository" >
-	      <legend for="target">Vælg repositorium</legend>
+	      <legend for="target">Vælg repositorie</legend>
 	      <select id="repo">
 		<jsp:element name="option" value="adl">
-		  <jsp:body>Arkiv før Dansk Litteratur</jsp:body>
+		  <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
 		</jsp:element>
 		<jsp:element name="option" value="sks">
 		  <jsp:body>Søren Kierkegaards Skrifter</jsp:body>
@@ -56,7 +56,7 @@
 	  </div>
 	  <div style="clear: both;" class="form-group" >
 	    <fieldset id="submit">
-	      <input id="publish-field" type="submit" name="send" value="Send"/>
+	      <input id="publish-field" type="submit" name="send" value="Importér"/>
 	    </fieldset>
 	  </div>
 	</form>
