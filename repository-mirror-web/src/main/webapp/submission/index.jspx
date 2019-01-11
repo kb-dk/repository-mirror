@@ -18,6 +18,9 @@
 	<jsp:scriptlet>
 	  String repository  = request.getParameter("repository");
 	  String destination = request.getParameter("destination");
+	  dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff("tcp://127.0.0.1:61616","text-git-pull");
+	  queue.sendMessage(repository + ";" + destination);
+	  queue.shutDownPRoducer();
 	</jsp:scriptlet>
 	<ul>
 	  <li>repository  = <jsp:expression>repository</jsp:expression></li>
