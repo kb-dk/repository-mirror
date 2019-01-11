@@ -17,9 +17,9 @@
       <div>
 	<form method="get" action="submission/">
 	  <div  class="form-group">
-	    <fieldset id="status">
-	      <legend for="target">Vælg destination</legend>
-	      <select id="target" name="status">
+	    <fieldset id="destination">
+	      <legend for="dest">Vælg destination</legend>
+	      <select id="dest" name="destination">
 		<jsp:element name="option" value="staging" selected="selected">
 		  <jsp:body>Forhåndsvisning</jsp:body>
 		</jsp:element>
@@ -32,7 +32,7 @@
 	  <div class="form-group">
 	    <fieldset id="repository" >
 	      <legend for="repo">Vælg repositorie</legend>
-	      <select id="repo" name="destination">
+	      <select id="repo" name="repository">
 		<jsp:element name="option" value="adl">
 		  <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
 		</jsp:element>

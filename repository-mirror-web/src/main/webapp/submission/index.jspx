@@ -16,11 +16,11 @@
       <h1>Følg din dataimport</h1>
       <div>
 	<jsp:scriptlet>
-	  String status      = request.getParameter("status");
+	  String repository  = request.getParameter("repository");
 	  String destination = request.getParameter("destination");
 	</jsp:scriptlet>
 	<ul>
-	  <li>status      = <jsp:expression>status</jsp:expression></li>
+	  <li>repository  = <jsp:expression>repository</jsp:expression></li>
 	  <li>destination = <jsp:expression>destination</jsp:expression></li>
 	</ul>
       </div>
