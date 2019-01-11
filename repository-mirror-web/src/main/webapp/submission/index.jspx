@@ -1,4 +1,6 @@
-<jsp:root  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:core="http://java.sun.com/jsp/jstl/core" version="2.0">
+<jsp:root  xmlns:jsp="http://java.sun.com/JSP/Page" 
+	   xmlns:core="http://java.sun.com/jsp/jstl/core" 
+	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <html>
     <head>
@@ -13,6 +15,14 @@
     <body>
       <h1>Følg din dataimport</h1>
       <div>
+	<jsp:scriptlet>
+	  String status      = request.getParameter("status");
+	  String destination = request.getParameter("destination");
+	</jsp:scriptlet>
+	<ul>
+	  <li>status      = <jsp:expression>status</jsp:expression></li>
+	  <li>destination = <jsp:expression>destination</jsp:expression></li>
+	</ul>
       </div>
     </body>
   </html>

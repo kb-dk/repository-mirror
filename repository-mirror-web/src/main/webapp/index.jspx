@@ -31,8 +31,8 @@
 	  </div>
 	  <div class="form-group">
 	    <fieldset id="repository" >
-	      <legend for="target">Vælg repositorie</legend>
-	      <select id="repo">
+	      <legend for="repo">Vælg repositorie</legend>
+	      <select id="repo" name="destination">
 		<jsp:element name="option" value="adl">
 		  <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
 		</jsp:element>
