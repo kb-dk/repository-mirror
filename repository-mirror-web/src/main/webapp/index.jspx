@@ -1,4 +1,6 @@
-<jsp:root  xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:core="http://java.sun.com/jsp/jstl/core" version="2.0">
+<jsp:root  xmlns:jsp="http://java.sun.com/JSP/Page" 
+	   xmlns:core="http://java.sun.com/jsp/jstl/core"
+	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <html>
     <head>
@@ -18,12 +20,11 @@
 	    <fieldset id="status">
 	      <legend for="target">Vælg destination</legend>
 	      <select id="target" name="status">
-		<jsp:element name="option" value="staging">
-		  <jsp:attribute name="selected">true</jsp:attribute>
+		<jsp:element name="option" value="staging" selected="selected">
 		  <jsp:body>Forhåndsvisning</jsp:body>
 		</jsp:element>
 		<jsp:element name="option" value="production">
-		  <jsp:body>Publicér</jsp:body>
+		  <jsp:body>Publicéring</jsp:body>
 		</jsp:element>
 	      </select>
 	    </fieldset>
@@ -38,8 +39,7 @@
 		<jsp:element name="option" value="sks">
 		  <jsp:body>Søren Kierkegaards Skrifter</jsp:body>
 		</jsp:element>
-		<jsp:element name="option" value="grundtvig">
-		  <jsp:attribute name="selected">true</jsp:attribute>
+		<jsp:element name="option" value="grundtvig" selected="selected">
 		  <jsp:body>Grundtvigs Værker</jsp:body>
 		</jsp:element>
 		<jsp:element name="option" value="tfs">

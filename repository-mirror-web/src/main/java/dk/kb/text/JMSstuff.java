@@ -56,7 +56,9 @@ public class JMSstuff {
             return false;
         }
 
-    }/**
+    }
+
+    /**
      * method for sending a xmlNode to the queue
      *
      * @param xmlNode a xmlNode i.e. a mods record
