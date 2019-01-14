@@ -1,7 +1,6 @@
 
 package dk.kb.pullStuff;
 
-import dk.kb.cop2.backend.constants.ConfigurableConstants;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
@@ -127,14 +126,14 @@ public class RunLoad {
         props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
         props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
         PropertyConfigurator.configure(props);
-        Logger logger = Logger.getLogger(SolrizeEdition.class);
+        Logger logger = Logger.getLogger(RunLoad.class);
         return logger;
     }
 
     private static void sendToFailedQueue(String id, String msg, Logger logger) {
-        JMSProducer producer = null;
+        JMSstuff producer = null;
         try {
-            producer = new JMSProducer(
+            producer = new JMSstuff(
                     consts.getConstants().getProperty("cop2.solrizr.queue.host"),
                     consts.getConstants().getProperty("cop2.solrizr.queue.update")+".failed");
             producer.sendMessage(id + "|" + msg);
