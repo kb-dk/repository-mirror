@@ -21,16 +21,10 @@ import java.io.InputStream;
 public class RunPull {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
-    Logger logger = configureLog4j();
+    private static Logger logger = configureLog4j();
 
 
     public static void main(String args[]) {
-
-	System.out.println("Shit");
-
-	/*
-
-
 
         String host = System.getProperty("queue.uri");
         if (host == null) host = consts.getConstants().getProperty("queue.uri");
@@ -39,7 +33,7 @@ public class RunPull {
         Session session = null;
         MessageConsumer consumer = null;
 
-	        try {
+	try {
             connection = connectionFactory.createConnection();
             connection.start();
 
@@ -82,7 +76,7 @@ public class RunPull {
 	    } catch (Exception e) {
 		logger.fatal("error while shutting donw ",e);
 	    }
-	} */
+	} 
     }
 
     private static Logger configureLog4j() {
