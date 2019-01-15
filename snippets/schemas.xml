@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
 <locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
-  <uri resource="collection-level-description.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-adl.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-pmm.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-grundtvig.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-sks.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-holberg.xml" uri="tei_all.rnc"/>
+  <uri resource="collection-tfs.xml" uri="tei_all.rnc"/>
 </locatingRules>

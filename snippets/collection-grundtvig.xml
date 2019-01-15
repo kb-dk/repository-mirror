@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <bibl xmlns="http://www.tei-c.org/ns/1.0" 
-      corresp="adl" 
-      copyOf="https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git">
-  <ref type="work">texts/</ref>
-  <ref type="editorial">authors/</ref>
-  <ref type="editorial">periods/</ref>
+      corresp="grundtvig" 
+      copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
+  <ref type="work">grundtvig/</ref>
 </bibl>
