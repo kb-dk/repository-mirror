@@ -6,5 +6,7 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <comment>Configuration for text service daemon.</comment>
     <entry key="queue.uri">tcp://localhost:61616</entry>
     <entry key="queue.name">text-git-pull</entry>
+    <entry key="queue.logfile">text-logger.log</entry>
+    <entry key="queue.loglevel">info</entry>
     <entry key="data.home">/home/text-service/</entry>
 </properties>

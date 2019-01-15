@@ -44,8 +44,8 @@ public class RunPull {
 
             consumer = session.createConsumer(destination);
 
-	    //            while (true) {
-	    if(true) {
+	    while (true) {
+	    // if(true) {
 		String id = null;
 		try {
 		    logger.info("Waiting for next message");
@@ -80,10 +80,13 @@ public class RunPull {
     }
 
     private static Logger configureLog4j() {
+
 	String level = "info";
 	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
-	String file = "runsolrizr.log";
+
+	String file = consts.getConstants().getProperty("queue.logfile");
 	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
+
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
 	props.put("log4j.appender.FILE", "org.apache.log4j.DailyRollingFileAppender");
@@ -99,7 +102,7 @@ public class RunPull {
     }
 
     private static void sendToFailedQueue(String id, String msg, Logger logger) {
-	/*	JMSstuff producer = null;
+	JMSstuff producer = null;
 	try {
 	    producer = new JMSstuff(
 				    consts.getConstants().getProperty("cop2.solrizr.queue.host"),
@@ -111,10 +114,11 @@ public class RunPull {
 	    if (producer != null) {
 		producer.shutDownPRoducer();
 	    }
-	    }*/
+	}
     }
 
     private static boolean wasItASuccess(InputStream response, Logger logger) {
+	logger.info("I'm asked wheter I was successful. To be hones, I don't know really.");
 	return true;
     }
 }
