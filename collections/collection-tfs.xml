@@ -2,5 +2,5 @@
 <bibl xmlns="http://www.tei-c.org/ns/1.0" 
       corresp="tfs" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/trykkefrihedsskrifter.git">
-  <ref type="work">trykkefrihedsskrifter/tei_dir/</ref>
+  <ref corresp="texts">trykkefrihedsskrifter/tei_dir/</ref>
 </bibl>

@@ -2,5 +2,5 @@
 <bibl xmlns="http://www.tei-c.org/ns/1.0" 
       corresp="pmm" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
-  <ref type="work">pmm/</ref>
+  <ref corresp="texts">pmm/</ref>
 </bibl>
