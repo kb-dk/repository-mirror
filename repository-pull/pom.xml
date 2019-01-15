@@ -13,7 +13,7 @@
       <artifactId>maven-plugin-api</artifactId>
       <version>2.0</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.jolira/onejar-maven-plugin -->
+    <!-- This one is for building a single huge jar -->
     <dependency>
       <groupId>com.jolira</groupId>
       <artifactId>onejar-maven-plugin</artifactId>
@@ -30,6 +30,7 @@
       <artifactId>java-getopt</artifactId>
       <version>1.0.13</version>
     </dependency>
+    <!-- There is obviously a copy of this in the activemq jar. classloader don't like it twice -->
     <!-- dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -54,6 +55,7 @@
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-all</artifactId>
       <version>5.6.0</version>
+      <!-- didn't work, really -->
       <!-- exclusions>
 	<exclusion>
 	  <groupId>org.slf4j</groupId>
@@ -65,39 +67,11 @@
 	</exclusion>
       </exclusions -->
     </dependency>
-
   </dependencies>
-
-  <!-- pluginRepositories>
-    <pluginRepository>
-      <id>onejar-maven-plugin.googlecode.com</id>
-      <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-    </pluginRepository>
-  </pluginRepositories -->
-
-
 
   <build>
     <plugins>
-      <!-- plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-dependency-plugin</artifactId>
-	<executions>
-	  <execution>
-            <id>copy-dependencies</id>
-            <phase>prepare-package</phase>
-            <goals>
-	      <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-	      <outputDirectory>${project.build.directory}/lib</outputDirectory>
-	      <overWriteReleases>false</overWriteReleases>
-	      <overWriteSnapshots>false</overWriteSnapshots>
-	      <overWriteIfNewer>true</overWriteIfNewer>
-            </configuration>
-	  </execution>
-	</executions>
-      </plugin -->
+      <!-- seems to do what I need -->
       <plugin>
 	<groupId>com.jolira</groupId>
 	<artifactId>onejar-maven-plugin</artifactId>
