@@ -2,5 +2,6 @@
 <bibl xmlns="http://www.tei-c.org/ns/1.0" 
       corresp="grundtvig" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
+  <title>Grundtvigs Værker</title>
   <ref corresp="texts">grundtvig/</ref>
 </bibl>

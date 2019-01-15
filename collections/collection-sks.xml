@@ -2,5 +2,6 @@
 <bibl xmlns="http://www.tei-c.org/ns/1.0" 
       corresp="sks" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/SKS_tei.git">
+  <title>Søren Kierkegaards Skrifter</title>
   <ref corresp="/">data/v1.9/</ref>
 </bibl>

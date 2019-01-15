@@ -6,61 +6,76 @@
     <head>
       <title>Importér data til tekstportalen</title>
       <style type="text/css">
+	@import url("css/styles.css");
 	.form-group { 
 	float: left; 
 	width: 30%; 
 	}
       </style>
     </head>
-    <body>
-      <h1>Importér data til tekstportalen</h1>
-      <div>
-	<form method="get" action="submission/">
-	  <div  class="form-group">
-	    <fieldset id="destination">
-	      <legend for="dest">Vælg destination</legend>
-	      <select id="dest" name="destination">
-		<jsp:element name="option" value="staging" selected="selected">
-		  <jsp:body>Forhåndsvisning</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="production">
-		  <jsp:body>Publicéring</jsp:body>
-		</jsp:element>
-	      </select>
-	    </fieldset>
+    <body class="theme-yellow">
+
+      <header class="org-c3af7b08-07d8-4a3e-8b12-5b6de87acf0c">
+	<div class="inner-content grid-container"> 
+	  <div class="grid-x">
+	    <div class="small-6 large-3 cell" > 
+	      <div class="logo"> 
+		<a class="show-for-medium" href="frontpage.html"><pre> </pre></a> 
+	      </div>
+	    </div>
 	  </div>
-	  <div class="form-group">
-	    <fieldset id="repository" >
-	      <legend for="repo">Vælg repositorie</legend>
-	      <select id="repo" name="repository">
-		<jsp:element name="option" value="adl">
-		  <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="sks">
-		  <jsp:body>Søren Kierkegaards Skrifter</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="grundtvig" selected="selected">
-		  <jsp:body>Grundtvigs Værker</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="tfs">
-		  <jsp:body>Trykkefrihedens Skrifter</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="pmm">
-		  <jsp:body>Poul Martin Møller</jsp:body>
-		</jsp:element>
-		<jsp:element name="option" value="holberg">
-		  <jsp:body>Ludvig Holbergs Skrifter</jsp:body>
-		</jsp:element>
-	      </select>
-	    </fieldset>
-	  </div>
-	  <div style="clear: both;" class="form-group" >
-	    <fieldset id="submit">
-	      <input id="publish-field" type="submit" name="send" value="Importér"/>
-	    </fieldset>
-	  </div>
-	</form>
-      </div>
+	</div>
+      </header>
+      <main>
+	<h1>Importér data til tekstportalen</h1>
+	<div>
+	  <form method="get" action="submission/">
+	    <div  class="form-group">
+	      <fieldset id="destination">
+		<legend for="dest">Vælg destination</legend>
+		<select id="dest" name="destination">
+		  <jsp:element name="option" value="staging" selected="selected">
+		    <jsp:body>Forhåndsvisning</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="production">
+		    <jsp:body>Publicéring</jsp:body>
+		  </jsp:element>
+		</select>
+	      </fieldset>
+	    </div>
+	    <div class="form-group">
+	      <fieldset id="repository" >
+		<legend for="repo">Vælg repositorie</legend>
+		<select id="repo" name="repository">
+		  <jsp:element name="option" value="adl">
+		    <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="sks">
+		    <jsp:body>Søren Kierkegaards Skrifter</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="grundtvig" selected="selected">
+		    <jsp:body>Grundtvigs Værker</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="tfs">
+		    <jsp:body>Trykkefrihedens Skrifter</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="pmm">
+		    <jsp:body>Poul Martin Møller</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="holberg">
+		    <jsp:body>Ludvig Holbergs Skrifter</jsp:body>
+		  </jsp:element>
+		</select>
+	      </fieldset>
+	    </div>
+	    <div style="clear: both;" class="form-group" >
+	      <fieldset id="submit">
+		<input id="publish-field" type="submit" name="send" value="Importér"/>
+	      </fieldset>
+	    </div>
+	  </form>
+	</div>
+      </main>
     </body>
   </html>
 </jsp:root>
