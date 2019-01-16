@@ -6,27 +6,7 @@
     <head>
       <title>Importér data til tekstportalen</title>
       <style type="text/css">
-	body {
-	font-family: sans-serif;
-	margin-left:10%;
-	background-color: #FFF6C4;
-	}
-	div {
-	width: 65%;
-	padding-left: 1%;
-	padding-bottom: 1%;
-	background-color: white;
-	overflow:hidden;
-	}
-	form {
-	width: 100%;
-	background-color: white;
-	}
-	fieldset { 
-	background-color: white;
-	float: left; 
-	width: 45%; 
-	}
+	@import "css/simple-style.css";
       </style>
     </head>
     <body>

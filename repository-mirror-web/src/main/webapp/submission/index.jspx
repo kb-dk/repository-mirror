@@ -6,26 +6,26 @@
     <head>
       <title>Følg din dataimport</title>
       <style type="text/css">
-	.form-group { 
-	float: left; 
-	width: 30%; 
-	}
+	@import "../css/simple-style.css";
       </style>
     </head>
     <body>
-      <h1>Følg din dataimport</h1>
+      <h1><img src="../img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
       <div>
-	<jsp:scriptlet>
-	  String repository  = request.getParameter("repository");
-	  String destination = request.getParameter("destination");
-	  dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff("tcp://127.0.0.1:61616","text-git-pull");
-	  queue.sendMessage(repository + ";" + destination);
-	  queue.shutDownPRoducer();
-	</jsp:scriptlet>
-	<ul>
-	  <li>repository  = <jsp:expression>repository</jsp:expression></li>
-	  <li>destination = <jsp:expression>destination</jsp:expression></li>
-	</ul>
+	<h1>Følg din dataimport</h1>
+	<div>
+	  <jsp:scriptlet>
+	    String repository  = request.getParameter("repository");
+	    String destination = request.getParameter("destination");
+	    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff("tcp://127.0.0.1:61616","text-git-pull");
+	    queue.sendMessage(repository + ";" + destination);
+	    queue.shutDownPRoducer();
+	  </jsp:scriptlet>
+	  <ul>
+	    <li>repository  = <jsp:expression>repository</jsp:expression></li>
+	    <li>destination = <jsp:expression>destination</jsp:expression></li>
+	  </ul>
+	</div>
       </div>
     </body>
   </html>
