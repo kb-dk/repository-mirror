@@ -21,7 +21,7 @@ where contains(util:document-name($d),"collection-")
 return <option>{string($d)}</option>
 
 return
-<select> {
+<select id="repo" name="repository"> {
 for $item in distinct-values($list) 
    for $bibl in collection($coll)//t:bibl[@corresp = $item]
 	let $val := $bibl/@copyOf

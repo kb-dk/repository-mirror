@@ -32,26 +32,13 @@
 
 	  <fieldset id="repository" >
 	    <legend for="repo">Vælg repositorie</legend>
-	    <select id="repo" name="repository">
-	      <jsp:element name="option" value="adl">
-		<jsp:body>Arkiv for Dansk Litteratur</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="sks">
-		<jsp:body>Søren Kierkegaards Skrifter</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="grundtvig" selected="selected">
-		<jsp:body>Grundtvigs Værker</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="tfs">
-		<jsp:body>Trykkefrihedens Skrifter</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="pmm">
-		<jsp:body>Poul Martin Møller</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="holberg">
-		<jsp:body>Ludvig Holbergs Skrifter</jsp:body>
-	      </jsp:element>
-	    </select>
+
+	    <jsp:scriptlet>
+	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
+	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq");
+	    </jsp:scriptlet>
+	    <jsp:expression>select</jsp:expression>
+	  
 	  </fieldset>
 
 	  <fieldset id="submit" style="clear: both;">
