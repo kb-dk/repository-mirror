@@ -1,5 +1,5 @@
 
-[README](REAADME.md) | Architecture
+[README](README.md) | Architecture
 
 # Tools for the mirroring of repositories 
 
