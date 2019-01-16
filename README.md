@@ -12,5 +12,6 @@ just do
 
 ```
 mvn install
-
 ```
+
+in those two directories
