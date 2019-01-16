@@ -6,76 +6,80 @@
     <head>
       <title>Importér data til tekstportalen</title>
       <style type="text/css">
-	@import url("css/styles.css");
-	.form-group { 
+	body {
+	font-family: sans-serif;
+	margin-left:10%;
+	background-color: #FFF6C4;
+	}
+	div {
+	width: 65%;
+	padding-left: 1%;
+	padding-bottom: 1%;
+	background-color: white;
+	overflow:hidden;
+	}
+	form {
+	width: 100%;
+	background-color: white;
+	}
+	fieldset { 
+	background-color: white;
 	float: left; 
-	width: 30%; 
+	width: 45%; 
 	}
       </style>
     </head>
-    <body class="theme-yellow">
+    <body>
 
-      <header class="org-c3af7b08-07d8-4a3e-8b12-5b6de87acf0c">
-	<div class="inner-content grid-container"> 
-	  <div class="grid-x">
-	    <div class="small-6 large-3 cell" > 
-	      <div class="logo"> 
-		<a class="show-for-medium" href="frontpage.html"><pre> </pre></a> 
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </header>
-      <main>
-	<h1>Importér data til tekstportalen</h1>
-	<div>
-	  <form method="get" action="submission/">
-	    <div  class="form-group">
-	      <fieldset id="destination">
-		<legend for="dest">Vælg destination</legend>
-		<select id="dest" name="destination">
-		  <jsp:element name="option" value="staging" selected="selected">
-		    <jsp:body>Forhåndsvisning</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="production">
-		    <jsp:body>Publicéring</jsp:body>
-		  </jsp:element>
-		</select>
-	      </fieldset>
-	    </div>
-	    <div class="form-group">
-	      <fieldset id="repository" >
-		<legend for="repo">Vælg repositorie</legend>
-		<select id="repo" name="repository">
-		  <jsp:element name="option" value="adl">
-		    <jsp:body>Arkiv for Dansk Litteratur</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="sks">
-		    <jsp:body>Søren Kierkegaards Skrifter</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="grundtvig" selected="selected">
-		    <jsp:body>Grundtvigs Værker</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="tfs">
-		    <jsp:body>Trykkefrihedens Skrifter</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="pmm">
-		    <jsp:body>Poul Martin Møller</jsp:body>
-		  </jsp:element>
-		  <jsp:element name="option" value="holberg">
-		    <jsp:body>Ludvig Holbergs Skrifter</jsp:body>
-		  </jsp:element>
-		</select>
-	      </fieldset>
-	    </div>
-	    <div style="clear: both;" class="form-group" >
-	      <fieldset id="submit">
-		<input id="publish-field" type="submit" name="send" value="Importér"/>
-	      </fieldset>
-	    </div>
-	  </form>
-	</div>
-      </main>
+      <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
+
+      <div>
+
+	<h1> Importér </h1>
+
+	<form method="get" action="submission/">
+	  <fieldset id="destination">
+	    <legend for="dest">Vælg destination</legend>
+	    <select id="dest" name="destination">
+	      <jsp:element name="option" value="staging" selected="selected">
+		<jsp:body>Forhåndsvisning</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="production">
+		<jsp:body>Publicéring</jsp:body>
+	      </jsp:element>
+	    </select>
+	  </fieldset>
+
+	  <fieldset id="repository" >
+	    <legend for="repo">Vælg repositorie</legend>
+	    <select id="repo" name="repository">
+	      <jsp:element name="option" value="adl">
+		<jsp:body>Arkiv for Dansk Litteratur</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="sks">
+		<jsp:body>Søren Kierkegaards Skrifter</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="grundtvig" selected="selected">
+		<jsp:body>Grundtvigs Værker</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="tfs">
+		<jsp:body>Trykkefrihedens Skrifter</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="pmm">
+		<jsp:body>Poul Martin Møller</jsp:body>
+	      </jsp:element>
+	      <jsp:element name="option" value="holberg">
+		<jsp:body>Ludvig Holbergs Skrifter</jsp:body>
+	      </jsp:element>
+	    </select>
+	  </fieldset>
+
+	  <fieldset id="submit" style="clear: both;">
+	    <input id="publish-field" type="submit" name="send" value="Importér"/>
+	  </fieldset>
+
+	</form>
+      </div>
     </body>
   </html>
 </jsp:root>
