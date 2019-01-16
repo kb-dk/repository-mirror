@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<bibl xmlns="http://www.tei-c.org/ns/1.0" 
+      corresp="tfs" 
+      copyOf="https://github.com/Det-Kongelige-Bibliotek/trykkefrihedsskrifter.git">
+  <title>Trykkefrihedens Skrifter</title>
+  <ref corresp="texts">trykkefrihedsskrifter/tei_dir/</ref>
+</bibl>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<listBibl xmlns="http://www.tei-c.org/ns/1.0" >
+  <bibl corresp="adl" 
+	copyOf="https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git">
+    <title>ADLs tekster</title>
+    <ref corresp="texts" >texts/</ref>
+  </bibl>
+
+  <bibl corresp="adl" 
+	copyOf="https://github.com/Det-Kongelige-Bibliotek/adl-text-sources.git">
+    <title>ADLs redaktionelle material</title>
+    <ref corresp="authors">authors/</ref>
+    <ref corresp="periods">periods/</ref>
+  </bibl>
+
+</listBibl>
