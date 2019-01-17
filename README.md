@@ -25,6 +25,8 @@ in each of those two directories
 
 ## Installation
 
+### Data
+
 You will need a some document projects to start with. Like
 
 * adl-text-sources
@@ -33,7 +35,11 @@ You will need a some document projects to start with. Like
 * SKS_tei
 * trykkefrihedsskrifter
 
+Propose that you create a directory /home/text-service/ and checkout whatever texts you need there. We also have the 
 
+* [solr-and-snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
+
+code close at hand
 
 ### Collections
 
