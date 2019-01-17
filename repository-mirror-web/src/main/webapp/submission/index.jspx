@@ -26,6 +26,7 @@
 	    <li>destination = <jsp:expression>destination</jsp:expression></li>
 	  </ul>
 	</div>
+	<button onclick="window.location.href='../'">Importér mere</button>
       </div>
     </body>
   </html>
