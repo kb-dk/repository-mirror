@@ -1,7 +1,14 @@
 
 README | [Architecture](ARCHITECTURE.md)
 
-# How to build
+# Repository mirror
+
+A tool for mirroring data from a GIT repository into a digital library
+service. More specifically, a set of XML text documents maintained
+using GIT should be possible to mirror into an eXist database and from
+there into a SOLR search engine.
+
+## How to build
 
 You need java8 or better and Maven. There are two source trees,
 
@@ -14,4 +21,20 @@ just do
 mvn install
 ```
 
-in those two directories
+in each of those two directories
+
+## Installation
+
+You will need a some document projects to start with. Like
+
+* adl-text-sources
+* other_tei_projects
+* [public-adl-text-sources](../public-adl-text-sources)
+* SKS_tei
+* trykkefrihedsskrifter
+
+
+
+### Collections
+
+
