@@ -29,7 +29,7 @@ You will need a some document projects to start with. Like
 
 * adl-text-sources
 * other_tei_projects
-* [public-adl-text-sources](../public-adl-text-sources)
+* [public-adl-text-sources](https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources)
 * SKS_tei
 * trykkefrihedsskrifter
 
