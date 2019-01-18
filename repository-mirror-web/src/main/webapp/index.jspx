@@ -8,8 +8,18 @@
       <style type="text/css">
 	@import "css/simple-style.css";
       </style>
+      <script type="text/javascript">
+	// window.location.href='./';
+      </script>
     </head>
     <body>
+
+      <jsp:scriptlet>
+	String default_repository = "public-adl-text-sources";
+	if(request.getParameter("repository") != null) {
+	   default_repository = request.getParameter("repository");
+	}
+      </jsp:scriptlet>
 
       <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
 
@@ -41,7 +51,18 @@
 	  
 	  </fieldset>
 
-	  <fieldset id="submit" style="clear: both;">
+	  <fieldset id="branches" style="clear: both;">
+	    <legend>Branches</legend>
+	    <select id="branch" name="branch">
+	      <jsp:scriptlet>
+		dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(default_repository); 
+		git.gitFetch();
+		out.print(git.gitBranches());
+	      </jsp:scriptlet>
+	    </select>
+	  </fieldset>
+
+	  <fieldset id="submit">
 	    <input id="publish-field" type="submit" name="send" value="Importér"/>
 	  </fieldset>
 

@@ -13,14 +13,23 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.List;
 
-public class GitClient {
+public class GitWebClient {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
 
     Git git = null;
 
-    public GitClient(String repo) {
+    public GitWebClient() {
+	String repo = "public-adl-text-sources";
+	init(repo);
+    }
+
+    public GitWebClient(String repo) {
+	init(repo);
+    }
+
+    private void init(String repo) {
 	String home = consts.getConstants().getProperty("data.home");
 
 	try {
@@ -28,7 +37,6 @@ public class GitClient {
 	} catch(java.io.IOException repoProblem ) {
 	    logger.error("IO prob: " + repoProblem);
 	}
-
     }
 
     public String gitLog() {
@@ -71,9 +79,11 @@ public class GitClient {
 	    Iterator<Ref> lister =  res.iterator();
 	    String blist = "";
 	    while(lister.hasNext()) {
-		blist = blist + lister.next() + "\n"; 
+		Ref branch = lister.next();
+		String item = "<option value=" + branch.getObjectId() + ">" + branch.getName() + "</option>\n";
+		blist = blist + item;
 	    }
-	    return res.toString();
+	    return blist;
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git failed";
@@ -98,7 +108,7 @@ public class GitClient {
 	props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
-	Logger logger = Logger.getLogger(GitClient.class);
+	Logger logger = Logger.getLogger(GitWebClient.class);
 	return logger;
     }
 
