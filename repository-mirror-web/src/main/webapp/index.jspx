@@ -2,6 +2,12 @@
 	   xmlns:core="http://java.sun.com/jsp/jstl/core"
 	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
+  <jsp:scriptlet>
+	String default_repository = "public-adl-text-sources";
+	if(request.getParameter("repository") != null) {
+	   default_repository = request.getParameter("repository");
+	}
+  </jsp:scriptlet>
   <html>
     <head>
       <title>Importér data til tekstportalen</title>
@@ -16,13 +22,6 @@
       </script>
     </head>
     <body>
-
-      <jsp:scriptlet>
-	String default_repository = "public-adl-text-sources";
-	if(request.getParameter("repository") != null) {
-	   default_repository = request.getParameter("repository");
-	}
-      </jsp:scriptlet>
 
       <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
 
@@ -48,7 +47,7 @@
 
 	    <jsp:scriptlet>
 	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
-	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq");
+	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq?repository=" +  default_repository);
 	    </jsp:scriptlet>
 	    <jsp:expression>select</jsp:expression>
 	  
