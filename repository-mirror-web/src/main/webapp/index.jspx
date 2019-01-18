@@ -9,7 +9,10 @@
 	@import "css/simple-style.css";
       </style>
       <script type="text/javascript">
-	// window.location.href='./';
+	function changeRepo() {
+	  var repo_sel = document.getElementById("sel_repo");
+	  window.location.href='./?repository=' + repo_sel.value ;
+	}
       </script>
     </head>
     <body>
