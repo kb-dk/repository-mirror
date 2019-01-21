@@ -2,12 +2,24 @@
 	   xmlns:core="http://java.sun.com/jsp/jstl/core"
 	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
+  <jsp:scriptlet>
+	String default_repository = "public-adl-text-sources";
+	if(request.getParameter("repository") != null) {
+	   default_repository = request.getParameter("repository");
+	}
+  </jsp:scriptlet>
   <html>
     <head>
       <title>Importér data til tekstportalen</title>
       <style type="text/css">
 	@import "css/simple-style.css";
       </style>
+      <script type="text/javascript">
+	function changeRepo() {
+	  var repo_sel = document.getElementById("sel_repo");
+	  window.location.href='./?repository=' + repo_sel.value ;
+	}
+      </script>
     </head>
     <body>
 
@@ -35,13 +47,24 @@
 
 	    <jsp:scriptlet>
 	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
-	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq");
+	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq?repository=" +  default_repository);
 	    </jsp:scriptlet>
 	    <jsp:expression>select</jsp:expression>
 	  
 	  </fieldset>
 
-	  <fieldset id="submit" style="clear: both;">
+	  <fieldset id="branches" style="clear: both;">
+	    <legend>Branches</legend>
+	    <select id="branch" name="branch">
+	      <jsp:scriptlet>
+		dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(default_repository); 
+		git.gitFetch();
+		out.print(git.gitBranches());
+	      </jsp:scriptlet>
+	    </select>
+	  </fieldset>
+
+	  <fieldset id="submit">
 	    <input id="publish-field" type="submit" name="send" value="Importér"/>
 	  </fieldset>
 
