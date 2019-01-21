@@ -18,7 +18,9 @@ public class GitWebClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
 
-    Git git = null;
+    private Git git = null;
+
+    private CredentialsProvider credentials = null;
 
     public GitWebClient() {
 	String repo = "public-adl-text-sources";
@@ -30,18 +32,23 @@ public class GitWebClient {
     }
 
     private void init(String repo) {
-	String home = consts.getConstants().getProperty("data.home");
+	String home   = consts.getConstants().getProperty("data.home");
+	String user   = consts.getConstants().getProperty("git.user");
+	String passwd = consts.getConstants().getProperty("git.password");
 
 	try {
 	    git = Git.open( new F‌ile( home + "/" + repo + "/.git" ) );
 	} catch(java.io.IOException repoProblem ) {
 	    logger.error("IO prob: " + repoProblem);
 	}
+	credentials = new UsernamePasswordCredentialsProvider(user,passwd);
     }
 
     public String gitLog() {
 	try {
-	    java.lang.Iterable<RevCommit> log = git.log().call();
+	    LogCommand log = git.log();
+	    log.setCredentialsProvider(credentials);
+	    java.lang.Iterable<RevCommit> log = log.call();
 	    return log.iterator().next().toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
@@ -49,9 +56,13 @@ public class GitWebClient {
 	}
     }
 
+
+    //    cloneCommand.setCredentialsProvider( new UsernamePasswordCredentialsProvider( "user", "password" ) );
+
     public String gitFetch() {
 	try {
 	    FetchCommand fetch = git.fetch();
+	    fetch.setCredentialsProvider(credentials);
 	    FetchResult res = fetch.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
@@ -63,6 +74,7 @@ public class GitWebClient {
      public String gitPull() {
 	try {
 	    PullCommand pull = git.pull();
+	    pull.setCredentialsProvider(credentials);
 	    PullResult res   = pull.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
@@ -74,6 +86,7 @@ public class GitWebClient {
     public String gitBranches() {
 	try {
 	    ListBranchCommand branches = git.branchList();
+	    branches.setCredentialsProvider(credentials);
 	    branches.setListMode(ListBranchCommand.ListMode.REMOTE);
 	    java.util.List<Ref> res      = branches.call();
 	    Iterator<Ref> lister =  res.iterator();
