@@ -47,9 +47,9 @@ public class GitWebClient {
     public String gitLog() {
 	try {
 	    LogCommand log = git.log();
-	    log.setCredentialsProvider(credentials);
-	    java.lang.Iterable<RevCommit> log = log.call();
-	    return log.iterator().next().toString();
+	    //	    log.setCredentialsProvider(credentials);
+	    java.lang.Iterable<RevCommit> log_arator = log.call();
+	    return log_arator.iterator().next().toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git failed";
@@ -86,7 +86,7 @@ public class GitWebClient {
     public String gitBranches() {
 	try {
 	    ListBranchCommand branches = git.branchList();
-	    branches.setCredentialsProvider(credentials);
+	    //	    branches.setCredentialsProvider(credentials);
 	    branches.setListMode(ListBranchCommand.ListMode.REMOTE);
 	    java.util.List<Ref> res      = branches.call();
 	    Iterator<Ref> lister =  res.iterator();

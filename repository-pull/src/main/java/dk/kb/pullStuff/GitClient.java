@@ -17,46 +17,41 @@ public class GitClient {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
+    private CredentialsProvider credentials = null;
 
     Git git = null;
 
+    public GitClient() {
+	String repo = "public-adl-text-sources";
+	init(repo);
+    }
+
     public GitClient(String repo) {
-	String home = consts.getConstants().getProperty("data.home");
+	init(repo);
+    }
+
+  private void init(String repo) {
+	String home   = consts.getConstants().getProperty("data.home");
+	String user   = consts.getConstants().getProperty("git.user");
+	String passwd = consts.getConstants().getProperty("git.password");
 
 	try {
 	    git = Git.open( new F‌ile( home + "/" + repo + "/.git" ) );
 	} catch(java.io.IOException repoProblem ) {
 	    logger.error("IO prob: " + repoProblem);
 	}
-
+	credentials = new UsernamePasswordCredentialsProvider(user,passwd);
     }
+
+    //
+    // These are basically local, doesn't seem to understand anything about 
+    // authentication.
+    //
 
     public String gitLog() {
 	try {
 	    java.lang.Iterable<RevCommit> log = git.log().call();
 	    return log.iterator().next().toString();
-	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
-	}
-    }
-
-    public String gitFetch() {
-	try {
-	    FetchCommand fetch = git.fetch();
-	    FetchResult res = fetch.call();
-	    return res.toString();
-	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
-	}
-    }
-
-     public String gitPull() {
-	try {
-	    PullCommand pull = git.pull();
-	    PullResult res   = pull.call();
-	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git failed";
@@ -73,6 +68,34 @@ public class GitClient {
 	    while(lister.hasNext()) {
 		blist = blist + lister.next() + "\n"; 
 	    }
+	    return res.toString();
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git failed";
+	}
+    }
+
+    // 
+    // Down here we have the ones requiring credentials
+    //
+
+    public String gitFetch() {
+	try {
+	    FetchCommand fetch = git.fetch();
+	    fetch.setCredentialsProvider(credentials);
+	    FetchResult res = fetch.call();
+	    return res.toString();
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git failed";
+	}
+    }
+
+     public String gitPull() {
+	try {
+	    PullCommand pull = git.pull();
+	    pull.setCredentialsProvider(credentials);
+	    PullResult res   = pull.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
