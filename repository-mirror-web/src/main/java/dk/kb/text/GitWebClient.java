@@ -93,7 +93,8 @@ public class GitWebClient {
 	    String blist = "";
 	    while(lister.hasNext()) {
 		Ref branch = lister.next();
-		String item = "<option value=" + branch.getObjectId() + ">" + branch.getName() + "</option>\n";
+		// String item = "<option value=" + branch.getObjectId() + ">" + branch.getName() + "</option>\n";
+		String item = "<option value=" + branch.getName() + ">" + branch.getName() + "</option>\n";
 		blist = blist + item;
 	    }
 	    return blist;
