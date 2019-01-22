@@ -8,6 +8,29 @@ service. More specifically, a set of XML text documents maintained
 using GIT should be possible to mirror into an eXist database and from
 there into a SOLR search engine.
 
+## Configuration
+
+Copy the file
+
+```config.xml```
+
+to the name
+
+```config_secret.xml```
+
+and edit that name. Make sure that you keep that for yourself, since
+it is supposed to contain credentials for your git repositories! The
+repository user is supposed to have read only access only, but
+nevertheless.
+
+Before building you can run 
+
+```add_config.sh```
+
+which copies the config.xml to the source trees. After use run 
+
+```del_config.sh```
+
 ## How to build
 
 You need java8 or better and Maven. There are two source trees,
