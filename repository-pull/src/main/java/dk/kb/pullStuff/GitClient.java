@@ -18,6 +18,7 @@ public class GitClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
     private CredentialsProvider credentials = null;
+    private String repository = "";
 
     Git git = null;
 
@@ -30,7 +31,8 @@ public class GitClient {
 	init(repo);
     }
 
-  private void init(String repo) {
+    private void init(String repo) {
+	repository = repo;
 	String home   = consts.getConstants().getProperty("data.home");
 	String user   = consts.getConstants().getProperty("git.user");
 	String passwd = consts.getConstants().getProperty("git.password");
@@ -91,7 +93,7 @@ public class GitClient {
 	}
     }
 
-     public String gitPull() {
+    public String gitPull() {
 	try {
 	    PullCommand pull = git.pull();
 	    pull.setCredentialsProvider(credentials);
