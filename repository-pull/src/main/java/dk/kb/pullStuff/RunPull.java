@@ -54,13 +54,21 @@ public class RunPull {
 			TextMessage textMessage = (TextMessage) message;
 			id = textMessage.getText();
 			String reg = ";";
-			String repo = id.split(reg)[0];
-			logger.info("repo: " + repo);
-			GitClient git = new GitClient(repo);
+			String repository  = id.split(reg)[0];
+			String branch      = id.split(reg)[1];
+			String target      = id.split(reg)[2];
+
+			logger.info("repository: " + repository);
+			GitClient git = new GitClient(repository);
+
+			git.setBranch(branch);
+
 			logger.info(git.gitFetch());
+			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
-			logger.info(git.gitBranches());
-			logger.info(git.gitLog());
+
+			// logger.info(git.gitBranches());
+			// logger.info(git.gitLog());
 		    } else {
 			id = message.toString();
 		    }
