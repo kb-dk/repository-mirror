@@ -107,6 +107,14 @@ public class GitClient {
 	}
     }
 
+    // placeholder:
+
+    // gitDiff should do what 
+    //
+    // git diff --name-only my_branch..master
+    //
+    // does
+
     // 
     // Down here we have the ones requiring credentials
     //
