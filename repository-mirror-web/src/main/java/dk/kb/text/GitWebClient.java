@@ -63,6 +63,7 @@ public class GitWebClient {
 	try {
 	    FetchCommand fetch = git.fetch();
 	    fetch.setCredentialsProvider(credentials);
+	    fetch.setRemoveDeletedRefs(true);
 	    FetchResult res = fetch.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
@@ -71,7 +72,7 @@ public class GitWebClient {
 	}
     }
 
-     public String gitPull() {
+    public String gitPull() {
 	try {
 	    PullCommand pull = git.pull();
 	    pull.setCredentialsProvider(credentials);
@@ -87,7 +88,7 @@ public class GitWebClient {
 	try {
 	    ListBranchCommand branches = git.branchList();
 	    //	    branches.setCredentialsProvider(credentials);
-	    branches.setListMode(ListBranchCommand.ListMode.REMOTE);
+	    branches.setListMode(ListBranchCommand.ListMode.ALL);
 	    java.util.List<Ref> res      = branches.call();
 	    Iterator<Ref> lister =  res.iterator();
 	    String blist = "";

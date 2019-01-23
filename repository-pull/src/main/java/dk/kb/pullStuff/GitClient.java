@@ -18,27 +18,38 @@ public class GitClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
     private CredentialsProvider credentials = null;
-    private String repository = "";
+    private String repository  = "";
+    private String branch      = "";
+    private String target      = "";
 
     Git git = null;
 
-    public GitClient() {
-	String repo = "public-adl-text-sources";
-	init(repo);
-    }
-
     public GitClient(String repo) {
-	init(repo);
+	this.setRepository(repo);
+	init();
     }
 
-    private void init(String repo) {
-	repository = repo;
+    public void setRepository(String repo) {
+	this.repository = repo;
+    }
+
+    public void setBranch(String branch) {
+	this.branch = branch;
+    }
+
+    public void setTarget(String target) {
+	this.target = target;
+    }
+
+
+    private void init() {
+
 	String home   = consts.getConstants().getProperty("data.home");
 	String user   = consts.getConstants().getProperty("git.user");
 	String passwd = consts.getConstants().getProperty("git.password");
 
 	try {
-	    git = Git.open( new F‌ile( home + "/" + repo + "/.git" ) );
+	    git = Git.open( new F‌ile( home + "/" + this.repository + "/.git" ) );
 	} catch(java.io.IOException repoProblem ) {
 	    logger.error("IO prob: " + repoProblem);
 	}
@@ -56,14 +67,14 @@ public class GitClient {
 	    return log.iterator().next().toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
+	    return "git log failed";
 	}
     }
 
     public String gitBranches() {
 	try {
 	    ListBranchCommand branches = git.branchList();
-	    branches.setListMode(ListBranchCommand.ListMode.REMOTE);
+	    branches.setListMode(ListBranchCommand.ListMode.ALL);
 	    java.util.List<Ref> res      = branches.call();
 	    Iterator<Ref> lister =  res.iterator();
 	    String blist = "";
@@ -73,7 +84,26 @@ public class GitClient {
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
+	    return "git branch failed";
+	}
+    }
+
+    public String gitCheckOut() {
+	try {
+	    logger.info("about to check out: " + this.branch);
+	    CheckoutCommand co = git.checkout();
+	    String local_branch = this.branch.replaceAll("(.*?/)","");
+	    logger.info("local_branch: " + local_branch);
+	    co.setName(local_branch);
+	    co.setStartPoint(this.branch);
+	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
+	    co.setCreateBranch(true);
+	    Ref rsult = co.call();
+	    logger.info("Done checking out");
+	    return rsult + "";
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git checkout failed";
 	}
     }
 
@@ -83,13 +113,18 @@ public class GitClient {
 
     public String gitFetch() {
 	try {
+	    logger.info("about to fetch: " + this.repository);
 	    FetchCommand fetch = git.fetch();
+
+	    fetch.setRemoveDeletedRefs(true);
+
 	    fetch.setCredentialsProvider(credentials);
 	    FetchResult res = fetch.call();
-	    return res.toString();
+	    String all_res = res.getMessages() + "\n" + res.getURI() + "\n";
+	    return all_res;
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
+	    return "git fetch failed";
 	}
     }
 
@@ -101,9 +136,11 @@ public class GitClient {
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
-	    return "git failed";
+	    return "git pull failed";
 	}
     }
+
+    // Other stuff
 
     private static Logger configureLog4j() {
 
