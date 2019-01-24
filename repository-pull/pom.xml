@@ -87,6 +87,7 @@
   <build>
     <plugins>
       <!-- seems to do what I need -->
+      <!-- it does build two jar files, don't understand why -->
       <plugin>
 	<groupId>com.jolira</groupId>
 	<artifactId>onejar-maven-plugin</artifactId>
