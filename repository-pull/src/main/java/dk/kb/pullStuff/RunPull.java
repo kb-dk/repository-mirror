@@ -66,9 +66,10 @@ public class RunPull {
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
+			logger.info(git.gitLog());
 
 			// logger.info(git.gitBranches());
-			// logger.info(git.gitLog());
+
 		    } else {
 			id = message.toString();
 		    }

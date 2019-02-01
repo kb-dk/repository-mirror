@@ -59,8 +59,19 @@ public class GitClient {
     //
     // These are basically local, doesn't seem to understand anything about 
     // authentication.
-    //
 
+    // gitDiff or gitLog should do what 
+    //
+    // git log --name-only --oneline --decorate=no master...
+    //
+    // or 
+    //
+    // git diff --name-only my_branch..master
+    //
+    // does
+
+
+    /*
     public String gitLog() {
 	try {
 	    java.lang.Iterable<RevCommit> log = git.log().call();
@@ -70,6 +81,81 @@ public class GitClient {
 	    return "git log failed";
 	}
     }
+    */
+
+    public String gitLog() {
+	try {
+	    LogCommand log = git.log();
+	    Repository repo = git.getRepository();
+	    ObjectId from = repo.resolve("master");
+	    ObjectId to = repo.resolve(this.branch);
+	    log.addRange(from, to);
+	    java.lang.Iterable<RevCommit> logList = log.call();
+	    java.util.Iterator<RevCommit> liter = logList.iterator();
+	    String list = "Log list:\n";
+	    while(liter.hasNext()) {
+
+		RevCommit commit = liter.next();
+		String msg = commit.getFullMessage() + "\n";
+
+		list = list + msg;
+	    }
+	    return list;
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git log failed";
+	} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
+	    logger.error("git ambiguity prob: " + objectProblem);
+	    return "git ambiguity";
+	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
+	    logger.error("git prob: " + e);
+	    return "git incorrect type";
+	} catch(org.eclipse.jgit.errors.MissingObjectException e) {
+	    logger.error("git prob: " + e);
+	    return "git missing object";
+	} catch(java.io.IOException e) {
+	    logger.error("git prob: " + e);
+	    return "git missing io exception";
+	}
+    }
+
+
+    /* public String gitDiff() {
+	try {
+	    DiffCommand diff = git.diff();
+	    Repository repo = git.getRepository();
+	    ObjectId from = repo.resolve("master");
+	    ObjectId to = repo.resolve(this.branch);
+	    diff.addRange(from, to);
+
+	    diff.setShowNameAndStatusOnly();
+
+	    java.lang.Iterable<RevCommit> logList = log.call();
+	    java.util.Iterator liter = logList.iterator();
+	    String list = "Log list:\n";
+	    while(liter.hasNext()) {
+		list = list + liter.next() + "\n";
+	    }
+	    return list;
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git log failed";
+	} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
+	    logger.error("git ambiguity prob: " + objectProblem);
+	    return "git ambiguity";
+	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
+	    logger.error("git prob: " + e);
+	    return "git incorrect type";
+	} catch(org.eclipse.jgit.errors.MissingObjectException e) {
+	    logger.error("git prob: " + e);
+	    return "git missing object";
+	} catch(java.io.IOException e) {
+	    logger.error("git prob: " + e);
+	    return "git missing io exception";
+	}
+	} */
+
+
 
     public String gitBranches() {
 	try {
@@ -106,14 +192,6 @@ public class GitClient {
 	    return "git checkout failed";
 	}
     }
-
-    // placeholder:
-
-    // gitDiff should do what 
-    //
-    // git diff --name-only my_branch..master
-    //
-    // does
 
     // 
     // Down here we have the ones requiring credentials
