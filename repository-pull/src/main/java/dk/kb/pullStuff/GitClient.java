@@ -181,12 +181,25 @@ public class GitClient {
 	    String local_branch = this.branch.replaceAll("(.*?/)","");
 	    logger.info("local_branch: " + local_branch);
 	    co.setName(local_branch);
+	    logger.info("name set to local_branch");
 	    co.setStartPoint(this.branch);
+	    logger.info("start point set to " + this.branch);
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
+	    logger.info("Upstream mode");
 	    co.setCreateBranch(true);
-	    Ref rsult = co.call();
-	    logger.info("Done checking out");
-	    return rsult + "";
+	    logger.info("create branch");
+	    try {
+		Ref rsult = co.call();
+		logger.info("Done checking out");
+		return rsult + "";
+	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
+		logger.error("git branch prob: " + branchProbl);
+		co.setCreateBranch(false);
+		logger.info("don't create branch");
+		Ref rsult = co.call();
+		logger.info("Done checking out");
+		return rsult + "";
+	    }
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git checkout failed";
