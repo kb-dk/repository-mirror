@@ -53,6 +53,7 @@ public class RunPull {
 		    if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
 			id = textMessage.getText();
+			logger.info("Received: " + id);
 			String reg = ";";
 			String repository  = id.split(reg)[0];
 			String branch      = id.split(reg)[1];
@@ -73,12 +74,11 @@ public class RunPull {
 		    } else {
 			id = message.toString();
 		    }
-		    logger.info("Received: " + id);
 
 		} catch (Exception e) {
-		    logger.error("Error connecting to Solrizr "+e);
+		    logger.error("Error connecting  "+e);
 		    logger.error("Waiting 60 sek and try again");
-		    sendToFailedQueue(id,"Error connecting to Solrizr "+e.getMessage(),logger);
+		    sendToFailedQueue(id,"Error connecting " + e.getMessage(),logger);
 		    e.printStackTrace();
 		    Thread.sleep(60000);
 		}

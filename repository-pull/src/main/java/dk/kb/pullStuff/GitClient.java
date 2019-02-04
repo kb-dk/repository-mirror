@@ -2,6 +2,7 @@ package dk.kb.pullStuff;
 
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.lib.*;
 
@@ -70,18 +71,38 @@ public class GitClient {
     //
     // does
 
+    public String walkTree (RevCommit commit) {
+	Repository repo = git.getRepository();
+	TreeWalk treeWalk = new TreeWalk(repo);
 
-    /*
-    public String gitLog() {
+	String paths = "";
+
 	try {
-	    java.lang.Iterable<RevCommit> log = git.log().call();
-	    return log.iterator().next().toString();
-	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
-	    return "git log failed";
+	    logger.info("trying walk tree ");
+	    treeWalk.addTree( commit.getId() );
+	    logger.info("add tree ");
+	    while( treeWalk.next() ) {
+		logger.info("climbing tree ");
+		String path = treeWalk.getPathString();
+		logger.info("entering path ");
+		logger.info("path = " + path);
+		paths = paths + "\n" + path;
+	    }
+	} catch(org.eclipse.jgit.errors.MissingObjectException missing) {
+	    logger.error("Missing object: " + missing);	   
+	    return "object sadly missing";
+	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
+	    logger.error("git prob: " + e);
+	    return "git incorrect type";
+	} catch(org.eclipse.jgit.errors.CorruptObjectException typeProb) {
+	    logger.error("git prob: " + typeProb);
+	    return "git incorrect type";
+	} catch(java.io.IOException e) {
+	    logger.error("git prob: " + e);
+	    return "git io exception";
 	}
+	return paths;
     }
-    */
 
     public String gitLog() {
 	try {
@@ -92,15 +113,19 @@ public class GitClient {
 	    log.addRange(from, to);
 	    java.lang.Iterable<RevCommit> logList = log.call();
 	    java.util.Iterator<RevCommit> liter = logList.iterator();
-	    String list = "Log list:\n";
+	    logger.info("Log list:");
 	    while(liter.hasNext()) {
 
 		RevCommit commit = liter.next();
-		String msg = commit.getFullMessage() + "\n";
+		logger.info("The really long ID: " + commit.getId().getName());
+		logger.info("Full msg: " + commit.getFullMessage());
+		logger.info("as string: " + commit.toString());
 
-		list = list + msg;
+		logger.info("Tree as string " + commit.getTree());
+		logger.info("walk tree: " + walkTree(commit));
+
 	    }
-	    return list;
+	    return "Returned from gitLog";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git log failed";
@@ -115,12 +140,12 @@ public class GitClient {
 	    return "git missing object";
 	} catch(java.io.IOException e) {
 	    logger.error("git prob: " + e);
-	    return "git missing io exception";
+	    return "git io exception";
 	}
     }
 
-
-    /* public String gitDiff() {
+    /*
+    public String gitDiff() {
 	try {
 	    DiffCommand diff = git.diff();
 	    Repository repo = git.getRepository();
@@ -153,8 +178,8 @@ public class GitClient {
 	    logger.error("git prob: " + e);
 	    return "git missing io exception";
 	}
-	} */
-
+	} 
+    */
 
 
     public String gitBranches() {
