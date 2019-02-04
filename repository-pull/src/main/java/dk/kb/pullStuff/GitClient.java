@@ -1,8 +1,9 @@
 package dk.kb.pullStuff;
 
 import org.eclipse.jgit.api.*;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.revwalk.*;
+import org.eclipse.jgit.treewalk.*;
 import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.lib.*;
 
@@ -22,6 +23,8 @@ public class GitClient {
     private String repository  = "";
     private String branch      = "";
     private String target      = "";
+
+    String branchId = "";
 
     Git git = null;
 
@@ -110,6 +113,10 @@ public class GitClient {
 	    Repository repo = git.getRepository();
 	    ObjectId from = repo.resolve("master");
 	    ObjectId to = repo.resolve(this.branch);
+
+	    listDiff(repo,from,to);
+
+	    log.all();
 	    log.addRange(from, to);
 	    java.lang.Iterable<RevCommit> logList = log.call();
 	    java.util.Iterator<RevCommit> liter = logList.iterator();
@@ -144,43 +151,23 @@ public class GitClient {
 	}
     }
 
-    /*
-    public String gitDiff() {
-	try {
-	    DiffCommand diff = git.diff();
-	    Repository repo = git.getRepository();
-	    ObjectId from = repo.resolve("master");
-	    ObjectId to = repo.resolve(this.branch);
-	    diff.addRange(from, to);
+    /* Borrowed from dstadler's jgit-cookbook: https://bit.ly/2S7ihzj */
 
-	    diff.setShowNameAndStatusOnly();
 
-	    java.lang.Iterable<RevCommit> logList = log.call();
-	    java.util.Iterator liter = logList.iterator();
-	    String list = "Log list:\n";
-	    while(liter.hasNext()) {
-		list = list + liter.next() + "\n";
-	    }
-	    return list;
-	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
-	    return "git log failed";
-	} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
-	    logger.error("git ambiguity prob: " + objectProblem);
-	    return "git ambiguity";
-	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
-	    logger.error("git prob: " + e);
-	    return "git incorrect type";
-	} catch(org.eclipse.jgit.errors.MissingObjectException e) {
-	    logger.error("git prob: " + e);
-	    return "git missing object";
-	} catch(java.io.IOException e) {
-	    logger.error("git prob: " + e);
-	    return "git missing io exception";
-	}
-	} 
-    */
+    private void listDiff(Repository repo,
+			  ObjectId oldCommit, 
+			  ObjectId newCommit) throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+         java.util.List<DiffEntry> diffs = git.diff()
+	    .setOldTree(prepareTreeParser(repo, oldCommit))
+	    .setNewTree(prepareTreeParser(repo, newCommit))
+	    .call();
 
+        logger.info("Found: " + diffs.size() + " differences");
+        for (DiffEntry diff : diffs) {
+            logger.info("Diff: " + diff.getChangeType() + ": " +
+                    (diff.getOldPath().equals(diff.getNewPath()) ? diff.getNewPath() : diff.getOldPath() + " -> " + diff.getNewPath()));
+        }
+    }
 
     public String gitBranches() {
 	try {
@@ -215,6 +202,7 @@ public class GitClient {
 	    logger.info("create branch");
 	    try {
 		Ref rsult = co.call();
+		this.branchId = rsult.getObjectId().toString();
 		logger.info("Done checking out");
 		return rsult + "";
 	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
@@ -222,6 +210,7 @@ public class GitClient {
 		co.setCreateBranch(false);
 		logger.info("don't create branch");
 		Ref rsult = co.call();
+		this.branchId = rsult.getObjectId().toString();
 		logger.info("Done checking out");
 		return rsult + "";
 	    }
@@ -287,5 +276,26 @@ public class GitClient {
 	Logger logger = Logger.getLogger(GitClient.class);
 	return logger;
     }
+
+    private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {
+        // from the commit we can build the tree which allows us to construct the TreeParser
+        // noinspection Duplicates
+
+	RevWalk walk = new RevWalk(repo);
+	RevCommit commit = walk.parseCommit(objId);
+	RevTree tree = walk.parseTree(commit.getTree().getId());
+
+	CanonicalTreeParser treeParser = new CanonicalTreeParser();
+
+	ObjectReader reader = repo.newObjectReader();
+	treeParser.reset(reader, tree.getId());
+
+	walk.dispose();
+
+	return treeParser;
+
+    }
+
+
 
 }
