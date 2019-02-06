@@ -69,8 +69,6 @@ public class RunPull {
 			logger.info(git.gitPull());
 			logger.info(git.gitLog());
 
-			// logger.info(git.gitBranches());
-
 		    } else {
 			id = message.toString();
 		    }
@@ -98,11 +96,11 @@ public class RunPull {
 
     private static Logger configureLog4j() {
 
-	String level = "info";
-	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
+	String level = consts.getConstants().getProperty("queue.loglevel");
+	if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
 
 	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
+	if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
 
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
@@ -115,6 +113,7 @@ public class RunPull {
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
 	Logger logger = Logger.getLogger(RunPull.class);
+	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
     }
 

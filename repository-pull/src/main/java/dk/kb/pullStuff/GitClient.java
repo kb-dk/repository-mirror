@@ -72,40 +72,8 @@ public class GitClient {
     //
     // git diff --name-only my_branch..master
     //
-    // does
 
-    public String walkTree (RevCommit commit) {
-	Repository repo = git.getRepository();
-	TreeWalk treeWalk = new TreeWalk(repo);
 
-	String paths = "";
-
-	try {
-	    logger.info("trying walk tree ");
-	    treeWalk.addTree( commit.getId() );
-	    logger.info("add tree ");
-	    while( treeWalk.next() ) {
-		logger.info("climbing tree ");
-		String path = treeWalk.getPathString();
-		logger.info("entering path ");
-		logger.info("path = " + path);
-		paths = paths + "\n" + path;
-	    }
-	} catch(org.eclipse.jgit.errors.MissingObjectException missing) {
-	    logger.error("Missing object: " + missing);	   
-	    return "object sadly missing";
-	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
-	    logger.error("git prob: " + e);
-	    return "git incorrect type";
-	} catch(org.eclipse.jgit.errors.CorruptObjectException typeProb) {
-	    logger.error("git prob: " + typeProb);
-	    return "git incorrect type";
-	} catch(java.io.IOException e) {
-	    logger.error("git prob: " + e);
-	    return "git io exception";
-	}
-	return paths;
-    }
 
     public String gitLog() {
 	try {
@@ -116,22 +84,6 @@ public class GitClient {
 
 	    listDiff(repo,from,to);
 
-	    log.all();
-	    log.addRange(from, to);
-	    java.lang.Iterable<RevCommit> logList = log.call();
-	    java.util.Iterator<RevCommit> liter = logList.iterator();
-	    logger.info("Log list:");
-	    while(liter.hasNext()) {
-
-		RevCommit commit = liter.next();
-		logger.info("The really long ID: " + commit.getId().getName());
-		logger.info("Full msg: " + commit.getFullMessage());
-		logger.info("as string: " + commit.toString());
-
-		logger.info("Tree as string " + commit.getTree());
-		logger.info("walk tree: " + walkTree(commit));
-
-	    }
 	    return "Returned from gitLog";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
@@ -157,16 +109,51 @@ public class GitClient {
     private void listDiff(Repository repo,
 			  ObjectId oldCommit, 
 			  ObjectId newCommit) throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+
          java.util.List<DiffEntry> diffs = git.diff()
 	    .setOldTree(prepareTreeParser(repo, oldCommit))
 	    .setNewTree(prepareTreeParser(repo, newCommit))
 	    .call();
 
         logger.info("Found: " + diffs.size() + " differences");
+
+	 /*
+	   The possible GIT diff types are:
+
+	   ADD    Add a new file to the project
+	   COPY   Copy an existing file to a new location, keeping the original
+	   DELETE Delete an existing file from the project
+	   MODIFY Modify an existing file in the project (content and/or mode)
+	   RENAME Rename an existing file to a new location
+
+	 */
+
         for (DiffEntry diff : diffs) {
+	    logger.info("**********");
+	    logger.info("Type="+diff.getChangeType() + "\nNew path=" +  diff.getNewPath() + "\nOld Path=" +  diff.getOldPath());
+
             logger.info("Diff: " + diff.getChangeType() + ": " +
                     (diff.getOldPath().equals(diff.getNewPath()) ? diff.getNewPath() : diff.getOldPath() + " -> " + diff.getNewPath()));
         }
+    }
+
+   private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {
+        // from the commit we can build the tree which allows us to construct the TreeParser
+        // noinspection Duplicates
+
+	RevWalk walk = new RevWalk(repo);
+	RevCommit commit = walk.parseCommit(objId);
+	RevTree tree = walk.parseTree(commit.getTree().getId());
+
+	CanonicalTreeParser treeParser = new CanonicalTreeParser();
+
+	ObjectReader reader = repo.newObjectReader();
+	treeParser.reset(reader, tree.getId());
+
+	walk.dispose();
+
+	return treeParser;
+
     }
 
     public String gitBranches() {
@@ -188,30 +175,30 @@ public class GitClient {
 
     public String gitCheckOut() {
 	try {
-	    logger.info("about to check out: " + this.branch);
+	    logger.debug("about to check out: " + this.branch);
 	    CheckoutCommand co = git.checkout();
 	    String local_branch = this.branch.replaceAll("(.*?/)","");
-	    logger.info("local_branch: " + local_branch);
+	    logger.debug("local_branch: " + local_branch);
 	    co.setName(local_branch);
-	    logger.info("name set to local_branch");
+	    logger.debug("name set to local_branch");
 	    co.setStartPoint(this.branch);
-	    logger.info("start point set to " + this.branch);
+	    logger.debug("start point set to " + this.branch);
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
-	    logger.info("Upstream mode");
+	    logger.debug("Upstream mode");
 	    co.setCreateBranch(true);
-	    logger.info("create branch");
+	    logger.debug("create branch");
 	    try {
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
-		logger.info("Done checking out");
+		logger.debug("Done checking out");
 		return rsult + "";
 	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
-		logger.error("git branch prob: " + branchProbl);
+		logger.debug("not really a git branch problem " + branchProbl);
 		co.setCreateBranch(false);
-		logger.info("don't create branch");
+		logger.info("branch already created");
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
-		logger.info("Done checking out");
+		logger.debug("Done checking out");
 		return rsult + "";
 	    }
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
@@ -226,15 +213,16 @@ public class GitClient {
 
     public String gitFetch() {
 	try {
-	    logger.info("about to fetch: " + this.repository);
+	    logger.debug("about to fetch: " + this.repository);
 	    FetchCommand fetch = git.fetch();
 
 	    fetch.setRemoveDeletedRefs(true);
 
 	    fetch.setCredentialsProvider(credentials);
 	    FetchResult res = fetch.call();
-	    String all_res = res.getMessages() + "\n" + res.getURI() + "\n";
-	    return all_res;
+	    String all_res = res.getMessages() + " " + res.getURI() + "\n";
+	    logger.info("fetching " + all_res);
+	    return "git fetch succeeded";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git fetch failed";
@@ -257,11 +245,11 @@ public class GitClient {
 
     private static Logger configureLog4j() {
 
-	String level = "info";
-	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
+	String level = consts.getConstants().getProperty("queue.loglevel");
+	if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
 
 	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
+	if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
 
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
@@ -274,28 +262,10 @@ public class GitClient {
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
 	Logger logger = Logger.getLogger(GitClient.class);
+	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
     }
 
-    private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {
-        // from the commit we can build the tree which allows us to construct the TreeParser
-        // noinspection Duplicates
-
-	RevWalk walk = new RevWalk(repo);
-	RevCommit commit = walk.parseCommit(objId);
-	RevTree tree = walk.parseTree(commit.getTree().getId());
-
-	CanonicalTreeParser treeParser = new CanonicalTreeParser();
-
-	ObjectReader reader = repo.newObjectReader();
-	treeParser.reset(reader, tree.getId());
-
-	walk.dispose();
-
-	return treeParser;
-
-    }
-
-
+ 
 
 }

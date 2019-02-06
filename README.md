@@ -58,7 +58,10 @@ You will need a some document projects to start with. Like
 * SKS_tei
 * trykkefrihedsskrifter
 
-Propose that you create a directory /home/text-service/ and checkout whatever texts you need there. We also have the 
+Propose that you create a directory /home/text-service/ and checkout whatever texts you need there.
+The directory were the texts are living should be read- and writable for the user running the tomcat.
+
+We also have the 
 
 * [solr-and-snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 
