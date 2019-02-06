@@ -1,7 +1,9 @@
 package dk.kb.pullStuff;
 
 import org.eclipse.jgit.api.*;
-import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.revwalk.*;
+import org.eclipse.jgit.treewalk.*;
 import org.eclipse.jgit.transport.*;
 import org.eclipse.jgit.lib.*;
 
@@ -21,6 +23,8 @@ public class GitClient {
     private String repository  = "";
     private String branch      = "";
     private String target      = "";
+
+    String branchId = "";
 
     Git git = null;
 
@@ -59,16 +63,97 @@ public class GitClient {
     //
     // These are basically local, doesn't seem to understand anything about 
     // authentication.
+
+    // gitDiff or gitLog should do what 
     //
+    // git log --name-only --oneline --decorate=no master...
+    //
+    // or 
+    //
+    // git diff --name-only my_branch..master
+    //
+
+
 
     public String gitLog() {
 	try {
-	    java.lang.Iterable<RevCommit> log = git.log().call();
-	    return log.iterator().next().toString();
+	    LogCommand log = git.log();
+	    Repository repo = git.getRepository();
+	    ObjectId from = repo.resolve("master");
+	    ObjectId to = repo.resolve(this.branch);
+
+	    listDiff(repo,from,to);
+
+	    return "Returned from gitLog";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git log failed";
+	} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
+	    logger.error("git ambiguity prob: " + objectProblem);
+	    return "git ambiguity";
+	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
+	    logger.error("git prob: " + e);
+	    return "git incorrect type";
+	} catch(org.eclipse.jgit.errors.MissingObjectException e) {
+	    logger.error("git prob: " + e);
+	    return "git missing object";
+	} catch(java.io.IOException e) {
+	    logger.error("git prob: " + e);
+	    return "git io exception";
 	}
+    }
+
+    /* Borrowed from dstadler's jgit-cookbook: https://bit.ly/2S7ihzj */
+
+
+    private void listDiff(Repository repo,
+			  ObjectId oldCommit, 
+			  ObjectId newCommit) throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+
+         java.util.List<DiffEntry> diffs = git.diff()
+	    .setOldTree(prepareTreeParser(repo, oldCommit))
+	    .setNewTree(prepareTreeParser(repo, newCommit))
+	    .call();
+
+        logger.info("Found: " + diffs.size() + " differences");
+
+	 /*
+	   The possible GIT diff types are:
+
+	   ADD    Add a new file to the project
+	   COPY   Copy an existing file to a new location, keeping the original
+	   DELETE Delete an existing file from the project
+	   MODIFY Modify an existing file in the project (content and/or mode)
+	   RENAME Rename an existing file to a new location
+
+	 */
+
+        for (DiffEntry diff : diffs) {
+	    logger.info("**********");
+	    logger.info("Type="+diff.getChangeType() + "\nNew path=" +  diff.getNewPath() + "\nOld Path=" +  diff.getOldPath());
+
+            logger.info("Diff: " + diff.getChangeType() + ": " +
+                    (diff.getOldPath().equals(diff.getNewPath()) ? diff.getNewPath() : diff.getOldPath() + " -> " + diff.getNewPath()));
+        }
+    }
+
+   private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {
+        // from the commit we can build the tree which allows us to construct the TreeParser
+        // noinspection Duplicates
+
+	RevWalk walk = new RevWalk(repo);
+	RevCommit commit = walk.parseCommit(objId);
+	RevTree tree = walk.parseTree(commit.getTree().getId());
+
+	CanonicalTreeParser treeParser = new CanonicalTreeParser();
+
+	ObjectReader reader = repo.newObjectReader();
+	treeParser.reset(reader, tree.getId());
+
+	walk.dispose();
+
+	return treeParser;
+
     }
 
     public String gitBranches() {
@@ -90,30 +175,37 @@ public class GitClient {
 
     public String gitCheckOut() {
 	try {
-	    logger.info("about to check out: " + this.branch);
+	    logger.debug("about to check out: " + this.branch);
 	    CheckoutCommand co = git.checkout();
 	    String local_branch = this.branch.replaceAll("(.*?/)","");
-	    logger.info("local_branch: " + local_branch);
+	    logger.debug("local_branch: " + local_branch);
 	    co.setName(local_branch);
+	    logger.debug("name set to local_branch");
 	    co.setStartPoint(this.branch);
+	    logger.debug("start point set to " + this.branch);
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
+	    logger.debug("Upstream mode");
 	    co.setCreateBranch(true);
-	    Ref rsult = co.call();
-	    logger.info("Done checking out");
-	    return rsult + "";
+	    logger.debug("create branch");
+	    try {
+		Ref rsult = co.call();
+		this.branchId = rsult.getObjectId().toString();
+		logger.debug("Done checking out");
+		return rsult + "";
+	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
+		logger.debug("not really a git branch problem " + branchProbl);
+		co.setCreateBranch(false);
+		logger.info("branch already created");
+		Ref rsult = co.call();
+		this.branchId = rsult.getObjectId().toString();
+		logger.debug("Done checking out");
+		return rsult + "";
+	    }
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git checkout failed";
 	}
     }
-
-    // placeholder:
-
-    // gitDiff should do what 
-    //
-    // git diff --name-only my_branch..master
-    //
-    // does
 
     // 
     // Down here we have the ones requiring credentials
@@ -121,15 +213,16 @@ public class GitClient {
 
     public String gitFetch() {
 	try {
-	    logger.info("about to fetch: " + this.repository);
+	    logger.debug("about to fetch: " + this.repository);
 	    FetchCommand fetch = git.fetch();
 
 	    fetch.setRemoveDeletedRefs(true);
 
 	    fetch.setCredentialsProvider(credentials);
 	    FetchResult res = fetch.call();
-	    String all_res = res.getMessages() + "\n" + res.getURI() + "\n";
-	    return all_res;
+	    String all_res = res.getMessages() + " " + res.getURI() + "\n";
+	    logger.info("fetching " + all_res);
+	    return "git fetch succeeded";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git fetch failed";
@@ -152,11 +245,11 @@ public class GitClient {
 
     private static Logger configureLog4j() {
 
-	String level = "info";
-	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
+	String level = consts.getConstants().getProperty("queue.loglevel");
+	if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
 
 	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
+	if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
 
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
@@ -169,7 +262,10 @@ public class GitClient {
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
 	Logger logger = Logger.getLogger(GitClient.class);
+	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
     }
+
+ 
 
 }

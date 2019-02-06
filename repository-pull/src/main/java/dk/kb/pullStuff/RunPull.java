@@ -53,6 +53,7 @@ public class RunPull {
 		    if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
 			id = textMessage.getText();
+			logger.info("Received: " + id);
 			String reg = ";";
 			String repository  = id.split(reg)[0];
 			String branch      = id.split(reg)[1];
@@ -66,18 +67,16 @@ public class RunPull {
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
+			logger.info(git.gitLog());
 
-			// logger.info(git.gitBranches());
-			// logger.info(git.gitLog());
 		    } else {
 			id = message.toString();
 		    }
-		    logger.info("Received: " + id);
 
 		} catch (Exception e) {
-		    logger.error("Error connecting to Solrizr "+e);
+		    logger.error("Error connecting  "+e);
 		    logger.error("Waiting 60 sek and try again");
-		    sendToFailedQueue(id,"Error connecting to Solrizr "+e.getMessage(),logger);
+		    sendToFailedQueue(id,"Error connecting " + e.getMessage(),logger);
 		    e.printStackTrace();
 		    Thread.sleep(60000);
 		}
@@ -97,11 +96,11 @@ public class RunPull {
 
     private static Logger configureLog4j() {
 
-	String level = "info";
-	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
+	String level = consts.getConstants().getProperty("queue.loglevel");
+	if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
 
 	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
+	if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
 
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
@@ -114,6 +113,7 @@ public class RunPull {
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
 	Logger logger = Logger.getLogger(RunPull.class);
+	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
     }
 
