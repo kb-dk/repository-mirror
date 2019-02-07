@@ -67,8 +67,17 @@ public class RunPull {
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
-			logger.info(git.gitLog());
-
+			java.util.HashMap<String,String> op = git.gitLog();
+			if(op.isEmpty()) {
+			    logger.info("OK nothing to do");
+			} else {
+			    logger.info("found operations");
+			    java.util.Iterator<String> keys = op.keySet().iterator();
+			    while(keys.hasNext()) {
+				String key = keys.next();
+				logger.info(key + "->" + op.get(key));
+			    }
+			}
 		    } else {
 			id = message.toString();
 		    }

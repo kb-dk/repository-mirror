@@ -75,38 +75,34 @@ public class GitClient {
 
 
 
-    public String gitLog() {
+    public  java.util.HashMap<String,String> gitLog() {
+	java.util.HashMap<String,String> op = new java.util.HashMap<String,String>();
 	try {
 	    LogCommand log = git.log();
 	    Repository repo = git.getRepository();
 	    ObjectId from = repo.resolve("master");
 	    ObjectId to = repo.resolve(this.branch);
 
-	    listDiff(repo,from,to);
+	    op = listDiff(repo,from,to);
 
-	    return "Returned from gitLog";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
-	    return "git log failed";
 	} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
 	    logger.error("git ambiguity prob: " + objectProblem);
-	    return "git ambiguity";
 	} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
 	    logger.error("git prob: " + e);
-	    return "git incorrect type";
 	} catch(org.eclipse.jgit.errors.MissingObjectException e) {
 	    logger.error("git prob: " + e);
-	    return "git missing object";
 	} catch(java.io.IOException e) {
 	    logger.error("git prob: " + e);
-	    return "git io exception";
 	}
+	return op;
     }
 
     /* Borrowed from dstadler's jgit-cookbook: https://bit.ly/2S7ihzj */
 
 
-    private void listDiff(Repository repo,
+    private java.util.HashMap<String,String> listDiff(Repository repo,
 			  ObjectId oldCommit, 
 			  ObjectId newCommit) throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
 
@@ -115,7 +111,9 @@ public class GitClient {
 	    .setNewTree(prepareTreeParser(repo, newCommit))
 	    .call();
 
-        logger.info("Found: " + diffs.size() + " differences");
+	 java.util.HashMap<String,String> operations = new java.util.HashMap<String,String>() ;
+
+	 logger.info("Found: " + diffs.size() + " differences");
 
 	 /*
 	   The possible GIT diff types are:
@@ -129,12 +127,44 @@ public class GitClient {
 	 */
 
         for (DiffEntry diff : diffs) {
+
+	    String type = diff.getChangeType() + "";
+
 	    logger.info("**********");
+
+	    if(type.equals("ADD") || type.equals("MODIFY") || type.equals("COPY")) {
+		String file = diff.getNewPath() + ""; 
+		String method = "PUT";
+		operations.put(file,method);
+		logger.info("type=" + type + " We'll " + method + " " + file);
+	    } else if(type.equals("RENAME")) {
+		String file = diff.getOldPath() + ""; 
+		String method = "DELETE";
+
+		logger.info("type=" + type + " We'll " + method + " " + file);
+		operations.put(file,method);
+
+		file = diff.getNewPath() + ""; 
+		method = "PUT";
+
+		logger.info("type=" + type + " We'll " + method + " " + file);
+		operations.put(file,method);
+
+	    } else if(type.equals("DELETE")) {
+		String file = diff.getOldPath() + ""; 
+		String method = "DELETE";
+
+		logger.info("type=" + type + " We'll " + method + " " + file);
+		operations.put(file,method);
+
+	    }
+
 	    logger.info("Type="+diff.getChangeType() + "\nNew path=" +  diff.getNewPath() + "\nOld Path=" +  diff.getOldPath());
 
             logger.info("Diff: " + diff.getChangeType() + ": " +
                     (diff.getOldPath().equals(diff.getNewPath()) ? diff.getNewPath() : diff.getOldPath() + " -> " + diff.getNewPath()));
         }
+	return operations;
     }
 
    private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {

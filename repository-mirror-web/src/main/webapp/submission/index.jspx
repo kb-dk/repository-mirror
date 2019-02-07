@@ -15,10 +15,13 @@
 	<h1>Følg din dataimport</h1>
 	<div>
 	  <jsp:scriptlet>
+	    dk.kb.text.ConfigurableConstants consts =  dk.kb.text.ConfigurableConstants.getInstance();	   
+	    String URI = consts.getConstants().getProperty("queue.uri");
+ 
 	    String repository  = request.getParameter("repository");
 	    String branch      = request.getParameter("branch");
 	    String destination = request.getParameter("destination");
-	    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff("tcp://127.0.0.1:61616","text-git-pull");
+	    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
 	    queue.sendMessage(repository + ";" + branch + ";" + destination);
 	    queue.shutDownPRoducer();
 	  </jsp:scriptlet>
