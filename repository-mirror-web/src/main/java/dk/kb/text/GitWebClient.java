@@ -13,6 +13,8 @@ import java.util.Properties;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.regex.*;
+
 public class GitWebClient {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
@@ -94,9 +96,17 @@ public class GitWebClient {
 	    String blist = "";
 	    while(lister.hasNext()) {
 		Ref branch = lister.next();
-		// String item = "<option value=" + branch.getObjectId() + ">" + branch.getName() + "</option>\n";
-		String item = "<option value=" + branch.getName() + ">" + branch.getName() + "</option>\n";
-		blist = blist + item;
+		String name = branch.getName() + "";
+
+		Pattern pat   = Pattern.compile(".*origin.*");
+		// match anything 
+		// Pattern pat   = Pattern.compile(".*");
+		Matcher match = pat.matcher(name);
+
+		if(match.matches()) {
+		    String item = "<option value=" + name + ">" + name + "</option>\n";
+		    blist = blist + item;
+		}
 	    }
 	    return blist;
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
