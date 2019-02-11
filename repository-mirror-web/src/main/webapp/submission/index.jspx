@@ -16,12 +16,14 @@
 	<div>
 	  <jsp:scriptlet>
 	    dk.kb.text.ConfigurableConstants consts =  dk.kb.text.ConfigurableConstants.getInstance();	   
-	    String URI = consts.getConstants().getProperty("queue.uri");
- 
+	    String URI   = consts.getConstants().getProperty("queue.uri");
+	    String queue = consts.getConstants().getProperty("queue.name");
+
 	    String repository  = request.getParameter("repository");
 	    String branch      = request.getParameter("branch");
 	    String destination = request.getParameter("destination");
-	    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
+
+	    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,queue);
 	    queue.sendMessage(repository + ";" + branch + ";" + destination);
 	    queue.shutDownPRoducer();
 	  </jsp:scriptlet>

@@ -24,6 +24,17 @@ public class RunPull {
     private static Logger logger = configureLog4j();
 
 
+    /*
+    String URI = consts.getConstants().getProperty("queue.uri");
+ 
+    String repository  = request.getParameter("repository");
+    String branch      = request.getParameter("branch");
+    String destination = request.getParameter("destination");
+    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
+    queue.sendMessage(repository + ";" + branch + ";" + destination);
+    queue.shutDownPRoducer();
+    */
+
     public static void main(String args[]) {
 
         String host = System.getProperty("queue.uri");

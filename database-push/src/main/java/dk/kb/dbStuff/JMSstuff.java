@@ -9,7 +9,6 @@ import org.w3c.dom.Node;
 
 public class JMSstuff {
 
-
     private static Logger logger = Logger.getLogger(JMSstuff.class);
 
     private Session session;
