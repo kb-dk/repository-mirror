@@ -1,5 +1,4 @@
-
-package dk.kb.pullStuff;
+package dk.kb.dbStuff;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 

@@ -1,0 +1,521 @@
+[2019-02-07 09.11:27] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 09.11:27] INFO  RunPull main: Waiting for next message 
+[2019-02-07 09.13:23] INFO  RunPull main: Received: public-adl-text-sources;refs/heads/master;staging 
+[2019-02-07 09.13:23] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 09.13:23] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 09.13:24] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 09.13:24] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 09.13:24] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 09.13:24] INFO  RunPull main: Ref[refs/heads/master=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 09.13:24] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@7c29daf3
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 09.13:24] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 09.13:24] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 09.13:24] INFO  RunPull main: Waiting for next message 
+[2019-02-07 09.14:29] INFO  RunPull main: Received: public-adl-text-sources;refs/heads/third_test_branch;staging 
+[2019-02-07 09.14:29] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 09.14:29] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 09.14:29] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 09.14:29] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 09.14:29] INFO  RunPull main: Ref[refs/heads/third_test_branch=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 09.14:30] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@4e7dc304
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 09.14:30] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 09.14:30] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 09.14:30] INFO  RunPull main: Waiting for next message 
+[2019-02-07 10.04:19] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 10.04:19] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 10.04:20] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 10.04:20] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 10.04:20] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 10.04:20] INFO  RunPull main: Ref[refs/heads/my_test_branch=51bc153e0b86f47e2767f307f3a82a884d5a90a3] 
+[2019-02-07 10.04:20] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@53f65459
+Merge of revisions 51bc153e0b86f47e2767f307f3a82a884d5a90a3, 51bc153e0b86f47e2767f307f3a82a884d5a90a3 with base 51bc153e0b86f47e2767f307f3a82a884d5a90a3 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Found: 4 differences 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: ********** 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: ********** 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: ********** 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: ********** 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 10.04:20] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 10.04:20] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 10.04:20] INFO  RunPull main: Waiting for next message 
+[2019-02-07 11.00:54] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 11.00:54] INFO  RunPull main: Waiting for next message 
+[2019-02-07 11.01:11] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/master;staging 
+[2019-02-07 11.01:11] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 11.01:11] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 11.01:12] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 11.01:12] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 11.01:12] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 11.01:12] INFO  RunPull main: Ref[refs/heads/master=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 11.01:12] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@614ddd49
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 11.01:12] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 11.01:12] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 11.01:12] INFO  RunPull main: Waiting for next message 
+[2019-02-07 11.01:21] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/third_test_branch;staging 
+[2019-02-07 11.01:21] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 11.01:22] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 11.01:22] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 11.01:22] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 11.01:22] INFO  RunPull main: Ref[refs/heads/third_test_branch=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 11.01:22] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@396f6598
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 11.01:22] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 11.01:22] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 11.01:22] INFO  RunPull main: Waiting for next message 
+[2019-02-07 11.06:00] INFO  RunPull main: Received: public-adl-text-sources;refs/heads/third_test_branch;staging 
+[2019-02-07 11.06:00] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 11.06:00] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 11.06:00] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 11.06:00] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 11.06:00] INFO  RunPull main: Ref[refs/heads/third_test_branch=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 11.06:01] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@3712b94
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 11.06:01] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 11.06:01] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 11.06:01] INFO  RunPull main: Waiting for next message 
+[2019-02-07 11.10:39] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 11.10:39] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 11.10:40] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 11.10:40] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 11.10:40] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 11.10:40] INFO  RunPull main: Ref[refs/heads/my_test_branch=51bc153e0b86f47e2767f307f3a82a884d5a90a3] 
+[2019-02-07 11.10:40] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@305fd85d
+Merge of revisions 51bc153e0b86f47e2767f307f3a82a884d5a90a3, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Fast-forward.  
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: ********** 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: ********** 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: ********** 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: ********** 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: ********** 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 11.10:40] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 11.10:40] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 11.10:40] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.14:00] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.14:00] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.14:15] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 12.14:15] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 12.14:15] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.14:16] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 12.14:16] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 12.14:16] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 12.14:16] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 12.14:17] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@9660f4e
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: We'll copy a file to database 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: We'll copy a file to database 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: We'll copy a file to database 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: We'll copy a file to database 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 12.14:17] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 12.14:17] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 12.14:17] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.32:42] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.32:43] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.33:00] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 12.33:00] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 12.33:00] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.33:01] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 12.33:01] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 12.33:01] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 12.33:01] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 12.33:02] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@4bbfb90a
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 12.33:03] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 12.33:03] INFO  RunPull main: Returned from gitLog 
+[2019-02-07 12.33:03] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.57:55] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.57:55] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.58:24] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 12.58:24] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 12.58:24] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 12.58:25] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 12.58:25] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 12.58:25] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 12.58:25] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 12.58:26] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@4bbfb90a
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: ********** 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 12.58:26] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 12.58:26] INFO  RunPull main: found operations 
+[2019-02-07 12.58:26] INFO  RunPull main: Waiting for next message 
+[2019-02-07 12.59:40] INFO  RunPull main: Received: public-adl-text-sources;refs/heads/master;staging 
+[2019-02-07 12.59:40] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 12.59:41] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 12.59:41] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 12.59:41] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 12.59:41] INFO  RunPull main: Ref[refs/heads/master=726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1] 
+[2019-02-07 12.59:41] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@10bbd20a
+Merge of revisions 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1, 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 with base 726350f0c70a3f4f0c2ff7c341ea7e048bbe7bd1 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 12.59:41] INFO  GitClient listDiff: Found: 0 differences 
+[2019-02-07 12.59:41] INFO  RunPull main: nothing to do 
+[2019-02-07 12.59:41] INFO  RunPull main: Waiting for next message 
+[2019-02-07 13.00:22] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 13.00:22] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 13.00:22] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 13.00:22] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 13.00:22] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 13.00:23] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 13.00:23] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@74650e52
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 13.00:23] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 13.00:23] INFO  RunPull main: found operations 
+[2019-02-07 13.00:23] INFO  RunPull main: Waiting for next message 
+[2019-02-07 13.01:53] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 13.01:53] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 13.01:54] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 13.01:54] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 13.01:54] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 13.01:54] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 13.01:54] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@704a52ec
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 13.01:54] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 13.01:54] INFO  RunPull main: found operations 
+[2019-02-07 13.01:54] INFO  RunPull main: Waiting for next message 
+[2019-02-07 13.51:09] INFO  RunPull configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 13.51:09] INFO  RunPull main: Waiting for next message 
+[2019-02-07 13.51:36] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 13.51:36] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 13.51:36] INFO  GitClient configureLog4j: logging at level info in file text-logger.log
+ 
+[2019-02-07 13.51:37] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 13.51:37] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 13.51:37] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 13.51:37] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 13.51:38] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@4bbfb90a
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: ********** 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 13.51:38] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 13.51:38] INFO  RunPull main: found operations 
+[2019-02-07 13.51:38] INFO  RunPull main: texts/bang01val.xml->PUT 
+[2019-02-07 13.51:38] INFO  RunPull main: work.md->PUT 
+[2019-02-07 13.51:38] INFO  RunPull main: texts/schemas.xml->DELETE 
+[2019-02-07 13.51:38] INFO  RunPull main: texts/munp1.xml->PUT 
+[2019-02-07 13.51:38] INFO  RunPull main: texts/aarestrup08.xml->PUT 
+[2019-02-07 13.51:38] INFO  RunPull main: Waiting for next message 
+[2019-02-07 14.21:37] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 14.21:37] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 14.21:37] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 14.21:37] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 14.21:37] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 14.21:37] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 14.21:37] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@d44fc21
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 14.21:37] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 14.21:37] INFO  RunPull main: found operations 
+[2019-02-07 14.21:37] INFO  RunPull main: texts/bang01val.xml->PUT 
+[2019-02-07 14.21:37] INFO  RunPull main: work.md->PUT 
+[2019-02-07 14.21:37] INFO  RunPull main: texts/schemas.xml->DELETE 
+[2019-02-07 14.21:37] INFO  RunPull main: texts/munp1.xml->PUT 
+[2019-02-07 14.21:37] INFO  RunPull main: texts/aarestrup08.xml->PUT 
+[2019-02-07 14.21:37] INFO  RunPull main: Waiting for next message 
+[2019-02-07 14.21:46] INFO  RunPull main: Received: public-adl-text-sources;refs/remotes/origin/my_test_branch;staging 
+[2019-02-07 14.21:46] INFO  RunPull main: repository: public-adl-text-sources 
+[2019-02-07 14.21:47] INFO  GitClient gitFetch: fetching  https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git
+ 
+[2019-02-07 14.21:47] INFO  RunPull main: git fetch succeeded 
+[2019-02-07 14.21:47] INFO  GitClient gitCheckOut: branch already created 
+[2019-02-07 14.21:47] INFO  RunPull main: Ref[refs/heads/my_test_branch=8894c7ca82084aaa56e9dfb98c334ff894e84d37] 
+[2019-02-07 14.21:47] INFO  RunPull main: org.eclipse.jgit.transport.FetchResult@1e965684
+Merge of revisions 8894c7ca82084aaa56e9dfb98c334ff894e84d37, 8894c7ca82084aaa56e9dfb98c334ff894e84d37 with base 8894c7ca82084aaa56e9dfb98c334ff894e84d37 using strategy recursive resulted in: Already-up-to-date.  
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Found: 5 differences 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: type=ADD We'll PUT texts/aarestrup08.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Type=ADD
+New path=texts/aarestrup08.xml
+Old Path=/dev/null 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Diff: ADD: /dev/null -> texts/aarestrup08.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/bang01val.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/bang01val.xml
+Old Path=texts/bang01val.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Diff: MODIFY: texts/bang01val.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: type=MODIFY We'll PUT texts/munp1.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Type=MODIFY
+New path=texts/munp1.xml
+Old Path=texts/munp1.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Diff: MODIFY: texts/munp1.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: type=DELETE We'll DELETE texts/schemas.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Type=DELETE
+New path=/dev/null
+Old Path=texts/schemas.xml 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Diff: DELETE: texts/schemas.xml -> /dev/null 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: ********** 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: type=MODIFY We'll PUT work.md 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Type=MODIFY
+New path=work.md
+Old Path=work.md 
+[2019-02-07 14.21:47] INFO  GitClient listDiff: Diff: MODIFY: work.md 
+[2019-02-07 14.21:47] INFO  RunPull main: found operations 
+[2019-02-07 14.21:47] INFO  RunPull main: texts/bang01val.xml->PUT 
+[2019-02-07 14.21:47] INFO  RunPull main: work.md->PUT 
+[2019-02-07 14.21:47] INFO  RunPull main: texts/schemas.xml->DELETE 
+[2019-02-07 14.21:47] INFO  RunPull main: texts/munp1.xml->PUT 
+[2019-02-07 14.21:47] INFO  RunPull main: texts/aarestrup08.xml->PUT 
+[2019-02-07 14.21:47] INFO  RunPull main: Waiting for next message 

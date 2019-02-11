@@ -94,17 +94,18 @@
 	<version>1.4.4</version>
 	<executions>
 	  <execution>
-	    <id>pull</id>
+	    <id>load</id>
             <configuration>
-                <mainClass>dk.kb.pullStuff.RunPull</mainClass>
-		<finalName>run-pull.jar</finalName>
+                <mainClass>dk.kb.dbStuff.RunLoad</mainClass>
+		<finalName>run-load.jar</finalName>
             </configuration>
             <goals>
-                <goal>one-jar</goal>
+	      <goal>one-jar</goal>
             </goals>
 	  </execution>
 	</executions>
       </plugin>
+
     </plugins>
   </build>
 
