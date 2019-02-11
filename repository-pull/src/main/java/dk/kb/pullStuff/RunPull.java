@@ -25,12 +25,8 @@ public class RunPull {
 
 
     /*
-    String URI = consts.getConstants().getProperty("queue.uri");
- 
-    String repository  = request.getParameter("repository");
-    String branch      = request.getParameter("branch");
-    String destination = request.getParameter("destination");
-    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
+
+
     queue.sendMessage(repository + ";" + branch + ";" + destination);
     queue.shutDownPRoducer();
     */
@@ -44,11 +40,17 @@ public class RunPull {
         Session session = null;
         MessageConsumer consumer = null;
 
+
 	try {
             connection = connectionFactory.createConnection();
             connection.start();
 
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+
+    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
+
+
             String queue = System.getProperty("queue");
             if (queue == null ) queue = consts.getConstants().getProperty("queue.name");
             Destination destination = session.createQueue(queue);
