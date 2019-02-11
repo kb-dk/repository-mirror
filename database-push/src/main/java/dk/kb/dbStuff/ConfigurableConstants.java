@@ -1,4 +1,4 @@
-package dk.kb.pullStuff;
+package dk.kb.dbStuff;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +16,7 @@ import java.util.Properties;
  */
 public class ConfigurableConstants{
 
-     private static Logger logger = Logger.getLogger(ConfigurableConstants.class);
+    private static Logger logger = Logger.getLogger(ConfigurableConstants.class);
 
     private Properties props = null;
 
