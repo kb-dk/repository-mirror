@@ -1,11 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>dk.kb.pullStuff</groupId>
-  <artifactId>repository-pull</artifactId>
+  <artifactId>database-push</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
-  <name>repository-pull</name>
+  <name>database-push</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -70,24 +71,12 @@
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-all</artifactId>
       <version>5.6.0</version>
-      <!-- didn't work, really -->
-      <!-- exclusions>
-	<exclusion>
-	  <groupId>org.slf4j</groupId>
-	  <artifactId>slf4j-log4j12</artifactId>
-	</exclusion>
-	<exclusion>
-	  <groupId>log4j</groupId>
-	  <artifactId>log4j</artifactId>
-	</exclusion>
-      </exclusions -->
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <!-- seems to do what I need -->
-      <!-- it does build two jar files, don't understand why -->
       <plugin>
 	<groupId>com.jolira</groupId>
 	<artifactId>onejar-maven-plugin</artifactId>
