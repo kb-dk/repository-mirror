@@ -47,10 +47,6 @@ public class RunPull {
 
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-
-    dk.kb.text.JMSstuff queue = new dk.kb.text.JMSstuff(URI,"text-git-pull");
-
-
             String queue = System.getProperty("queue");
             if (queue == null ) queue = consts.getConstants().getProperty("queue.name");
             Destination destination = session.createQueue(queue);
