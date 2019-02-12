@@ -55,18 +55,18 @@ public class RunPull {
 
 	    while (true) {
 	    // if(true) {
-		String id = null;
+		String msg = "";
 		try {
 		    logger.info("Waiting for next message");
 		    Message message = consumer.receive();
 		    if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
-			id = textMessage.getText();
-			logger.info("Received: " + id);
+			msg = textMessage.getText();
+			logger.info("Received: " + msg);
 			String reg = ";";
-			String repository  = id.split(reg)[0];
-			String branch      = id.split(reg)[1];
-			String target      = id.split(reg)[2];
+			String repository  = msg.split(reg)[0];
+			String branch      = msg.split(reg)[1];
+			String target      = msg.split(reg)[2];
 
 			logger.info("repository: " + repository);
 			GitClient git = new GitClient(repository);
@@ -88,13 +88,13 @@ public class RunPull {
 			    }
 			}
 		    } else {
-			id = message.toString();
+			msg = message.toString();
 		    }
 
 		} catch (Exception e) {
 		    logger.error("Error connecting  "+e);
 		    logger.error("Waiting 60 sek and try again");
-		    sendToFailedQueue(id,"Error connecting " + e.getMessage(),logger);
+
 		    e.printStackTrace();
 		    Thread.sleep(60000);
 		}
@@ -135,21 +135,6 @@ public class RunPull {
 	return logger;
     }
 
-    private static void sendToFailedQueue(String id, String msg, Logger logger) {
-	JMSstuff producer = null;
-	try {
-	    producer = new JMSstuff(
-				    consts.getConstants().getProperty("cop2.solrizr.queue.host"),
-				    consts.getConstants().getProperty("cop2.solrizr.queue.update")+".failed");
-	    producer.sendMessage(id + "|" + msg);
-	} catch (JMSException e) {
-	    logger.error("Error sending fail message ",e);
-	} finally {
-	    if (producer != null) {
-		producer.shutDownPRoducer();
-	    }
-	}
-    }
 
     private static boolean wasItASuccess(InputStream response, Logger logger) {
 	logger.info("I'm asked wheter I was successful. To be hones, I don't know really.");

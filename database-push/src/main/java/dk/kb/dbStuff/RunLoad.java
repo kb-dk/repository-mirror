@@ -50,21 +50,21 @@ public class RunLoad {
             consumer = session.createConsumer(destination);
 
             while (true) {
-                String id = null;
+                String msg = null;
                 try {
                     logger.info("Waiting for next message");
                     Message message = consumer.receive();
                     if (message instanceof TextMessage) {
                         TextMessage textMessage = (TextMessage) message;
-                        id = textMessage.getText();
+                        msg = textMessage.getText();
                     } else {
-                        id = message.toString();
+                        msg = message.toString();
                     }
-                    logger.info("Received: " + id);
+                    logger.info("Received: " + msg);
                 } catch (Exception e) {
                     logger.error("Error connecting "+e);
                     logger.error("Waiting 60 sek and try again");
-                    sendToFailedQueue(id,"Error connecting "+e.getMessage(),logger);
+
                     e.printStackTrace();
                     Thread.sleep(60000);
                 }
@@ -100,25 +100,9 @@ public class RunLoad {
 	props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
 	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
 	PropertyConfigurator.configure(props);
-	Logger logger = Logger.getLogger(RunPull.class);
+	Logger logger = Logger.getLogger(RunLoad.class);
 	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
-    }
-
-    private static void sendToFailedQueue(String id, String msg, Logger logger) {
-        JMSstuff producer = null;
-        try {
-            producer = new JMSstuff(
-				    consts.getConstants().getProperty("cop2.solrizr.queue.host"),
-				    consts.getConstants().getProperty("cop2.solrizr.queue.update")+".failed");
-            producer.sendMessage(id + "|" + msg);
-        } catch (JMSException e) {
-            logger.error("Error sending fail message ",e);
-        } finally {
-            if (producer != null) {
-                producer.shutDownPRoducer();
-            }
-        }
     }
   
 }
