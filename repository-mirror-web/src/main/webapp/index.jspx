@@ -1,13 +1,35 @@
 <jsp:root  xmlns:jsp="http://java.sun.com/JSP/Page" 
-	   xmlns:core="http://java.sun.com/jsp/jstl/core"
+	   xmlns:c="http://java.sun.com/jsp/jstl/core"
 	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <jsp:scriptlet>
-	String default_repository = "public-adl-text-sources";
+	String default_repository  = "adl;public-adl-text-sources";
+	String repository = "";
+
+	String default_destination = "staging";
+	String destination = default_destination;
+
+	String coll = "adl";
+	String reg  = ";";
+
 	if(request.getParameter("repository") != null) {
-	   default_repository = request.getParameter("repository");
+	   String repo = request.getParameter("repository");
+	   coll        = repo.split(reg)[0];
+	   repository  = repo.split(reg)[1];
+	} else {
+	   coll        = default_repository.split(reg)[0];
+	   repository  = default_repository.split(reg)[1];
 	}
+
+	if(request.getParameter("destination") != null) {
+	   destination     = request.getParameter("destination");
+	}
+
+	pageContext.setAttribute("dest", destination);
+	pageContext.setAttribute("repo", repository);
+
   </jsp:scriptlet>
+
   <html>
     <head>
       <title>Importér data til tekstportalen</title>
@@ -32,14 +54,29 @@
 	<form method="get" action="submission/">
 	  <fieldset id="destination">
 	    <legend for="dest">Vælg destination</legend>
+
 	    <select id="dest" name="destination">
-	      <jsp:element name="option" value="staging" selected="selected">
-		<jsp:body>Forhåndsvisning</jsp:body>
-	      </jsp:element>
-	      <jsp:element name="option" value="production">
-		<jsp:body>Publicéring</jsp:body>
-	      </jsp:element>
+	      <c:choose>
+		<c:when test='${dest == "staging"}'>
+		  <jsp:element name="option" value="staging" selected="selected">
+		    <jsp:body>Forhåndsvisning</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="production">
+		    <jsp:body>Publicéring</jsp:body>
+		  </jsp:element>
+		</c:when>
+	 
+		<c:when test='${dest == "production"}'>
+		  <jsp:element name="option" value="staging">
+		    <jsp:body>Forhåndsvisning</jsp:body>
+		  </jsp:element>
+		  <jsp:element name="option" value="production" selected="selected">
+		    <jsp:body>Publicéring</jsp:body>
+		  </jsp:element>
+		</c:when>
+	      </c:choose>
 	    </select>
+
 	  </fieldset>
 
 	  <fieldset id="repository" >
@@ -47,7 +84,7 @@
 
 	    <jsp:scriptlet>
 	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
-	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq?repository=" +  default_repository);
+	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq?repository=" +  repository);
 	    </jsp:scriptlet>
 	    <jsp:expression>select</jsp:expression>
 	  
@@ -57,7 +94,7 @@
 	    <legend>Branches</legend>
 	    <select id="branch" name="branch">
 	      <jsp:scriptlet>
-		dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(default_repository); 
+		dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(repository); 
 		git.gitFetch();
 		out.print(git.gitBranches());
 	      </jsp:scriptlet>
@@ -65,6 +102,7 @@
 	  </fieldset>
 
 	  <fieldset id="submit">
+	    <legend for="repo">Alt OK? Kør!</legend>
 	    <input id="publish-field" type="submit" name="send" value="Importér"/>
 	  </fieldset>
 
