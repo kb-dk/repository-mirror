@@ -66,9 +66,10 @@ public class RunPull {
 			msg = textMessage.getText();
 			logger.info("Received: " + msg);
 			String reg = ";";
-			String repository  = msg.split(reg)[0];
-			String branch      = msg.split(reg)[1];
-			String target      = msg.split(reg)[2];
+			String collection  = msg.split(reg)[0];
+			String repository  = msg.split(reg)[1];
+			String branch      = msg.split(reg)[2];
+			String target      = msg.split(reg)[3];
 
 			logger.info("repository: " + repository);
 			GitClient git = new GitClient(repository);
@@ -86,7 +87,7 @@ public class RunPull {
 			    java.util.Iterator<String> keys = op.keySet().iterator();
 			    while(keys.hasNext()) {
 				String key = keys.next();
-				String theMessage = repository + ";" + key + ";" + op.get(key);
+				String theMessage = collection + ";" + repository + ";" + key + ";" + op.get(key);
 				logger.info("about to send text msg = " + theMessage);
 				try {
 				    TextMessage text_message = session.createTextMessage(theMessage);
