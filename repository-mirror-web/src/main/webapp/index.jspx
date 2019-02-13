@@ -3,30 +3,35 @@
 	   version="2.0">
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <jsp:scriptlet>
-	String default_repository  = "adl;public-adl-text-sources";
-	String repository = "";
 
-	String default_destination = "staging";
-	String destination = default_destination;
+      dk.kb.text.ConfigurableConstants consts = dk.kb.text.ConfigurableConstants.ConfigurableConstants.getInstance();
 
-	String coll = "adl";
-	String reg  = ";";
+      String default_repository  = "adl;public-adl-text-sources";
+      String repository = "";
 
-	if(request.getParameter("repository") != null) {
-	   String repo = request.getParameter("repository");
-	   coll        = repo.split(reg)[0];
-	   repository  = repo.split(reg)[1];
-	} else {
-	   coll        = default_repository.split(reg)[0];
-	   repository  = default_repository.split(reg)[1];
-	}
+      String default_destination = "staging";
+      String destination = default_destination;
 
-	if(request.getParameter("destination") != null) {
-	   destination     = request.getParameter("destination");
-	}
+      String coll = "adl";
+      String reg  = ";";
 
-	pageContext.setAttribute("dest", destination);
-	pageContext.setAttribute("repo", repository);
+      if(request.getParameter("repository") != null) {
+	  String repo = request.getParameter("repository");
+	  coll        = repo.split(reg)[0];
+	  repository  = repo.split(reg)[1];
+      } else {
+	  coll        = default_repository.split(reg)[0];
+	  repository  = default_repository.split(reg)[1];
+      }
+
+      if(request.getParameter("destination") != null) {
+	  destination     = request.getParameter("destination");
+      }
+
+      String snippet_base_uri = consts.getConstants().getProperty(destination);
+
+      pageContext.setAttribute("dest", destination);
+      pageContext.setAttribute("repo", repository);
 
   </jsp:scriptlet>
 
@@ -84,7 +89,7 @@
 
 	    <jsp:scriptlet>
 	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
-	      String select = collection.restGet("http://localhost:8080/exist/rest/db/text-retriever/collection.xq?repository=" +  repository);
+	      String select = collection.restGet(snippet_base_uri + "collection.xq?repository=" +  repository);
 	    </jsp:scriptlet>
 	    <jsp:expression>select</jsp:expression>
 	  
