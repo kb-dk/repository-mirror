@@ -4,7 +4,7 @@
   <jsp:directive.page contentType="text/html; charset=UTF-8" />
   <jsp:scriptlet>
 
-      dk.kb.text.ConfigurableConstants consts = dk.kb.text.ConfigurableConstants.ConfigurableConstants.getInstance();
+      dk.kb.text.ConfigurableConstants consts = dk.kb.text.ConfigurableConstants.getInstance();
 
       String default_repository  = "adl;public-adl-text-sources";
       String repository = "";
@@ -44,7 +44,11 @@
       <script type="text/javascript">
 	function changeRepo() {
 	  var repo_sel = document.getElementById("sel_repo");
-	  window.location.href='./?repository=' + repo_sel.value ;
+	  window.location.href='./?repository=' + repo_sel.value + '&amp;destination=' + <c:out value="${dest}"/>;
+	}
+	function changeDestination() {
+	  var dest_sel = document.getElementById("sel_dest");
+	  window.location.href='./?repository=' + <c:out value="${repo}"/> + '&amp;destination=' + dest_sel.value;
 	}
       </script>
     </head>
@@ -60,7 +64,7 @@
 	  <fieldset id="destination">
 	    <legend for="dest">Vælg destination</legend>
 
-	    <select id="dest" name="destination">
+	    <select id="sel_dest"  onchange="changeDestination()"  name="destination">
 	      <c:choose>
 		<c:when test='${dest == "staging"}'>
 		  <jsp:element name="option" value="staging" selected="selected">
