@@ -38,6 +38,8 @@ public class RunLoad {
         Session session = null;
         MessageConsumer consumer = null;
 
+	ApiClient htclient = new ApiClient();
+
         try {
             connection = connectionFactory.createConnection();
             connection.start();
@@ -79,12 +81,16 @@ public class RunLoad {
 
                     logger.info(op + " " + URI);
 
+		    String res =  htclient.restHead(URI);
+
+                    logger.info("res: " + res);
+
                 } catch (Exception e) {
-                    logger.error("Error connecting "+e);
-                    logger.error("Waiting 60 sek and try again");
+                    logger.error("Error connecting " + e);
+                    logger.error("Waiting 6 sek and try again");
 
                     e.printStackTrace();
-                    Thread.sleep(60000);
+                    Thread.sleep(6000);
                 }
             }
         } catch (Exception e) {

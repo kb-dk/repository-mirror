@@ -38,7 +38,8 @@ public class ApiClient {
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
-	    contents = EntityUtils.toString(entity);
+	    contents = contents + response.toString();
+	    //	    contents = contents + EntityUtils.toString(entity);
 	} catch(java.io.IOException e) {
 
 	}
