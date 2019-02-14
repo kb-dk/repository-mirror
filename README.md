@@ -97,12 +97,13 @@ The products from building are in the directories
 ./repository-pull/target
 ./database-push/target
 ./repository-mirror-web/target
-
 ```
 
 The last one contains a web archive
 
-```repository-mirror-web.war```
+```
+repository-mirror-web.war
+```
 
 which is installed by copying it to your apache tomcat servlet
 container. We are assuming that your tomcat is run by a user with the
