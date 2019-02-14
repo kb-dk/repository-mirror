@@ -7,15 +7,29 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.CloseableHttpResponse;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.*;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.impl.client.*;
 
+import org.apache.http.impl.auth.AuthSchemeBase;
+import org.apache.http.auth.Credentials;
+
 public class ApiClient {
 
+    private Credentials credentials = null;
+
     public ApiClient() {}
+
+    private Credentials getCred() {
+	return this.credentials;
+    }
+
+    public void setCred(String user, String password) {
+	this.credentials = new  org.apache.http.auth.UsernamePasswordCredentials(user, password);
+    }
 
     public String restGet(String URI) {
 	String contents = "";
