@@ -20,6 +20,8 @@ import org.apache.http.auth.Credentials;
 public class ApiClient {
 
     private Credentials credentials = null;
+    private String user = "";
+    private String pwd  = "";
 
     public ApiClient() {}
 
@@ -27,8 +29,20 @@ public class ApiClient {
 	return this.credentials;
     }
 
-    public void setCred(String user, String password) {
-	this.credentials = new  org.apache.http.auth.UsernamePasswordCredentials(user, password);
+    public void setLogin(String user, String password) {
+	this.user = user;
+	this.pwd  = pwd;
+    }
+
+    private void credentials(CloseableHttpClient client, String realm) {
+	this.credentials = new org.apache.http.auth.UsernamePasswordCredentials(this.user, this.pwd);
+        client.
+	    getCredentialsProvider().
+	    setCredentials(new AuthScope("localhost", 443),
+    						       new UsernamePasswordCredentials("username", "password"));
+
+
+
     }
 
     public String restGet(String URI) {
@@ -36,6 +50,7 @@ public class ApiClient {
 	try {
 	    HttpGet request = new HttpGet(URI);
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    if(credentials != null) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    contents = EntityUtils.toString(entity);
