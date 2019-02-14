@@ -44,7 +44,7 @@
       <script type="text/javascript">
 	function changeRepo() {
 	  var repo_sel = document.getElementById("sel_repo");
-	  window.location.href='./?repository=' + repo_sel.value + '&amp;destination=' + <c:out value="${dest}"/>;
+	  window.location.href='./?repository=' + repo_sel.value + '&amp;destination=' + '<c:out value="${dest}"/>';
 	}
 	function changeDestination() {
 	  var dest_sel = document.getElementById("sel_dest");
@@ -54,7 +54,7 @@
     </head>
     <body>
 
-      <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
+      <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Dataimport til tekstportalen</h1>
 
       <div>
 
