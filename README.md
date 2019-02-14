@@ -87,7 +87,7 @@ Doing
 mvn install
 ```
 
-in project root builds both trees
+in project root builds all three trees
 
 ## Installation
 
