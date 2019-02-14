@@ -68,10 +68,16 @@ public class RunLoad {
 		    String repository = arr[1];
 		    String branch     = arr[2];
 		    String target     = arr[3];
-		    String key        = arr[4];
+		    String document   = arr[4];
 		    String op         = arr[5];
 
                     logger.info("Received: " + msg);
+
+		    String db_uri = consts.getConstants().getProperty(target);
+
+		    String URI = db_uri + collection + "/" + document;
+
+                    logger.info(op + " " + URI);
 
                 } catch (Exception e) {
                     logger.error("Error connecting "+e);
