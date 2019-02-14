@@ -28,8 +28,10 @@ for $item in distinct-values($list)
 	let $val := $bibl/@copyOf
 	let $tit := $bibl/t:title/text()
 	let $att := local:get-project-name(string($val))
-	let $opt := if($att = $repository) then element option { attribute value {$att},  attribute selected {"selected"}, $tit } 
-	else element option { attribute value {$att}, $tit } 
+	let $opt := if($att = $repository) then
+	   element option { attribute value {concat($item,";",$att)},  attribute selected {"selected"}, $tit } 
+	else
+	   element option { attribute value {concat($item,";",$att)}, $tit } 
 	return $opt
 } </select>
 

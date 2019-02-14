@@ -11,5 +11,6 @@
   <modules>
     <module>repository-pull</module>
     <module>repository-mirror-web</module>
+    <module>database-push</module>
   </modules>
 </project>
