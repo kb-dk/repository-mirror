@@ -102,7 +102,7 @@ The products from building are in the directories
 The last one contains a web archive
 
 ```
-repository-mirror-web.war
+import.war
 ```
 
 which is installed by copying it to your apache tomcat servlet
