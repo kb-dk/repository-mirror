@@ -71,6 +71,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>repository-mirror-web</finalName>
+    <finalName>import</finalName>
   </build>
 </project>
