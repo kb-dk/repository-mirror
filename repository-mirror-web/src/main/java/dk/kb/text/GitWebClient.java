@@ -102,9 +102,12 @@ public class GitWebClient {
 		// match anything 
 		// Pattern pat   = Pattern.compile(".*");
 		Matcher match = pat.matcher(name);
+		
+		String rgx = "^(.*?)/([^/]*)$";
+		String readable_name  = name.replaceAll(rgx,"$2");
 
 		if(match.matches()) {
-		    String item = "<option value=" + name + ">" + name + "</option>\n";
+		    String item = "<option value=" + name + ">" + readable_name + "</option>\n";
 		    blist = blist + item;
 		}
 	    }
