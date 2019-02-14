@@ -50,9 +50,12 @@ in project root builds both trees
 
 The products from building are in the directories
 
-```./repository-pull/target
+```
+./repository-pull/target
 ./database-push/target
-./repository-mirror-web/target```
+./repository-mirror-web/target
+
+```
 
 The last one contains a web archive
 
