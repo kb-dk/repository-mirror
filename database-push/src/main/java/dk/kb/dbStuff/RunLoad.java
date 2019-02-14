@@ -60,7 +60,19 @@ public class RunLoad {
                     } else {
                         msg = message.toString();
                     }
+
+		    String reg = ";";
+		    String[] arr = msg.split(reg);
+
+		    String collection = arr[0];
+		    String repository = arr[1];
+		    String branch     = arr[2];
+		    String target     = arr[3];
+		    String key        = arr[4];
+		    String op         = arr[5];
+
                     logger.info("Received: " + msg);
+
                 } catch (Exception e) {
                     logger.error("Error connecting "+e);
                     logger.error("Waiting 60 sek and try again");
