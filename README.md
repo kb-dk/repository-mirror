@@ -67,8 +67,10 @@ same name __tomcat__
 
 The other two directories contain the jars
 
-```repository-pull-1.0.one-jar.jar
-database-push-1.0.one-jar.jar```
+```
+repository-pull-1.0.one-jar.jar
+database-push-1.0.one-jar.jar
+```
 
 ### Data
 
