@@ -87,7 +87,13 @@ public class RunPull {
 			    java.util.Iterator<String> keys = op.keySet().iterator();
 			    while(keys.hasNext()) {
 				String key = keys.next();
-				String theMessage = collection + ";" + repository + ";" + key + ";" + op.get(key);
+				String theMessage 
+				    = collection + ";" 
+				    + repository + ";" 
+				    + branch     + ";"
+				    + target     + ";"
+				    + key        + ";" 
+				    + op.get(key);
 				logger.info("about to send text msg = " + theMessage);
 				try {
 				    TextMessage text_message = session.createTextMessage(theMessage);
