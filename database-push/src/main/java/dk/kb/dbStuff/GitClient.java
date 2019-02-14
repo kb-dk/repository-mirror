@@ -1,4 +1,4 @@
-package dk.kb.pullStuff;
+package dk.kb.dbStuff;
 
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.diff.DiffEntry;

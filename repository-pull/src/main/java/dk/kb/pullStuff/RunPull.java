@@ -23,7 +23,6 @@ public class RunPull {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
 
-
     public static void main(String args[]) {
 
         String host = System.getProperty("queue.uri");
@@ -31,33 +30,46 @@ public class RunPull {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
         Connection connection = null;
         Session session = null;
-        MessageConsumer consumer = null;
+        MessageConsumer pull_consumer = null;
+	MessageProducer producer = null;
 
 	try {
             connection = connectionFactory.createConnection();
             connection.start();
 
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
             String queue = System.getProperty("queue");
             if (queue == null ) queue = consts.getConstants().getProperty("queue.name");
-            Destination destination = session.createQueue(queue);
 
-            consumer = session.createConsumer(destination);
+            Destination pull_destination = session.createQueue(queue);
+
+            String push_queue = System.getProperty("queue.load.name");
+            if (push_queue == null ) push_queue = consts.getConstants().getProperty("queue.load.name");
+
+            Destination push_destination = session.createQueue(push_queue);
+
+	    pull_consumer = session.createConsumer(pull_destination);
+	    
+	    producer = session.createProducer(push_destination);
+	    producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+
+	logger.info("kilroy 5");
 
 	    while (true) {
-	    // if(true) {
-		String id = null;
+		String msg = "";
 		try {
 		    logger.info("Waiting for next message");
-		    Message message = consumer.receive();
+		    Message message = pull_consumer.receive();
 		    if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
-			id = textMessage.getText();
-			logger.info("Received: " + id);
+			msg = textMessage.getText();
+			logger.info("Received: " + msg);
 			String reg = ";";
-			String repository  = id.split(reg)[0];
-			String branch      = id.split(reg)[1];
-			String target      = id.split(reg)[2];
+			String collection  = msg.split(reg)[0];
+			String repository  = msg.split(reg)[1];
+			String branch      = msg.split(reg)[2];
+			String target      = msg.split(reg)[3];
 
 			logger.info("repository: " + repository);
 			GitClient git = new GitClient(repository);
@@ -67,16 +79,34 @@ public class RunPull {
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
-			logger.info(git.gitLog());
-
+			java.util.HashMap<String,String> op = git.gitLog();
+			if(op.isEmpty()) {
+			    logger.info("OK nothing to do");
+			} else {
+			    logger.info("found operations");
+			    java.util.Iterator<String> keys = op.keySet().iterator();
+			    while(keys.hasNext()) {
+				String key = keys.next();
+				String theMessage = collection + ";" + repository + ";" + key + ";" + op.get(key);
+				logger.info("about to send text msg = " + theMessage);
+				try {
+				    TextMessage text_message = session.createTextMessage(theMessage);
+				    producer.send(text_message);
+				    logger.debug("text message sent to jms queue");
+				} catch (JMSException jme) {
+				    jme.printStackTrace();
+				    logger.error("could not text send message to queue");
+				}
+			    }
+			}
 		    } else {
-			id = message.toString();
+			msg = message.toString();
 		    }
 
 		} catch (Exception e) {
 		    logger.error("Error connecting  "+e);
 		    logger.error("Waiting 60 sek and try again");
-		    sendToFailedQueue(id,"Error connecting " + e.getMessage(),logger);
+
 		    e.printStackTrace();
 		    Thread.sleep(60000);
 		}
@@ -85,11 +115,11 @@ public class RunPull {
 	    logger.fatal("Stopping execution ",e);
 	} finally {
 	    try {
-		consumer.close();
+		pull_consumer.close();
 		session.close();
 		connection.close();
 	    } catch (Exception e) {
-		logger.fatal("error while shutting donw ",e);
+		logger.fatal("error while shutting down ",e);
 	    }
 	} 
     }
@@ -115,22 +145,6 @@ public class RunPull {
 	Logger logger = Logger.getLogger(RunPull.class);
 	logger.info("logging at level " + level + " in file " + file + "\n");
 	return logger;
-    }
-
-    private static void sendToFailedQueue(String id, String msg, Logger logger) {
-	JMSstuff producer = null;
-	try {
-	    producer = new JMSstuff(
-				    consts.getConstants().getProperty("cop2.solrizr.queue.host"),
-				    consts.getConstants().getProperty("cop2.solrizr.queue.update")+".failed");
-	    producer.sendMessage(id + "|" + msg);
-	} catch (JMSException e) {
-	    logger.error("Error sending fail message ",e);
-	} finally {
-	    if (producer != null) {
-		producer.shutDownPRoducer();
-	    }
-	}
     }
 
     private static boolean wasItASuccess(InputStream response, Logger logger) {
