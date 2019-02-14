@@ -18,10 +18,10 @@ to the name
 
 ```config_secret.xml```
 
-and edit that name. Make sure that you keep that for yourself, since
-it is supposed to contain credentials for your git repositories! The
-repository user is supposed to have read only access only, but
-nevertheless.
+and edit it under that name that name. Make sure that you keep that
+for yourself, since it is supposed to contain credentials for your git
+repositories! The repository user is supposed to have read only access
+only, but nevertheless.
 
 Before building you can run 
 
@@ -47,6 +47,25 @@ mvn install
 in project root builds both trees
 
 ## Installation
+
+The products from building are in the directories
+
+```./repository-pull/target
+./database-push/target
+./repository-mirror-web/target```
+
+The last one contains a web archive
+
+```repository-mirror-web.war```
+
+which is installed by copying it to your apache tomcat servlet
+container. We are assuming that your tomcat is run by a user with the
+same name __tomcat__
+
+The other two directories contain the jars
+
+```repository-pull-1.0.one-jar.jar
+database-push-1.0.one-jar.jar```
 
 ### Data
 
