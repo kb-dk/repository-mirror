@@ -4,12 +4,14 @@ Author: Sigfrid Lundberg (slu@kb.dk)
 -->
 <properties>
     <comment>Configuration for text service daemon.</comment>
-    <entry key="queue.uri">tcp://localhost:61616</entry>
+    <entry key="queue.uri">tcp://[Active MQ hostport]</entry>
     <entry key="queue.name">text-git-pull</entry>
     <entry key="queue.load.name">text-db-load</entry>
     <entry key="queue.logfile">text-logger.log</entry>
     <entry key="queue.loglevel">info</entry>
     <entry key="data.home">/home/text-service/</entry>
+    <entry key="staging">[staging snippet server hostport]/exist/rest/db/text-retriever/</entry>
+    <entry key="production">[staging snippet server hostport]/exist/rest/db/text-retriever/</entry>
     <entry key="git.user">the_user_name</entry>
     <entry key="git.password">very_secret_password</entry>
 </properties>
