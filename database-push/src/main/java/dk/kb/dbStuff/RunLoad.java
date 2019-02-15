@@ -4,8 +4,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.*;
 import org.apache.http.HttpEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
