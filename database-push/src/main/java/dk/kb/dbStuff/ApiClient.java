@@ -80,9 +80,8 @@ public class ApiClient {
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    contents = contents + response.toString();
-	    //	    contents = contents + EntityUtils.toString(entity);
 	} catch(java.io.IOException e) {
-
+	    
 	}
 	return contents;
     }
