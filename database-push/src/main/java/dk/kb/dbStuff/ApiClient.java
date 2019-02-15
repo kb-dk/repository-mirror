@@ -11,8 +11,10 @@ import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.NameValuePair;
 
-import org.apache.http.impl.auth.AuthSchemeBase;
-import org.apache.http.auth.Credentials;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.Properties;
 
 public class ApiClient {
 
-    private Credentials credentials = null;
     private String user = "";
     private String passwd  = "";
 
@@ -33,16 +34,23 @@ public class ApiClient {
 
     public ApiClient() {}
 
-    private Credentials getCred() {
-	return this.credentials;
-    }
-
     public void setLogin(String user, String password) {
 	this.user    = user;
 	this.passwd  = password;
     }
 
-    private List <NameValuePair>  applyCredentials() {
+    private CredentialsProvider setCred() {
+    
+	CredentialsProvider cred = new BasicCredentialsProvider();
+        cred.setCredentials(new AuthScope("localhost", 8080),
+				     new UsernamePasswordCredentials(this.user, this.passwd));
+	return cred;
+
+	//        CloseableHttpClient httpclient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+
+    }
+
+    private List <NameValuePair>  fillForm() {
 	List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 	nvps.add(new BasicNameValuePair("username", this.user));
 	nvps.add(new BasicNameValuePair("password", this.passwd));
@@ -84,6 +92,7 @@ public class ApiClient {
 	try {
 	    HttpDelete request = new HttpDelete(URI);
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    contents = EntityUtils.toString(entity);
@@ -98,10 +107,11 @@ public class ApiClient {
 	try {
 	    HttpPut request = new HttpPut(URI);
 	    AbstractHttpEntity entity = new StringEntity(text);
+	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    entity.setContentType("text/xml");
             entity.setContentEncoding("UTF-8");
 	    request.setEntity(entity);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
 	    CloseableHttpResponse response = httpClient.execute(request);
 
 	} catch(java.io.IOException e) {
@@ -113,10 +123,11 @@ public class ApiClient {
     public String restPost(String text, String URI) {
 	String contents = "";
 	try {
+	    CloseableHttpClient httpClient = HttpClients.createDefault();
 	    HttpPost request = new HttpPost(URI);
 	    HttpEntity entity = new StringEntity(text);
 	    request.setEntity(entity);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 
 	} catch(java.io.IOException e) {
