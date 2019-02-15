@@ -14,6 +14,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 
 import java.util.List;
@@ -45,8 +46,6 @@ public class ApiClient {
         cred.setCredentials(new AuthScope("localhost", 8080),
 				     new UsernamePasswordCredentials(this.user, this.passwd));
 	return cred;
-
-	//        CloseableHttpClient httpclient = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
 
     }
 
@@ -106,8 +105,12 @@ public class ApiClient {
 	try {
 	    HttpPut request = new HttpPut(URI);
 	    AbstractHttpEntity entity = new StringEntity(text);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
-	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
+	    CloseableHttpClient httpClient = null;
+	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+		httpClient = HttpClients.createDefault();
+	    } else {
+		httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
+	    }
 	    entity.setContentType("text/xml");
             entity.setContentEncoding("UTF-8");
 	    request.setEntity(entity);
