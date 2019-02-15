@@ -90,10 +90,15 @@ public class ApiClient {
 	try {
 	    HttpDelete request = new HttpDelete(URI);
 	    CloseableHttpClient httpClient = HttpClients.createDefault();
-	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
+	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+		httpClient = HttpClients.createDefault();
+	    } else {
+		httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
+	    }
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    contents = EntityUtils.toString(entity);
+	    contents = contents + response.toString();
 	} catch(java.io.IOException e) {
 
 	}
