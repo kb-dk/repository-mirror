@@ -6,6 +6,9 @@ import org.apache.http.client.methods.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.*;
+import org.apache.http.client.entity.EntityBuilder;
+
+
 import org.apache.http.util.EntityUtils;
 import org.apache.http.impl.client.*;
 import org.apache.http.message.BasicNameValuePair;
@@ -109,16 +112,16 @@ public class ApiClient {
 	String contents = "";
 	try {
 	    HttpPut request = new HttpPut(URI);
-	    AbstractHttpEntity entity = new StringEntity(text);
+
 	    CloseableHttpClient httpClient = null;
 	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
 		httpClient = HttpClients.createDefault();
 	    } else {
 		httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
 	    }
-	    entity.setContentType("text/xml");
-            entity.setContentEncoding("UTF-8");
-	    request.setEntity(entity);
+
+	    request.setEntity( EntityBuilder.create( ).setText(text).build( ) );
+
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    contents = contents + response.toString();
 	} catch(java.io.IOException e) {
