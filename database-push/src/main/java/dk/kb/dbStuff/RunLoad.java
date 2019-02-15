@@ -16,6 +16,11 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.Properties;
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+
+
 
 /**
  * Created by dgj on 17-11-2016.
@@ -74,14 +79,42 @@ public class RunLoad {
                     logger.info("Received: " + msg);
 
 		    String db_uri = consts.getConstants().getProperty(target);
+		    String credField = target + ".credentials";
+
+                    logger.info("credField: " + credField);
+
+		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
+		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
 		    String URI = db_uri + collection + "/" + document;
 
+		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+
+		    htclient.setLogin(user,passwd);
                     logger.info(op + " " + URI);
+                    logger.info("File " + file);
 
-		    String res =  htclient.restHead(URI);
+		    String res = "";
+		    if(op.matches(".*PUT.*")) { 
+			logger.info("operation = " + op);
+			try {
+			    String text = readFile(file);
+			    res = htclient.restPut(text, URI);
+			    logger.info("res: " + res);
+			} catch (IOException fileprblm) {
+			    logger.error("Error reading: " + file);
+			    logger.error("Problem: " + fileprblm);
+			}
+		    } else if(op.matches(".*DELETE.*")) { 
+			logger.info("delete operation = " + op);
+			res = htclient.restDelete(URI);
+		    } else if(op.matches(".*GET.*")) { 
+			logger.info("GET operation = " + op);
+		    } else {
+			res =  htclient.restHead(URI);
+		    }
 
-                    logger.info("res: " + res);
+                    logger.info(op + " result: " + res);
 
                 } catch (Exception e) {
                     logger.error("Error connecting " + e);
@@ -102,6 +135,23 @@ public class RunLoad {
                 logger.fatal("error while shutting donw ",e);
             }
         }
+    }
+
+    static String readFile(String fileName) throws IOException {
+	BufferedReader br = new BufferedReader(new FileReader(fileName));
+	try {
+	    StringBuilder sb = new StringBuilder();
+	    String line = br.readLine();
+
+	    while (line != null) {
+		sb.append(line);
+		sb.append("\n");
+		line = br.readLine();
+	    }
+	    return sb.toString();
+	} finally {
+	    br.close();
+	}
     }
 
     private static Logger configureLog4j() {

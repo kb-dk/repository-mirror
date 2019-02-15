@@ -115,9 +115,9 @@ public class ApiClient {
             entity.setContentEncoding("UTF-8");
 	    request.setEntity(entity);
 	    CloseableHttpResponse response = httpClient.execute(request);
-
+	    contents = contents + response.toString();
 	} catch(java.io.IOException e) {
-
+	    logger.info("IO exception for " + URI);
 	}
 	return contents;
     }

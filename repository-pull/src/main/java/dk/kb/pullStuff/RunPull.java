@@ -54,8 +54,6 @@ public class RunPull {
 	    producer = session.createProducer(push_destination);
 	    producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
-	logger.info("kilroy 5");
-
 	    while (true) {
 		String msg = "";
 		try {
