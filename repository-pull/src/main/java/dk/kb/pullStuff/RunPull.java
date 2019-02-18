@@ -54,8 +54,6 @@ public class RunPull {
 	    producer = session.createProducer(push_destination);
 	    producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
-	logger.info("kilroy 5");
-
 	    while (true) {
 		String msg = "";
 		try {
@@ -87,7 +85,13 @@ public class RunPull {
 			    java.util.Iterator<String> keys = op.keySet().iterator();
 			    while(keys.hasNext()) {
 				String key = keys.next();
-				String theMessage = collection + ";" + repository + ";" + key + ";" + op.get(key);
+				String theMessage 
+				    = collection + ";" 
+				    + repository + ";" 
+				    + branch     + ";"
+				    + target     + ";"
+				    + key        + ";" 
+				    + op.get(key);
 				logger.info("about to send text msg = " + theMessage);
 				try {
 				    TextMessage text_message = session.createTextMessage(theMessage);

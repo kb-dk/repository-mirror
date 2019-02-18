@@ -4,8 +4,6 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.*;
 import org.apache.http.HttpEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -18,6 +16,11 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.Properties;
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+
+
 
 /**
  * Created by dgj on 17-11-2016.
@@ -37,6 +40,8 @@ public class RunLoad {
         Connection connection = null;
         Session session = null;
         MessageConsumer consumer = null;
+
+	ApiClient htclient = new ApiClient();
 
         try {
             connection = connectionFactory.createConnection();
@@ -60,13 +65,63 @@ public class RunLoad {
                     } else {
                         msg = message.toString();
                     }
+
+		    String reg = ";";
+		    String[] arr = msg.split(reg);
+
+		    String collection = arr[0];
+		    String repository = arr[1];
+		    String branch     = arr[2];
+		    String target     = arr[3];
+		    String document   = arr[4];
+		    String op         = arr[5];
+
                     logger.info("Received: " + msg);
+
+		    String db_uri = consts.getConstants().getProperty(target);
+		    String credField = target + ".credentials";
+
+                    logger.info("credField: " + credField);
+
+		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
+		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
+
+		    String URI = db_uri + collection + "/" + document;
+
+		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+
+		    htclient.setLogin(user,passwd);
+                    logger.info(op + " " + URI);
+                    logger.info("File " + file);
+
+		    String res = "";
+		    if(op.matches(".*PUT.*")) { 
+			logger.info("operation = " + op);
+			try {
+			    String text = readFile(file);
+			    res = htclient.restPut(text, URI);
+			    logger.info("res: " + res);
+			} catch (IOException fileprblm) {
+			    logger.error("Error reading: " + file);
+			    logger.error("Problem: " + fileprblm);
+			}
+		    } else if(op.matches(".*DELETE.*")) { 
+			logger.info("delete operation = " + op);
+			res = htclient.restDelete(URI);
+		    } else if(op.matches(".*GET.*")) { 
+			logger.info("GET operation = " + op);
+		    } else {
+			res =  htclient.restHead(URI);
+		    }
+
+                    logger.info(op + " result: " + res);
+
                 } catch (Exception e) {
-                    logger.error("Error connecting "+e);
-                    logger.error("Waiting 60 sek and try again");
+                    logger.error("Error connecting " + e);
+                    logger.error("Waiting 6 sek and try again");
 
                     e.printStackTrace();
-                    Thread.sleep(60000);
+                    Thread.sleep(6000);
                 }
             }
         } catch (Exception e) {
@@ -80,6 +135,23 @@ public class RunLoad {
                 logger.fatal("error while shutting donw ",e);
             }
         }
+    }
+
+    static String readFile(String fileName) throws IOException {
+	BufferedReader br = new BufferedReader(new FileReader(fileName));
+	try {
+	    StringBuilder sb = new StringBuilder();
+	    String line = br.readLine();
+
+	    while (line != null) {
+		sb.append(line);
+		sb.append("\n");
+		line = br.readLine();
+	    }
+	    return sb.toString();
+	} finally {
+	    br.close();
+	}
     }
 
     private static Logger configureLog4j() {

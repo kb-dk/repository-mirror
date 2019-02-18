@@ -32,20 +32,10 @@
       <version>1.0.13</version>
     </dependency>
     <!-- There is obviously a copy of this in the activemq jar. classloader don't like it twice -->
-    <!-- dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.14</version>
-    </dependency -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.0.1</version>
-    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.3.6</version>
+      <version>4.5.6</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
