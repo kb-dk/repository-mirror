@@ -121,7 +121,6 @@ public class ApiClient {
 	    }
 
 	    request.setEntity( EntityBuilder.create( ).setText(text).build( ) );
-
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    contents = contents + response.toString();
 	} catch(java.io.IOException e) {

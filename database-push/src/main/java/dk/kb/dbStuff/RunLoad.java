@@ -19,9 +19,6 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-
-
-
 /**
  * Created by dgj on 17-11-2016.
  * Stolen by slu on 11-01-2019
