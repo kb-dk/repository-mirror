@@ -3,7 +3,7 @@ package dk.kb.dbStuff;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
-
+import com.damnhandy.uri.template.UriTemplate;
 import org.apache.http.HttpEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -24,6 +24,29 @@ import java.io.FileReader;
  * Stolen by slu on 11-01-2019
  */
 public class RunLoad {
+
+
+    /* My perl app uses these
+    my $solrizer_template    = URI::Template->new("http://{exist_host}:{exist_port}/exist/rest/db/{service}/present.xq{?op,doc,c}");
+    my $solr_template        = URI::Template->new("http://{solr_host}:{solr_port}/solr/{collection}/update");
+    my $solr_commit_template = URI::Template->new("http://{solr_host}:{solr_port}/solr/{collection}/update{?commit,softCommit}");
+    */
+
+    /*
+      Now we'd like to use damn handy URI Templates in java
+
+      https://github.com/damnhandy/Handy-URI-Templates
+
+      String uri =  UriTemplate.fromTemplate("/{foo:1}{/foo,thing*}{?query,test2}")
+                         .set("foo", "houses")
+                         .set("query", "Ask something")
+                         .set("test2", "someting else")
+                         .set("thing", "A test")
+                         .expand();
+
+     */
+
+
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 
@@ -75,7 +98,9 @@ public class RunLoad {
 
                     logger.info("Received: " + msg);
 
+		    String tmplt = consts.getConstants().getProperty("file.template");
 		    String db_uri = consts.getConstants().getProperty(target);
+
 		    String credField = target + ".credentials";
 
                     logger.info("credField: " + credField);
@@ -83,12 +108,19 @@ public class RunLoad {
 		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
 		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
-		    String URI = db_uri + collection + "/" + document;
+		    String URI = UriTemplate.fromTemplate(consts.getConstants().getProperty("file.template"))
+			.set("exist_hostport", consts.getConstants().getProperty(target) )
+			.set("collection", collection)
+			.set("file", document)
+			.expand();
+
+		    // String URI = db_uri + collection + "/" + document;
 
 		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
 
 		    htclient.setLogin(user,passwd);
-                    logger.info(op + " " + URI);
+                    logger.info("URI  " + URI);
+                    logger.info("op   " + op);
                     logger.info("File " + file);
 
 		    String res = "";

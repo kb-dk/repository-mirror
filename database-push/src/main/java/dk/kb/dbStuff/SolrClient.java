@@ -8,11 +8,11 @@ public class SolrClient {
     public SolrClient() {}
 
     public String getIndexEntry() {
-
+	return "";
     }
 
     public boolean sendIndexEntry() {
-
+	return false;
     }
 	
     public void setSolrServer(String server) {
