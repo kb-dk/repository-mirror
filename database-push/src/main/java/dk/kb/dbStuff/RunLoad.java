@@ -25,29 +25,6 @@ import java.io.FileReader;
  */
 public class RunLoad {
 
-
-    /* My perl app uses these
-    my $solrizer_template    = URI::Template->new("http://{exist_host}:{exist_port}/exist/rest/db/{service}/present.xq{?op,doc,c}");
-    my $solr_template        = URI::Template->new("http://{solr_host}:{solr_port}/solr/{collection}/update");
-    my $solr_commit_template = URI::Template->new("http://{solr_host}:{solr_port}/solr/{collection}/update{?commit,softCommit}");
-    */
-
-    /*
-      Now we'd like to use damn handy URI Templates in java
-
-      https://github.com/damnhandy/Handy-URI-Templates
-
-      String uri =  UriTemplate.fromTemplate("/{foo:1}{/foo,thing*}{?query,test2}")
-                         .set("foo", "houses")
-                         .set("query", "Ask something")
-                         .set("test2", "someting else")
-                         .set("thing", "A test")
-                         .expand();
-
-     */
-
-
-
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 
     public static void main(String args[]) {
@@ -114,13 +91,10 @@ public class RunLoad {
 			.set("file", document)
 			.expand();
 
-		    // String URI = db_uri + collection + "/" + document;
-
 		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
 
 		    htclient.setLogin(user,passwd);
                     logger.info("URI  " + URI);
-                    logger.info("op   " + op);
                     logger.info("File " + file);
 
 		    String res = "";
@@ -130,6 +104,17 @@ public class RunLoad {
 			    String text = readFile(file);
 			    res = htclient.restPut(text, URI);
 			    logger.info("res: " + res);
+
+			    String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+				.set("exist_hostport", consts.getConstants().getProperty(target) )
+				.set("op", "solrize")
+				.set("doc", document)
+				.set("c", collection)
+				.expand();
+
+			    logger.info("solrizr: " + solrizrURI);
+			    String solrres = htclient.restGet(solrizrURI);
+			    logger.info("solrizr: " + solrres);
 			} catch (IOException fileprblm) {
 			    logger.error("Error reading: " + file);
 			    logger.error("Problem: " + fileprblm);
