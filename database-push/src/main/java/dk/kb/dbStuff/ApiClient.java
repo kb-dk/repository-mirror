@@ -44,9 +44,8 @@ public class ApiClient {
     }
 
     private CredentialsProvider setCred() {
-    
 	CredentialsProvider cred = new BasicCredentialsProvider();
-        cred.setCredentials(new AuthScope("localhost", 8080),
+        cred.setCredentials(new AuthScope("localhost", 8080, "exist"),
 				     new UsernamePasswordCredentials(this.user, this.passwd));
 	return cred;
 
@@ -115,16 +114,29 @@ public class ApiClient {
 
 	    CloseableHttpClient httpClient = null;
 	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+		logger.info("Have no credentials for " + URI);
 		httpClient = HttpClients.createDefault();
 	    } else {
+		logger.info("using credentials " +  this.user + " with password " + this.passwd);
 		httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
 	    }
+	    if(httpClient == null) {
+		logger.info("failed to create httpClient");
+	    } else {
+		logger.info("setting entity " + URI);
+		HttpEntity entity = new StringEntity(text,ContentType.create("text/xml","UTF-8"));
+		request.setEntity( entity);
+		logger.info("executing " + URI);
+		CloseableHttpResponse response = httpClient.execute(request);
+		int statusCode = response.getStatusLine().getStatusCode();
 
-	    request.setEntity( EntityBuilder.create( ).setText(text).build( ) );
-	    CloseableHttpResponse response = httpClient.execute(request);
-	    contents = contents + response.toString();
-	} catch(java.io.IOException e) {
+		logger.info("GOT " +  statusCode + " for " + URI);
+
+		contents = contents + response.toString();
+	    }
+	} catch(java.io.IOException io) {
 	    logger.info("IO exception for " + URI);
+	    logger.info("Exception " + io.toString());
 	}
 	return contents;
     }

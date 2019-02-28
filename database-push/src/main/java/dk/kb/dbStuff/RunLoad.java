@@ -114,7 +114,7 @@ public class RunLoad {
 
 			    logger.info("solrizr: " + solrizrURI);
 			    String solrres = htclient.restGet(solrizrURI);
-			    logger.info("solrizr: " + solrres);
+			    // logger.info("solrizr: " + solrres);
 			} catch (IOException fileprblm) {
 			    logger.error("Error reading: " + file);
 			    logger.error("Problem: " + fileprblm);
