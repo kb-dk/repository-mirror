@@ -19,6 +19,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.client.ResponseHandler;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -127,12 +128,26 @@ public class ApiClient {
 		HttpEntity entity = new StringEntity(text,ContentType.create("text/xml","UTF-8"));
 		request.setEntity( entity);
 		logger.info("executing " + URI);
-		CloseableHttpResponse response = httpClient.execute(request);
-		int statusCode = response.getStatusLine().getStatusCode();
 
-		logger.info("GOT " +  statusCode + " for " + URI);
+		// Create a custom response handler
+		ResponseHandler<String> responseHandler = response->{
+		    int status = response.getStatusLine().getStatusCode();
+		    if (status >= 200 && status < 300) {
+			HttpEntity responseEntity = response.getEntity();
+			logger.info("Got " +  status + " for " + URI);
+			return responseEntity != null ? EntityUtils.toString(responseEntity) : null;
+		    } else {
+			throw new ClientProtocolException("Unexpected response status: " + status);
+		    }
+		}; 
+		String responseBody = httpClient.execute(request, responseHandler);
+		// CloseableHttpResponse response = httpClient.execute(request);
 
-		contents = contents + response.toString();
+		// int statusCode = response.getStatusLine().getStatusCode();
+
+		// logger.info("GOT " +  statusCode + " for " + URI);
+
+		contents = contents + responseBody; //response.toString();
 	    }
 	} catch(java.io.IOException io) {
 	    logger.info("IO exception for " + URI);
