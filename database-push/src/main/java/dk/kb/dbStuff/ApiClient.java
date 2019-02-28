@@ -61,9 +61,10 @@ public class ApiClient {
 
     public String restGet(String URI) {
 	String contents = "";
+	CloseableHttpClient httpClient = null;
 	try {
 	    HttpGet request = new HttpGet(URI);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    httpClient = HttpClients.createDefault();
 	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
@@ -71,28 +72,33 @@ public class ApiClient {
 	} catch(java.io.IOException e) {
 
 	}
+	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {}
 	return contents;
     }
 
     public String restHead(String URI) {
 	String contents = "";
+	CloseableHttpClient httpClient = null;
 	try {
 	    HttpHead request = new HttpHead(URI);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    httpClient = HttpClients.createDefault();
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    contents = contents + response.toString();
 	} catch(java.io.IOException e) {
 	    
 	}
+	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {}
+
 	return contents;
     }
 
     public String restDelete(String URI) {
 	String contents = "";
+	CloseableHttpClient httpClient = null;
 	try {
 	    HttpDelete request = new HttpDelete(URI);
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    httpClient = HttpClients.createDefault();
 	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
 		httpClient = HttpClients.createDefault();
 	    } else {
@@ -105,15 +111,16 @@ public class ApiClient {
 	} catch(java.io.IOException e) {
 
 	}
+	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {}
+
 	return contents;
     }
 
     public String restPut(String text, String URI) {
 	String contents = "";
+	CloseableHttpClient httpClient = null;
 	try {
 	    HttpPut request = new HttpPut(URI);
-
-	    CloseableHttpClient httpClient = null;
 	    if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
 		logger.info("Have no credentials for " + URI);
 		httpClient = HttpClients.createDefault();
@@ -142,24 +149,23 @@ public class ApiClient {
 		}; 
 		String responseBody = httpClient.execute(request, responseHandler);
 		// CloseableHttpResponse response = httpClient.execute(request);
-
 		// int statusCode = response.getStatusLine().getStatusCode();
-
 		// logger.info("GOT " +  statusCode + " for " + URI);
-
 		contents = contents + responseBody; //response.toString();
 	    }
 	} catch(java.io.IOException io) {
 	    logger.info("IO exception for " + URI);
 	    logger.info("Exception " + io.toString());
 	}
+	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {}
 	return contents;
     }
 
     public String restPost(String text, String URI) {
 	String contents = "";
+	CloseableHttpClient httpClient = null;
 	try {
-	    CloseableHttpClient httpClient = HttpClients.createDefault();
+	    httpClient = HttpClients.createDefault();
 	    HttpPost request = new HttpPost(URI);
 	    HttpEntity entity = new StringEntity(text);
 	    request.setEntity(entity);
@@ -169,6 +175,7 @@ public class ApiClient {
 	} catch(java.io.IOException e) {
 
 	}
+	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {}
 	return contents;
     }
 
