@@ -10,45 +10,52 @@ import java.lang.ProcessBuilder;
 
 public class DirtyPutHack {
 
-    public class DirtyPutHack() {}
+    public DirtyPutHack() {}
 
-    public String put() {
+    public String restUpload(String method, String text, String URI) throws IOException {
 
 	String result = "";
 
-        //Build command 
-        List<String> commands = new ArrayList<String>();
-        commands.add("/bin/cat");
-        //Add arguments
-        commands.add("/home/narek/pk.txt");
-        System.out.println(commands);
+	try {
 
-        //Run macro on target
-        ProcessBuilder pb = new ProcessBuilder(commands);
-        pb.directory(new File("/home/narek"));
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
+	    //Build command 
+	    List<String> commands = new ArrayList<String>();
+	    commands.add("/usr/bin/lwp-request");
+	    //Add arguments
+	    commands.add("-m " + method);
+	    System.out.println(commands);
 
-        //Read output
-        StringBuilder out = new StringBuilder();
-        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line = null, previous = null;
-        while ((line = br.readLine()) != null)
-            if (!line.equals(previous)) {
-                previous = line;
-                out.append(line).append('\n');
-                System.out.println(line);
-            }
+	    //Run macro on target
+	    ProcessBuilder pb = new ProcessBuilder(commands);
+	    pb.directory(new File("/home/text-service/"));
+	    pb.redirectErrorStream(true);
+	    Process process = pb.start();
 
-        //Check result
-        if (process.waitFor() == 0) {
-            System.out.println("Success!");
-        }
+	    //Read output
+	    StringBuilder out = new StringBuilder();
+	    BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	    String line = null, previous = null;
+	    while ((line = br.readLine()) != null)
+		if (!line.equals(previous)) {
+		    previous = line;
+		    out.append(line).append('\n');
+		    result = result + line;
+		}
 
-        //Abnormal termination: Log command parameters and output and throw ExecutionException
-        System.err.println(commands);
-        System.err.println(out.toString());
+	    //Check result
+	    if (process.waitFor() == 0) {
+		result = result + "Success!";
+	    }
 
+	    //Abnormal termination: Log command parameters and output and throw ExecutionException
+
+	    result = result + commands;
+	    result = result + out.toString();
+
+	} catch (InterruptedException interuption) {
+	    // interuption
+	}
+ 
 	return result;
 
     }

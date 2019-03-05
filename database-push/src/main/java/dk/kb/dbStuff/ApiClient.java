@@ -119,12 +119,31 @@ public class ApiClient {
     }
 
     // should I set agent to, say "crud-client/0.1 "?
+
     // This giving me even grayer hair. See
     // https://stackoverflow.com/questions/9161591/apache-httpclient-4-x-behaving-strange-when-uploading-larger-files
     // https://stackoverflow.com/questions/32303385/http-post-using-apache-http-client-with-expect-continue-option-to-an-authorized
 
     public String restPut(String text, String URI) {
 	String contents = "";
+	try {
+	    boolean apacheHttpApiWorks = false;
+	    if(apacheHttpApiWorks) {
+		contents = doingItApacheWay(text, URI);
+	    } else {
+		DirtyPutHack hack = new DirtyPutHack();
+		contents = hack.restUpload("PUT",text, URI);
+	    }
+	} catch(java.io.IOException e) {
+	    logger.info(logStackTrace(e));
+	}
+	return contents;
+    }
+
+    public String doingItApacheWay(String text, String URI)  throws java.io.IOException {
+
+	String contents = "";
+
 	CloseableHttpClient httpClient = null;
 	try {
 	    HttpPut request = new HttpPut(URI);
@@ -179,7 +198,9 @@ public class ApiClient {
 	}
 	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {logger.info(logStackTrace(e));}
 	return contents;
+
     }
+
 
     public String restPost(String text, String URI) {
 	String contents = "";
