@@ -15,9 +15,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 /**
  * Created by dgj on 17-11-2016.
@@ -100,25 +97,22 @@ public class RunLoad {
 		    String res = "";
 		    if(op.matches(".*PUT.*")) { 
 			logger.info("operation = " + op);
-			try {
-			    String text = readFile(file);
-			    res = htclient.restPut(text, URI);
-			    logger.info("res: " + res);
 
-			    String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
-				.set("exist_hostport", consts.getConstants().getProperty(target) )
-				.set("op", "solrize")
-				.set("doc", document)
-				.set("c", collection)
-				.expand();
+			res = htclient.restPut(file, URI);
+			logger.info("res: " + res);
 
-			    logger.info("solrizr: " + solrizrURI);
-			    String solrres = htclient.restGet(solrizrURI);
-			    // logger.info("solrizr: " + solrres);
-			} catch (IOException fileprblm) {
-			    logger.error("Error reading: " + file);
-			    logger.error("Problem: " + fileprblm);
-			}
+			String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+			    .set("exist_hostport", consts.getConstants().getProperty(target) )
+			    .set("op", "solrize")
+			    .set("doc", document)
+			    .set("c", collection)
+			    .expand();
+
+			logger.info("solrizr: " + solrizrURI);
+			String solrres = htclient.restGet(solrizrURI);
+			// logger.info("solrizr: " + solrres);
+		
+
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
 			res = htclient.restDelete(URI);
@@ -151,22 +145,6 @@ public class RunLoad {
         }
     }
 
-    static String readFile(String fileName) throws IOException {
-	BufferedReader br = new BufferedReader(new FileReader(fileName));
-	try {
-	    StringBuilder sb = new StringBuilder();
-	    String line = br.readLine();
-
-	    while (line != null) {
-		sb.append(line);
-		sb.append("\n");
-		line = br.readLine();
-	    }
-	    return sb.toString();
-	} finally {
-	    br.close();
-	}
-    }
 
     private static Logger configureLog4j() {
 

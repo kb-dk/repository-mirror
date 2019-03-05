@@ -31,6 +31,10 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import java.util.Properties;
 
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class ApiClient {
 
     private String user = "";
@@ -124,21 +128,41 @@ public class ApiClient {
     // https://stackoverflow.com/questions/9161591/apache-httpclient-4-x-behaving-strange-when-uploading-larger-files
     // https://stackoverflow.com/questions/32303385/http-post-using-apache-http-client-with-expect-continue-option-to-an-authorized
 
-    public String restPut(String text, String URI) {
+    public String restPut(String file, String URI) {
 	String contents = "";
 	try {
 	    boolean apacheHttpApiWorks = false;
 	    if(apacheHttpApiWorks) {
+		String text = readFile(file);
 		contents = doingItApacheWay(text, URI);
 	    } else {
 		DirtyPutHack hack = new DirtyPutHack();
-		contents = hack.restUpload("PUT",text, URI);
+		contents = hack.restUpload("PUT", file, URI,this.user,this.passwd);
 	    }
 	} catch(java.io.IOException e) {
 	    logger.info(logStackTrace(e));
 	}
 	return contents;
     }
+
+    public String readFile(String fileName) throws java.io.IOException {
+	BufferedReader br = new BufferedReader(new FileReader(fileName));
+	try {
+	    StringBuilder sb = new StringBuilder();
+	    String line = br.readLine();
+
+	    while (line != null) {
+		sb.append(line);
+		sb.append("\n");
+		line = br.readLine();
+	    }
+	    return sb.toString();
+	} finally {
+	    br.close();
+	}
+    }
+
+
 
     public String doingItApacheWay(String text, String URI)  throws java.io.IOException {
 

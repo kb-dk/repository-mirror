@@ -12,22 +12,22 @@ public class DirtyPutHack {
 
     public DirtyPutHack() {}
 
-    public String restUpload(String method, String text, String URI) throws IOException {
+    public String restUpload(String method, String file, String URI, String user, String passwd) throws IOException {
 
 	String result = "";
 
 	try {
 
 	    //Build command 
-	    List<String> commands = new ArrayList<String>();
-	    commands.add("/usr/bin/lwp-request");
-	    //Add arguments
-	    commands.add("-m " + method);
-	    System.out.println(commands);
+	    String[] commands = {
+		"/bin/sh",
+		"-c",
+		"(/usr/bin/lwp-request -H Content-type:text/xml -m " + method + " -s -C" +user + ":" + passwd + " " + URI + " < "+file +")"};
 
+	    System.out.println(commands);
 	    //Run macro on target
 	    ProcessBuilder pb = new ProcessBuilder(commands);
-	    pb.directory(new File("/home/text-service/"));
+	    //	    pb.directory(new File("/home/text-service/"));
 	    pb.redirectErrorStream(true);
 	    Process process = pb.start();
 
@@ -44,7 +44,7 @@ public class DirtyPutHack {
 
 	    //Check result
 	    if (process.waitFor() == 0) {
-		result = result + "Success!";
+		result = result + " Success!";
 	    }
 
 	    //Abnormal termination: Log command parameters and output and throw ExecutionException
