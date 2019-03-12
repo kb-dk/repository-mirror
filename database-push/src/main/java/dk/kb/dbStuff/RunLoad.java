@@ -82,6 +82,8 @@ public class RunLoad {
 		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
 		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
+                    logger.info("creds user: " + user + " creds passwd: " + passwd);
+
 		    String URI = UriTemplate.fromTemplate(consts.getConstants().getProperty("file.template"))
 			.set("exist_hostport", consts.getConstants().getProperty(target) )
 			.set("collection", collection)
@@ -89,8 +91,12 @@ public class RunLoad {
 			.expand();
 
 		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+		    String database_host = consts.getConstants().getProperty(target).split(":")[0];
+		    String port_number   = consts.getConstants().getProperty(target).split(":")[1];
+		    int    port = Integer.parseInt(port_number);
+		    String realm = "exist";
+		    htclient.setLogin(user,passwd,database_host,port,realm);
 
-		    htclient.setLogin(user,passwd);
                     logger.info("URI  " + URI);
                     logger.info("File " + file);
 
@@ -110,9 +116,11 @@ public class RunLoad {
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrres = htclient.restGet(solrizrURI);
-			// logger.info("solrizr: " + solrres);
-		
-
+			if(solrres == null) {
+			    logger.info("solrizr: got null");
+			} else {
+			    logger.info("solrizr: status 200 OK");
+			}
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
 			res = htclient.restDelete(URI);

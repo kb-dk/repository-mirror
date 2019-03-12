@@ -39,23 +39,28 @@ public class ApiClient {
 
     private String user = "";
     private String passwd  = "";
+    private String host  = "";
+    private int    port;
+    private String realm  = "";
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private Logger logger = configureLog4j();
 
     public ApiClient() {}
 
-    public void setLogin(String user, String password) {
+    public void setLogin(String user, String password, String host, int port, String realm) {
 	this.user    = user;
 	this.passwd  = password;
+	this.host    = host;
+	this.port    = port;
+	this.realm   = realm;
     }
 
     private CredentialsProvider setCred() {
 	CredentialsProvider cred = new BasicCredentialsProvider();
-        cred.setCredentials(new AuthScope("localhost", 8080, "exist"),
-				     new UsernamePasswordCredentials(this.user, this.passwd));
+        cred.setCredentials(new AuthScope(this.host, this.port, this.realm),
+			    new UsernamePasswordCredentials(this.user, this.passwd));
 	return cred;
-
     }
 
     private List <NameValuePair>  fillForm() {
@@ -66,7 +71,7 @@ public class ApiClient {
     }
 
     public String restGet(String URI) {
-	String contents = "";
+	String contents = null;
 	CloseableHttpClient httpClient = null;
 	try {
 	    HttpGet request = new HttpGet(URI);
@@ -74,7 +79,12 @@ public class ApiClient {
 	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
-	    contents = EntityUtils.toString(entity);
+	    int statusCode = response.getStatusLine().getStatusCode();
+	    logger.info("GOT " +  statusCode + " for " + URI);
+	    if(statusCode == 200) {
+		contents = EntityUtils.toString(entity);
+		return contents;
+	    }
 	} catch(java.io.IOException e) {
 	    logger.info(logStackTrace(e));
 	}
@@ -131,7 +141,7 @@ public class ApiClient {
     public String restPut(String file, String URI) {
 	String contents = "";
 	try {
-	    boolean apacheHttpApiWorks = false;
+	    boolean apacheHttpApiWorks = true;
 	    if(apacheHttpApiWorks) {
 		String text = readFile(file);
 		contents = doingItApacheWay(text, URI);
