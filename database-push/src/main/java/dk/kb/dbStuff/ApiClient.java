@@ -235,7 +235,6 @@ public class ApiClient {
 
     }
 
-
     public String restPost(String text, String URI) {
 	String contents = "";
 	CloseableHttpClient httpClient = null;
@@ -244,7 +243,8 @@ public class ApiClient {
 	    HttpPost request = new HttpPost(URI);
 	    HttpEntity entity = new StringEntity(text);
 	    request.setEntity(entity);
-	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
+	    // We post to solr, which can be done on port 8983
+	    // if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
 
 	} catch(java.io.IOException e) {
