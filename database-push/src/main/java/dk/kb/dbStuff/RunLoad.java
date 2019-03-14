@@ -3,7 +3,7 @@ package dk.kb.dbStuff;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
-
+import com.damnhandy.uri.template.UriTemplate;
 import org.apache.http.HttpEntity;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -15,12 +15,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-
-
 
 /**
  * Created by dgj on 17-11-2016.
@@ -78,7 +72,9 @@ public class RunLoad {
 
                     logger.info("Received: " + msg);
 
+		    String tmplt = consts.getConstants().getProperty("file.template");
 		    String db_uri = consts.getConstants().getProperty(target);
+
 		    String credField = target + ".credentials";
 
                     logger.info("credField: " + credField);
@@ -86,24 +82,50 @@ public class RunLoad {
 		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
 		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
-		    String URI = db_uri + collection + "/" + document;
+                    logger.info("creds user: " + user + " creds passwd: " + passwd);
+
+		    String URI = UriTemplate.fromTemplate(consts.getConstants().getProperty("file.template"))
+			.set("exist_hostport", consts.getConstants().getProperty(target) )
+			.set("collection", collection)
+			.set("file", document)
+			.expand();
 
 		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+		    String database_host = consts.getConstants().getProperty(target).split(":")[0];
+		    String port_number   = consts.getConstants().getProperty(target).split(":")[1];
+		    int    port = Integer.parseInt(port_number);
+		    String realm = "exist";
+		    htclient.setLogin(user,passwd,database_host,port,realm);
 
-		    htclient.setLogin(user,passwd);
-                    logger.info(op + " " + URI);
+                    logger.info("URI  " + URI);
                     logger.info("File " + file);
 
 		    String res = "";
 		    if(op.matches(".*PUT.*")) { 
 			logger.info("operation = " + op);
-			try {
-			    String text = readFile(file);
-			    res = htclient.restPut(text, URI);
-			    logger.info("res: " + res);
-			} catch (IOException fileprblm) {
-			    logger.error("Error reading: " + file);
-			    logger.error("Problem: " + fileprblm);
+
+			res = htclient.restPut(file, URI);
+			logger.info("res: " + res);
+
+			String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+			    .set("exist_hostport", consts.getConstants().getProperty(target) )
+			    .set("op", "solrize")
+			    .set("doc", document)
+			    .set("c", collection)
+			    .expand();
+
+			logger.info("solrizr: " + solrizrURI);
+			String solrres = htclient.restGet(solrizrURI);
+			if(solrres == null) {
+			    logger.info("solrizr: got null");
+			} else {
+			    logger.info("solrizr: status 200 OK");
+			    String index_server = target + "." + consts.getConstants().getProperty("index_hostport");
+			    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
+				.set("solr_hostport", index_server)
+				.expand();
+			    String index_res = htclient.restPost(solrres,solr_index_uri);
+			    logger.info("index_result " + index_res + " from " + solr_index_uri);
 			}
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
@@ -137,22 +159,6 @@ public class RunLoad {
         }
     }
 
-    static String readFile(String fileName) throws IOException {
-	BufferedReader br = new BufferedReader(new FileReader(fileName));
-	try {
-	    StringBuilder sb = new StringBuilder();
-	    String line = br.readLine();
-
-	    while (line != null) {
-		sb.append(line);
-		sb.append("\n");
-		line = br.readLine();
-	    }
-	    return sb.toString();
-	} finally {
-	    br.close();
-	}
-    }
 
     private static Logger configureLog4j() {
 

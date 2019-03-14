@@ -93,7 +93,13 @@
 
 	    <jsp:scriptlet>
 	      dk.kb.text.ApiClient collection = new dk.kb.text.ApiClient();
-	      String select = collection.restGet(snippet_base_uri + "collection.xq?repository=" +  repository);
+
+              String URI = com.damnhandy.uri.template.UriTemplate.fromTemplate(consts.getConstants().getProperty("collection.template"))
+			.set("exist_hostport", consts.getConstants().getProperty(destination) )
+			.set("repository", repository)
+			.expand();
+
+	      String select = collection.restGet(URI);
 	    </jsp:scriptlet>
 	    <jsp:expression>select</jsp:expression>
 	  
