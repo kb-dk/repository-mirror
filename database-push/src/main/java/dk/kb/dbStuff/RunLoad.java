@@ -120,8 +120,9 @@ public class RunLoad {
 			    logger.info("solrizr: got null");
 			} else {
 			    logger.info("solrizr: status 200 OK");
+			    String index_server = target + "." + consts.getConstants().getProperty("index_hostport");
 			    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
-				.set("solr_hostport", consts.getConstants().getProperty("index_hostport") )
+				.set("solr_hostport", index_server)
 				.expand();
 			    String index_res = htclient.restPost(solrres,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri);

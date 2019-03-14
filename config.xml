@@ -16,12 +16,18 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="solrizr.template">http://{+exist_hostport}/exist/rest/db/text-retriever/present.xq{?op,doc,c}</entry>
     <entry key="file.template">http://{+exist_hostport}/exist/rest/db/text-retriever/{collection}/{+file}</entry>
 
+    <!-- Snippet server -->
+
     <entry key="staging">staging hostport</entry>
     <entry key="production">production hostport</entry>
 
     <!-- Two fields in one: note the semicolon! -->
     <entry key="staging.credentials">[user];[password]</entry>
     <entry key="production.credentials">[user];[password]</entry>
+
+    <!-- The index servers -->
+    <entry key="staging.index_hostport">host:port</entry>
+    <entry key="production.index_hostport">host:port</entry>
 
     <!-- Eventually we'll need more than one of these: -->
     <entry key="git.user">the_git_user_name</entry>

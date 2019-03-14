@@ -241,12 +241,13 @@ public class ApiClient {
 	try {
 	    httpClient = HttpClients.createDefault();
 	    HttpPost request = new HttpPost(URI);
-	    HttpEntity entity = new StringEntity(text);
+	    HttpEntity entity = new StringEntity(text,ContentType.create("text/xml","UTF-8"));
 	    request.setEntity(entity);
 	    // We post to solr, which can be done on port 8983
 	    // if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
 	    CloseableHttpResponse response = httpClient.execute(request);
-
+	    logger.info(response.getStatusLine());
+	    contents = contents + response.getStatusLine() + "\n" + response.toString();
 	} catch(java.io.IOException e) {
 	    logger.info(logStackTrace(e));
 	}
