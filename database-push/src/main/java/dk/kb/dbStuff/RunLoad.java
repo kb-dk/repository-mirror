@@ -23,10 +23,9 @@ import java.util.Properties;
 public class RunLoad {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
+    static Logger logger = configureLog4j();
 
     public static void main(String args[]) {
-
-        Logger logger = configureLog4j();
 
 	String host = System.getProperty("queue.uri");
         if (host == null) host = consts.getConstants().getProperty("queue.uri");
@@ -100,6 +99,12 @@ public class RunLoad {
                     logger.info("URI  " + URI);
                     logger.info("File " + file);
 
+		    String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
+		    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
+			.set("solr_hostport", index_server)
+			.expand();
+
+
 		    String res = "";
 		    if(op.matches(".*PUT.*")) { 
 			logger.info("operation = " + op);
@@ -120,16 +125,18 @@ public class RunLoad {
 			    logger.info("solrizr: got null");
 			} else {
 			    logger.info("solrizr: status 200 OK");
-			    String index_server = target + "." + consts.getConstants().getProperty("index_hostport");
-			    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
-				.set("solr_hostport", index_server)
-				.expand();
 			    String index_res = htclient.restPost(solrized_res,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri);
 			}
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
 			res = htclient.restDelete(URI);
+			String solrDel = solrDeletionCmd(collection,document);		
+
+			logger.info("delete command: " + solrDel);
+
+			String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
+			res = res + "\n" + solr_del_res;
 		    } else if(op.matches(".*GET.*")) { 
 			logger.info("GET operation = " + op);
 		    } else {
@@ -157,6 +164,23 @@ public class RunLoad {
                 logger.fatal("error while shutting donw ",e);
             }
         }
+    }
+
+    // this is for deleting single TEI documents, which may correspond
+    // to many solr records
+
+    private static String solrDeletionCmd (String collection, String document) {
+	
+	String doc_part = document
+	    .replaceAll("\\.xml$","-root")
+	    .replaceAll("/","-");
+	String delete_query = "volume_id_ssi:" + collection + "-" + doc_part; 
+
+	// don't use query *:*, that is dangerous
+
+	String solr_del = "<delete><query>" + delete_query + "</query></delete>";
+
+	return solr_del;
     }
 
 
