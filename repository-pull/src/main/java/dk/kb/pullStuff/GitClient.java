@@ -78,10 +78,10 @@ public class GitClient {
     public  java.util.HashMap<String,String> gitLog() {
 	java.util.HashMap<String,String> op = new java.util.HashMap<String,String>();
 	try {
-	    LogCommand log = git.log();
+	    LogCommand log =  git.log();
 	    Repository repo = git.getRepository();
-	    ObjectId from = repo.resolve("master");
-	    ObjectId to = repo.resolve(this.branch);
+	    ObjectId from =   repo.resolve("master");
+	    ObjectId to =     repo.resolve(this.branch);
 
 	    op = listDiff(repo,from,to);
 
