@@ -115,8 +115,8 @@ public class RunLoad {
 			    .expand();
 
 			logger.info("solrizr: " + solrizrURI);
-			String solrres = htclient.restGet(solrizrURI);
-			if(solrres == null) {
+			String solrized_res = htclient.restGet(solrizrURI);
+			if(solrized_res == null) {
 			    logger.info("solrizr: got null");
 			} else {
 			    logger.info("solrizr: status 200 OK");
@@ -124,7 +124,7 @@ public class RunLoad {
 			    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
 				.set("solr_hostport", index_server)
 				.expand();
-			    String index_res = htclient.restPost(solrres,solr_index_uri);
+			    String index_res = htclient.restPost(solrized_res,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri);
 			}
 		    } else if(op.matches(".*DELETE.*")) { 
