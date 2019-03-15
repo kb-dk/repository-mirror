@@ -104,7 +104,6 @@ public class RunLoad {
 			.set("solr_hostport", index_server)
 			.expand();
 
-
 		    String res = "";
 		    if(op.matches(".*PUT.*")) { 
 			logger.info("operation = " + op);
