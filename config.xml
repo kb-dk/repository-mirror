@@ -12,6 +12,8 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="data.home">/home/text-service/</entry>
     
     <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
+    <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>
+
     <entry key="collection.template">http://{+exist_hostport}/exist/rest/db/text-retriever/collection.xq{?repository}</entry>
     <entry key="solrizr.template">http://{+exist_hostport}/exist/rest/db/text-retriever/present.xq{?op,doc,c}</entry>
     <entry key="file.template">http://{+exist_hostport}/exist/rest/db/text-retriever/{collection}/{+file}</entry>
