@@ -102,6 +102,24 @@ public class RunPull {
 				    logger.error("could not text send message to queue");
 				}
 			    }
+			    // We've got all files, then we just send a message that it is time
+			    // to run a commit
+			    String finalMessage 
+				= collection + ";" 
+				+ repository + ";" 
+				+ branch     + ";"
+				+ target     + ";"
+				+ ""         + ";" 
+				+ "COMMIT"
+				logger.info("about to send final text msg = " + finalMessage);
+			    try {
+				TextMessage text_message = session.createTextMessage(finalMessage);
+				producer.send(text_message);
+				logger.debug("text message sent to jms queue");
+			    } catch (JMSException jme) {
+				jme.printStackTrace();
+				logger.error("could not text send message to queue");
+			    }
 			}
 		    } else {
 			msg = message.toString();
