@@ -80,7 +80,7 @@ public class ApiClient {
 	    CloseableHttpResponse response = httpClient.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    int statusCode = response.getStatusLine().getStatusCode();
-	    logger.info("GOT " +  statusCode + " for " + URI);
+	    logger.info("GOT " +  statusCode + " for GET " + URI);
 	    if(statusCode == 200) {
 		contents = EntityUtils.toString(entity);
 		return contents;

@@ -138,15 +138,24 @@ public class RunLoad {
 			res = res + "\n" + solr_del_res;
 		    } else if(op.matches(".*GET.*")) { 
 			logger.info("GET operation = " + op);
-		    } else {
+		    } else if(op.matches(".*COMMIT.*")) { 
+
+			String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
+			    .set("solr_hostport", index_server)
+			    .set("commit", "true")
+			    .expand();
+		    
+			String commit_res = htclient.restGet(solr_commit_uri);
+
+			logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
+
+		} else {
 			res =  htclient.restHead(URI);
 		    }
 
-                    logger.info(op + " result: " + res);
-
                 } catch (Exception e) {
                     logger.error("Error connecting " + e);
-                    logger.error("Waiting 6 sek and try again");
+                    logger.error("Waiting 6 seconds and try again");
 
                     e.printStackTrace();
                     Thread.sleep(6000);
