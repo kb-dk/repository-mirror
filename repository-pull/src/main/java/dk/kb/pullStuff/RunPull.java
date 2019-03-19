@@ -72,7 +72,9 @@ public class RunPull {
 			logger.info("repository: " + repository);
 			GitClient git = new GitClient(repository);
 
+			String publishedBranch = consts.getConstants().getProperty("published.branch");
 			git.setBranch(branch);
+			git.setPublishedBranch(publishedBranch);
 
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());

@@ -20,9 +20,11 @@ public class GitClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
     private CredentialsProvider credentials = null;
-    private String repository  = "";
-    private String branch      = "";
-    private String target      = "";
+
+    private String repository       = "";
+    private String branch           = "";
+    private String published_branch = "";
+    private String target           = "";
 
     String branchId = "";
 
@@ -39,6 +41,10 @@ public class GitClient {
 
     public void setBranch(String branch) {
 	this.branch = branch;
+    }
+
+    public void setPublishedBranch(String branch) {
+	this.published_branch = branch;
     }
 
     public void setTarget(String target) {

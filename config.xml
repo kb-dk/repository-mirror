@@ -10,6 +10,8 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="queue.logfile">text-logger.log</entry>
     <entry key="queue.loglevel">info</entry>
     <entry key="data.home">/home/text-service/</entry>
+
+    <entry key="published.branch">installed_corpus</entry>
     
     <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
     <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>
