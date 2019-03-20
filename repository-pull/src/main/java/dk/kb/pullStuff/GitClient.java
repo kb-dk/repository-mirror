@@ -219,23 +219,23 @@ public class GitClient {
     }
 
     public String gitCheckOutBranch(String my_branch) {
-	logger.debug("about to check out: " + my_branch);
+	logger.info("about to check out: " + my_branch);
 
 	try {
 	    CheckoutCommand co = git.checkout();
 
-	    String local_branch = this.branch.replaceAll("(.*?/)","");
-	    logger.debug("local_branch: " + local_branch);
+	    String local_branch = my_branch.replaceAll("(.*?/)","");
+	    logger.info("local_branch: " + local_branch);
 	    co.setName(local_branch);
-	    logger.debug("name set to local_branch");
+	    logger.info("name set to local_branch");
 	    co.setStartPoint(this.branch);
-	    logger.debug("start point set to " + my_branch);
+	    logger.info("start point set to " + my_branch);
 
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 
-	    logger.debug("Upstream mode");
+	    logger.info("Upstream mode");
 	    co.setCreateBranch(true);
-	    logger.debug("create branch");
+	    logger.info("create branch");
 	    try {
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
@@ -299,6 +299,34 @@ public class GitClient {
 	    return "git pull failed";
 	}
     }
+
+    public String gitMergeToPublished(String branch) {
+
+	String local_name = branch.replaceAll("(.*?/)","");
+
+	try {
+	    MergeCommand mgCmd = git.merge();
+	    Repository repo = git.getRepository();
+	    mgCmd.include(repo.resolve(this.branch)); 
+	    MergeResult res = mgCmd.call(); 
+	    return res.toString();
+	} catch (org.eclipse.jgit.errors.IncorrectObjectTypeException objectTypeProb) {
+	    logger.error("git prob: " + objectTypeProb);
+	    return "git pull failed";
+	} catch (org.eclipse.jgit.errors.AmbiguousObjectException ambiguityProb) {
+	    logger.error("git prob: " + ambiguityProb);
+	    return "git pull failed";
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git pull failed";
+	} catch(java.io.IOException repoProblem ) {
+	    logger.error("IO prob: " + repoProblem);
+	    return "git pull failed";
+	}
+
+    }
+
+
 
     // Other stuff
 
