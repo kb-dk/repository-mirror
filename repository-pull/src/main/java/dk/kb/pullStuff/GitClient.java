@@ -86,8 +86,9 @@ public class GitClient {
 	try {
 	    LogCommand log =  git.log();
 	    Repository repo = git.getRepository();
-	    ObjectId from =   repo.resolve("master");
-	    ObjectId to =     repo.resolve(this.branch);
+
+	    ObjectId from =   repo.resolve(this.branch);
+	    ObjectId to   =   repo.resolve(this.published_branch);
 
 	    op = listDiff(repo,from,to);
 
@@ -210,15 +211,23 @@ public class GitClient {
     }
 
     public String gitCheckOut() {
+	return gitCheckOutBranch(this.branch);
+    }
+
+    public String gitCheckOutPublished() {
+	return gitCheckOutBranch(this.published_branch);
+    }
+
+    public String gitCheckOutBranch(String my_branch) {
 	try {
-	    logger.debug("about to check out: " + this.branch);
+	    logger.debug("about to check out: " + my_branch);
 	    CheckoutCommand co = git.checkout();
-	    String local_branch = this.branch.replaceAll("(.*?/)","");
+	    String local_branch = my_branch.replaceAll("(.*?/)","");
 	    logger.debug("local_branch: " + local_branch);
 	    co.setName(local_branch);
 	    logger.debug("name set to local_branch");
-	    co.setStartPoint(this.branch);
-	    logger.debug("start point set to " + this.branch);
+	    co.setStartPoint(my_branch);
+	    logger.debug("start point set to " + my_branch);
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 	    logger.debug("Upstream mode");
 	    co.setCreateBranch(true);
@@ -243,6 +252,7 @@ public class GitClient {
 	}
     }
 
+
     // 
     // Down here we have the ones requiring credentials
     //
@@ -266,9 +276,15 @@ public class GitClient {
     }
 
     public String gitPull() {
+	// We choose the remote
+	return gitPullFromBranch(this.branch);
+    }
+
+    public String gitPullFromBranch(String branch) {
 	try {
 	    PullCommand pull = git.pull();
 	    pull.setCredentialsProvider(credentials);
+	    pull.setRemoteBranchName(branch);
 	    PullResult res   = pull.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {

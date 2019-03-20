@@ -78,7 +78,8 @@ public class RunPull {
 
 			logger.info(git.gitFetch());
 			logger.info(git.gitCheckOut());
-			logger.info(git.gitPull());
+			logger.info(git.gitCheckOutPublished());
+
 			java.util.HashMap<String,String> op = git.gitLog();
 			if(op.isEmpty()) {
 			    logger.info("OK nothing to do");
@@ -104,6 +105,10 @@ public class RunPull {
 				    logger.error("could not text send message to queue");
 				}
 			    }
+
+			    logger.info(git.gitPull());
+
+
 			    // We've got all files, then we just send a message that it is time
 			    // to run a commit
 			    String finalMessage 
@@ -112,7 +117,7 @@ public class RunPull {
 				+ branch     + ";"
 				+ target     + ";"
 				+ ""         + ";" 
-				+ "COMMIT"
+				+ "COMMIT";
 				logger.info("about to send final text msg = " + finalMessage);
 			    try {
 				TextMessage text_message = session.createTextMessage(finalMessage);
