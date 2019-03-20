@@ -77,7 +77,7 @@ public class RunPull {
 			git.setPublishedBranch(publishedBranch);
 
 			logger.info(git.gitFetch());
-			logger.info(git.gitCheckOut());
+			// logger.info(git.gitCheckOut());
 			logger.info(git.gitCheckOutPublished());
 
 			java.util.HashMap<String,String> op = git.gitLog();

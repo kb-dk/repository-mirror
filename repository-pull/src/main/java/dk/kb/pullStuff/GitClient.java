@@ -219,16 +219,20 @@ public class GitClient {
     }
 
     public String gitCheckOutBranch(String my_branch) {
+	logger.debug("about to check out: " + my_branch);
+
 	try {
-	    logger.debug("about to check out: " + my_branch);
 	    CheckoutCommand co = git.checkout();
-	    String local_branch = my_branch.replaceAll("(.*?/)","");
+
+	    String local_branch = this.branch.replaceAll("(.*?/)","");
 	    logger.debug("local_branch: " + local_branch);
 	    co.setName(local_branch);
 	    logger.debug("name set to local_branch");
-	    co.setStartPoint(my_branch);
+	    co.setStartPoint(this.branch);
 	    logger.debug("start point set to " + my_branch);
+
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
+
 	    logger.debug("Upstream mode");
 	    co.setCreateBranch(true);
 	    logger.debug("create branch");
@@ -281,11 +285,14 @@ public class GitClient {
     }
 
     public String gitPullFromBranch(String branch) {
+
+	String local_name = branch.replaceAll("(.*?/)","");
+
 	try {
-	    PullCommand pull = git.pull();
-	    pull.setCredentialsProvider(credentials);
-	    pull.setRemoteBranchName(branch);
-	    PullResult res   = pull.call();
+	    PullResult res = git.pull()
+		.setCredentialsProvider(credentials)
+		.setRemoteBranchName(local_name)
+		.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
