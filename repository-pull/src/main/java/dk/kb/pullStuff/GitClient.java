@@ -84,11 +84,16 @@ public class GitClient {
     public  java.util.HashMap<String,String> gitLog() {
 	java.util.HashMap<String,String> op = new java.util.HashMap<String,String>();
 	try {
-	    LogCommand log =  git.log();
+	    //LogCommand log =  git.log();
 	    Repository repo = git.getRepository();
 
-	    ObjectId from =   repo.resolve(this.branch);
-	    ObjectId to   =   repo.resolve(this.published_branch);
+	    String local_branch = this.branch.replaceAll("(.*?/)","");
+	    String published_branch = this.published_branch.replaceAll("(.*?/)","");
+
+	    logger.error("diff between: " + this.branch + " and " + this.published_branch);
+
+	    ObjectId from =   repo.resolve(local_branch);
+	    ObjectId to   =   repo.resolve(published_branch);
 
 	    op = listDiff(repo,from,to);
 
@@ -228,8 +233,8 @@ public class GitClient {
 	    logger.info("local_branch: " + local_branch);
 	    co.setName(local_branch);
 	    logger.info("name set to local_branch");
-	    co.setStartPoint(this.branch);
-	    logger.info("start point set to " + my_branch);
+	    // co.setStartPoint(this.branch);
+	    // logger.info("start point set to " + my_branch);
 
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 
@@ -286,7 +291,7 @@ public class GitClient {
 
     public String gitPullFromBranch(String branch) {
 
-	String local_name = branch.replaceAll("(.*?/)","");
+	String local_name = branch; //.replaceAll("(.*?/)","");
 
 	try {
 	    PullResult res = git.pull()

@@ -69,19 +69,30 @@ public class RunPull {
 			String branch      = msg.split(reg)[2];
 			String target      = msg.split(reg)[3];
 
-			logger.info("repository: " + repository);
+			logger.info("Setting repository: " + repository);
 			GitClient git = new GitClient(repository);
 
 			String publishedBranch = consts.getConstants().getProperty("published.branch");
+
+
 			git.setBranch(branch);
 			git.setPublishedBranch(publishedBranch);
 
 			logger.info(git.gitFetch());
-			// logger.info(git.gitCheckOut());
+
+			// branch
+			
+			logger.info(git.gitCheckOut());
+
+			// publishedBranch
+
 			logger.info(git.gitCheckOutPublished());
-			logger.info(git.gitMergeToPublished(branch));
+
 
 			java.util.HashMap<String,String> op = git.gitLog();
+			logger.info(git.gitPull());
+
+			// logger.info(git.gitMergeToPublished(branch));
 
 			if(op.isEmpty()) {
 			    logger.info("OK nothing to do");
