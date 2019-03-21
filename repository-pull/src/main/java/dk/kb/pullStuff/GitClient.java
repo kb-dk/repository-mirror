@@ -310,9 +310,9 @@ public class GitClient {
 	}
     }
 
-    public String gitResetTo() {
+    public String gitResetTo(String branch) {
 	try {
-	    Ref res = git.reset().setRef("origin/master").setMode(ResetCommand.ResetType.HARD).call();
+	    Ref res = git.reset().setRef(branch).setMode(ResetCommand.ResetType.HARD).call();
 	    return res.toString();
 	}  catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);

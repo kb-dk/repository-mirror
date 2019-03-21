@@ -92,6 +92,7 @@ public class RunPull {
 
 			java.util.HashMap<String,String> op = git.gitLog();
 
+			logger.info(git.gitResetTo("origin/master"));
 
 			logger.info(git.gitMergeToPublished(branch));
 
