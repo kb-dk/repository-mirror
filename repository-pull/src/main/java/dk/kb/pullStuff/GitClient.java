@@ -310,6 +310,16 @@ public class GitClient {
 	}
     }
 
+    public String gitResetTo() {
+	try {
+	    Ref res = git.reset().setRef("origin/master").setMode(ResetCommand.ResetType.HARD).call();
+	    return res.toString();
+	}  catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git reset failed";
+	}
+    }
+
     public String gitMergeToPublished(String branch) {
 
 	String local_name = branch.replaceAll("(.*?/)","");
