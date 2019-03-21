@@ -233,13 +233,15 @@ public class GitClient {
 	    logger.info("local_branch: " + local_branch);
 	    co.setName(local_branch);
 	    logger.info("name set to local_branch");
-	    // co.setStartPoint(this.branch);
-	    // logger.info("start point set to " + my_branch);
+	    co.setForce(true);
 
+	    co.setStartPoint(my_branch);
+	    logger.info("start point set to " + my_branch);
+
+
+	    co.setCreateBranch(true);
 	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 
-	    logger.info("Upstream mode");
-	    co.setCreateBranch(true);
 	    logger.info("create branch");
 	    try {
 		Ref rsult = co.call();
@@ -247,9 +249,12 @@ public class GitClient {
 		logger.debug("Done checking out");
 		return rsult + "";
 	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
-		logger.debug("not really a git branch problem " + branchProbl);
+		logger.info("not really a git branch problem " + branchProbl);
 		co.setCreateBranch(false);
-		logger.info("branch already created");
+		co.setName(local_branch);
+		co.setForce(true);
+		co.setStartPoint(my_branch);
+		co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
 		logger.debug("Done checking out");
@@ -312,20 +317,20 @@ public class GitClient {
 	try {
 	    MergeCommand mgCmd = git.merge();
 	    Repository repo = git.getRepository();
-	    mgCmd.include(repo.resolve(this.branch)); 
+	    mgCmd.include(repo.resolve(local_name)); 
 	    MergeResult res = mgCmd.call(); 
 	    return res.toString();
 	} catch (org.eclipse.jgit.errors.IncorrectObjectTypeException objectTypeProb) {
-	    logger.error("git prob: " + objectTypeProb);
+	    logger.info("git prob: " + objectTypeProb);
 	    return "git pull failed";
 	} catch (org.eclipse.jgit.errors.AmbiguousObjectException ambiguityProb) {
-	    logger.error("git prob: " + ambiguityProb);
+	    logger.info("git prob: " + ambiguityProb);
 	    return "git pull failed";
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
+	    logger.info("git prob: " + gitProblem);
 	    return "git pull failed";
 	} catch(java.io.IOException repoProblem ) {
-	    logger.error("IO prob: " + repoProblem);
+	    logger.info("IO prob: " + repoProblem);
 	    return "git pull failed";
 	}
 

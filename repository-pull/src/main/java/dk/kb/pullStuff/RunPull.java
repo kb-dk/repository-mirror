@@ -83,6 +83,7 @@ public class RunPull {
 			// branch
 			
 			logger.info(git.gitCheckOut());
+			logger.info(git.gitPull());
 
 			// publishedBranch
 
@@ -90,9 +91,9 @@ public class RunPull {
 
 
 			java.util.HashMap<String,String> op = git.gitLog();
-			logger.info(git.gitPull());
 
-			// logger.info(git.gitMergeToPublished(branch));
+
+			logger.info(git.gitMergeToPublished(branch));
 
 			if(op.isEmpty()) {
 			    logger.info("OK nothing to do");
