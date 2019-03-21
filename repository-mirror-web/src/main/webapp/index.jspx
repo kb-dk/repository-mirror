@@ -118,7 +118,7 @@
 
 	  <fieldset id="submit">
 	    <legend for="repo">Alt OK? Kør!</legend>
-	    <input id="publish-field" type="submit" name="send" value="Importér"/>
+	    <input id="publish-field" class="publish-field" type="submit" name="send" value="Importér"/>
 	  </fieldset>
 
 	</form>

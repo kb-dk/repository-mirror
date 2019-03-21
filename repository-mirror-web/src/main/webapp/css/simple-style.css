@@ -19,3 +19,6 @@ fieldset {
     float: left; 
     width: 45%; 
 }
+input.publish-field {
+    background-color: #ccf;
+}
