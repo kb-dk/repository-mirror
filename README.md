@@ -1,5 +1,5 @@
 
-[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md)
+[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md) | [Collections](./collections/README.md)
 
 # Repository mirror
 
