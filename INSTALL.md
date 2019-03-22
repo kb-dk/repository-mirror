@@ -25,10 +25,13 @@ to the name
 config_secret.xml
 ```
 
-and edit it under that name that name. 
+and edit it under that name that name. As of writing this, the file looks like this
 
 ```
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!--
+Author: Sigfrid Lundberg (slu@kb.dk)
+-->
 <properties>
     <comment>Configuration for text service daemon.</comment>
     <entry key="queue.uri">tcp://[Active MQ hostport]</entry>
@@ -37,11 +40,34 @@ and edit it under that name that name.
     <entry key="queue.logfile">text-logger.log</entry>
     <entry key="queue.loglevel">info</entry>
     <entry key="data.home">/home/text-service/</entry>
-    <entry key="staging">[staging snippet server hostport]/exist/rest/db/text-retriever/</entry>
-    <entry key="production">[staging snippet server hostport]/exist/rest/db/text-retriever/</entry>
-    <entry key="git.user">the_user_name</entry>
-    <entry key="git.password">very_secret_password</entry>
+
+    <entry key="published.branch">installed_corpus</entry>
+    
+    <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
+    <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>
+
+    <entry key="collection.template">http://{+exist_hostport}/exist/rest/db/text-retriever/collection.xq{?repository}</entry>
+    <entry key="solrizr.template">http://{+exist_hostport}/exist/rest/db/text-retriever/present.xq{?op,doc,c}</entry>
+    <entry key="file.template">http://{+exist_hostport}/exist/rest/db/text-retriever/{collection}/{+file}</entry>
+
+    <!-- Snippet server -->
+
+    <entry key="staging">staging hostport</entry>
+    <entry key="production">production hostport</entry>
+
+    <!-- Two fields in one: note the semicolon! -->
+    <entry key="staging.credentials">[user];[password]</entry>
+    <entry key="production.credentials">[user];[password]</entry>
+
+    <!-- The index servers -->
+    <entry key="staging.index_hostport">host:port</entry>
+    <entry key="production.index_hostport">host:port</entry>
+
+    <!-- Eventually we'll need more than one of these: -->
+    <entry key="git.user">the_git_user_name</entry>
+    <entry key="git.password">very_secret_git_password</entry>
 </properties>
+
 ```
 
 For some reason, I'm completely unable to remember the standard port number of the
