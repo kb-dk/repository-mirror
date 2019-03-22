@@ -98,7 +98,7 @@ public class GitWebClient {
 		Ref branch = lister.next();
 		String name = branch.getName() + "";
 
-		Pattern pat   = Pattern.compile(".*origin.*");
+		Pattern pat   = Pattern.compile("^refs/remotes.*");
 		// match anything 
 		// Pattern pat   = Pattern.compile(".*");
 		Matcher match = pat.matcher(name);

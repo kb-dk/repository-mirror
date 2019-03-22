@@ -20,9 +20,11 @@ public class GitClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private static Logger logger = configureLog4j();
     private CredentialsProvider credentials = null;
-    private String repository  = "";
-    private String branch      = "";
-    private String target      = "";
+
+    private String repository       = "";
+    private String branch           = "";
+    private String published_branch = "";
+    private String target           = "";
 
     String branchId = "";
 
@@ -39,6 +41,10 @@ public class GitClient {
 
     public void setBranch(String branch) {
 	this.branch = branch;
+    }
+
+    public void setPublishedBranch(String branch) {
+	this.published_branch = branch;
     }
 
     public void setTarget(String target) {
@@ -78,10 +84,16 @@ public class GitClient {
     public  java.util.HashMap<String,String> gitLog() {
 	java.util.HashMap<String,String> op = new java.util.HashMap<String,String>();
 	try {
-	    LogCommand log =  git.log();
+	    //LogCommand log =  git.log();
 	    Repository repo = git.getRepository();
-	    ObjectId from =   repo.resolve("master");
-	    ObjectId to =     repo.resolve(this.branch);
+
+	    String local_branch = this.branch.replaceAll("(.*?/)","");
+	    String published_branch = this.published_branch.replaceAll("(.*?/)","");
+
+	    logger.error("diff between: " + this.branch + " and " + this.published_branch);
+
+	    ObjectId from =   repo.resolve(local_branch);
+	    ObjectId to   =   repo.resolve(published_branch);
 
 	    op = listDiff(repo,from,to);
 
@@ -204,28 +216,45 @@ public class GitClient {
     }
 
     public String gitCheckOut() {
+	return gitCheckOutBranch(this.branch);
+    }
+
+    public String gitCheckOutPublished() {
+	return gitCheckOutBranch(this.published_branch);
+    }
+
+    public String gitCheckOutBranch(String my_branch) {
+	logger.info("about to check out: " + my_branch);
+
 	try {
-	    logger.debug("about to check out: " + this.branch);
 	    CheckoutCommand co = git.checkout();
-	    String local_branch = this.branch.replaceAll("(.*?/)","");
-	    logger.debug("local_branch: " + local_branch);
+
+	    String local_branch = my_branch.replaceAll("(.*?/)","");
+	    logger.info("local_branch: " + local_branch);
 	    co.setName(local_branch);
-	    logger.debug("name set to local_branch");
-	    co.setStartPoint(this.branch);
-	    logger.debug("start point set to " + this.branch);
-	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
-	    logger.debug("Upstream mode");
+	    logger.info("name set to local_branch");
+	    co.setForce(true);
+
+	    co.setStartPoint(my_branch);
+	    logger.info("start point set to " + my_branch);
+
+
 	    co.setCreateBranch(true);
-	    logger.debug("create branch");
+	    co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
+
+	    logger.info("create branch");
 	    try {
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
 		logger.debug("Done checking out");
 		return rsult + "";
 	    } catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
-		logger.debug("not really a git branch problem " + branchProbl);
+		logger.info("not really a git branch problem " + branchProbl);
 		co.setCreateBranch(false);
-		logger.info("branch already created");
+		co.setName(local_branch);
+		co.setForce(true);
+		co.setStartPoint(my_branch);
+		co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
 		Ref rsult = co.call();
 		this.branchId = rsult.getObjectId().toString();
 		logger.debug("Done checking out");
@@ -236,6 +265,7 @@ public class GitClient {
 	    return "git checkout failed";
 	}
     }
+
 
     // 
     // Down here we have the ones requiring credentials
@@ -260,16 +290,63 @@ public class GitClient {
     }
 
     public String gitPull() {
+	// We choose the remote
+	return gitPullFromBranch(this.branch);
+    }
+
+    public String gitPullFromBranch(String branch) {
+
+	String local_name = branch; //.replaceAll("(.*?/)","");
+
 	try {
-	    PullCommand pull = git.pull();
-	    pull.setCredentialsProvider(credentials);
-	    PullResult res   = pull.call();
+	    PullResult res = git.pull()
+		.setCredentialsProvider(credentials)
+		.setRemoteBranchName(local_name)
+		.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 	    logger.error("git prob: " + gitProblem);
 	    return "git pull failed";
 	}
     }
+
+    public String gitResetTo(String branch) {
+	try {
+	    Ref res = git.reset().setRef(branch).setMode(ResetCommand.ResetType.HARD).call();
+	    return res.toString();
+	}  catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.error("git prob: " + gitProblem);
+	    return "git reset failed";
+	}
+    }
+
+    public String gitMergeToPublished(String branch) {
+
+	String local_name = branch.replaceAll("(.*?/)","");
+
+	try {
+	    MergeCommand mgCmd = git.merge();
+	    Repository repo = git.getRepository();
+	    mgCmd.include(repo.resolve(local_name)); 
+	    MergeResult res = mgCmd.call(); 
+	    return res.toString();
+	} catch (org.eclipse.jgit.errors.IncorrectObjectTypeException objectTypeProb) {
+	    logger.info("git prob: " + objectTypeProb);
+	    return "git pull failed";
+	} catch (org.eclipse.jgit.errors.AmbiguousObjectException ambiguityProb) {
+	    logger.info("git prob: " + ambiguityProb);
+	    return "git pull failed";
+	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+	    logger.info("git prob: " + gitProblem);
+	    return "git pull failed";
+	} catch(java.io.IOException repoProblem ) {
+	    logger.info("IO prob: " + repoProblem);
+	    return "git pull failed";
+	}
+
+    }
+
+
 
     // Other stuff
 

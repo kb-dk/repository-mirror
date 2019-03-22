@@ -69,15 +69,33 @@ public class RunPull {
 			String branch      = msg.split(reg)[2];
 			String target      = msg.split(reg)[3];
 
-			logger.info("repository: " + repository);
+			logger.info("Setting repository: " + repository);
 			GitClient git = new GitClient(repository);
 
+			String publishedBranch = consts.getConstants().getProperty("published.branch");
+
+
 			git.setBranch(branch);
+			git.setPublishedBranch(publishedBranch);
 
 			logger.info(git.gitFetch());
+
+			// branch
+			
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
+
+			// publishedBranch
+
+			logger.info(git.gitCheckOutPublished());
+
+
 			java.util.HashMap<String,String> op = git.gitLog();
+
+			logger.info(git.gitResetTo("origin/master"));
+
+			logger.info(git.gitMergeToPublished(branch));
+
 			if(op.isEmpty()) {
 			    logger.info("OK nothing to do");
 			} else {
@@ -102,6 +120,7 @@ public class RunPull {
 				    logger.error("could not text send message to queue");
 				}
 			    }
+
 			    // We've got all files, then we just send a message that it is time
 			    // to run a commit
 			    String finalMessage 
@@ -110,7 +129,7 @@ public class RunPull {
 				+ branch     + ";"
 				+ target     + ";"
 				+ ""         + ";" 
-				+ "COMMIT"
+				+ "COMMIT";
 				logger.info("about to send final text msg = " + finalMessage);
 			    try {
 				TextMessage text_message = session.createTextMessage(finalMessage);
