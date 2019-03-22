@@ -373,6 +373,4 @@ public class GitClient {
 	return logger;
     }
 
- 
-
 }

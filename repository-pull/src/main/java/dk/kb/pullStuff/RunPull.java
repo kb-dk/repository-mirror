@@ -57,6 +57,26 @@ public class RunPull {
 	    while (true) {
 		String msg = "";
 		try {
+
+		    /*
+		      We have different branches, locally and
+		      remotely. Two are the ones we work with. One is
+		      in our remote git text repository and one in the
+		      remote repository. Their names are in the String variables
+
+		      publishedBranch
+
+		      and 
+
+		      branch
+
+		      respectively.
+
+		      The former is in the configuration file the
+		      latter comes in a message from ActiveMQ
+		      
+		    */
+
 		    logger.info("Waiting for next message");
 		    Message message = pull_consumer.receive();
 		    if (message instanceof TextMessage) {
@@ -64,35 +84,67 @@ public class RunPull {
 			msg = textMessage.getText();
 			logger.info("Received: " + msg);
 			String reg = ";";
-			String collection  = msg.split(reg)[0];
-			String repository  = msg.split(reg)[1];
-			String branch      = msg.split(reg)[2];
-			String target      = msg.split(reg)[3];
+			String collection  = msg.split(reg)[0]; // this is ADL or SKS etc
+			String repository  = msg.split(reg)[1]; // the git URI
+			String branch      = msg.split(reg)[2]; // the branch containing the desired data
+			String target      = msg.split(reg)[3]; // where we are going to deposit those data
 
+			// Initialize our git gateway
 			logger.info("Setting repository: " + repository);
 			GitClient git = new GitClient(repository);
 
+			// This branch is used for storing data prior
+			// to loading it into eXist and Solr
+
 			String publishedBranch = consts.getConstants().getProperty("published.branch");
 
-
+			// Tell our git gateway the names of the two branches
 			git.setBranch(branch);
 			git.setPublishedBranch(publishedBranch);
-
+			
+			// OK, first we fetch. We'll basically get
+			// everything that has happened since last
+			// fetch.
 			logger.info(git.gitFetch());
 
-			// branch
+			// branch, checkout the desired branch and do
+			// a pull
 			
 			logger.info(git.gitCheckOut());
 			logger.info(git.gitPull());
 
-			// publishedBranch
+			// publishedBranch. This is where we are doing
+			// the work. The isn't any corresponding
+			// branch remotely so there is no need to
+			// pull.
+			//
+			// This branch should reflect the status of
+			// the last import
 
 			logger.info(git.gitCheckOutPublished());
 
+			// Now we have the two branches. In spite of
+			// the name gitLog() this is calculating a
+			// diff, not a log. This is actually returning a 
+			// map between an object and operation.
 
 			java.util.HashMap<String,String> op = git.gitLog();
 
+			// This resets the publishedBranch to the
+			// state of the remote master. I.e., we have
+			// exactly the same data as in branch master.
 			logger.info(git.gitResetTo("origin/master"));
+
+			// Now we merge the remote desired branch with
+			// publishedBranch
+			//
+			// by doing this in this odd order, we'll be
+			// able to take into account the fact that the
+			// database might contain earlier
+			// changes. These will be overwritten below
+			// when we queue up the operations in the op
+			// HashMap for execution in the next step in
+			// the "conveyor belt"
 
 			logger.info(git.gitMergeToPublished(branch));
 
