@@ -41,6 +41,36 @@ impossible.
 3. Request indexing service for index documents
 4. Store the index documents in index (Solr)
 
+#### Process
+
+We have different branches, either locally or remotely or both. Two
+are the ones we work with. One is in our remote git text repository
+and one in the remote repository. Their names are in the String
+variables
+
+* publishedBranch
+
+and 
+
+* branch
+
+respectively.
+
+The former is in the configuration file the latter comes in a message
+from ActiveMQ. __publishedBranch__ is where we do the work. There isn't any
+corresponding branch remotely so there is no need to pull. This branch
+should reflect the status of the last
+
+First we establish which files differ between the two. Then we merge
+the remote desired branch with publishedBranch
+			
+By doing this in this odd order, we'll be able to take into account
+the fact that the database might contain earlier changes. These will
+be overwritten below when we queue up the operations in the op HashMap
+for execution in the next step in the "conveyor belt" 
+
+([See RunPull.java, line 57 and forward](/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
+
 Most of this software is already written and available in [Solr and
 Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 

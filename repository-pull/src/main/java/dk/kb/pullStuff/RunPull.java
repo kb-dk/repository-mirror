@@ -114,7 +114,7 @@ public class RunPull {
 			logger.info(git.gitPull());
 
 			// publishedBranch. This is where we are doing
-			// the work. The isn't any corresponding
+			// the work. There isn't any corresponding
 			// branch remotely so there is no need to
 			// pull.
 			//
