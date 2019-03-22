@@ -67,9 +67,7 @@ the remote desired branch with publishedBranch
 By doing this in this odd order, we'll be able to take into account
 the fact that the database might contain earlier changes. These will
 be overwritten below when we queue up the operations in the op HashMap
-for execution in the next step in the "conveyor belt" 
-
-([See RunPull.java, line 57 and forward](https://github.com/Det-Kongelige-Bibliotek/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
+for execution in the next step in the "conveyor belt" ([See RunPull.java, line 57 and forward](https://github.com/Det-Kongelige-Bibliotek/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
 
 Most of this software is already written and available in [Solr and
 Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
