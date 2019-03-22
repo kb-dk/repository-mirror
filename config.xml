@@ -12,6 +12,8 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="data.home">/home/text-service/</entry>
 
     <entry key="published.branch">installed_corpus</entry>
+
+    <!-- These are RFC 6570 URI templates -->
     
     <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
     <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>

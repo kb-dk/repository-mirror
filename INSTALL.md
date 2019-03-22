@@ -29,9 +29,7 @@ and edit it under that name that name. As of writing this, the file looks like t
 
 ```
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<!--
-Author: Sigfrid Lundberg (slu@kb.dk)
--->
+
 <properties>
     <comment>Configuration for text service daemon.</comment>
     <entry key="queue.uri">tcp://[Active MQ hostport]</entry>
@@ -42,6 +40,8 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="data.home">/home/text-service/</entry>
 
     <entry key="published.branch">installed_corpus</entry>
+
+    <!-- These are RFC 6570 URI templates -->
     
     <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
     <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>
