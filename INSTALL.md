@@ -4,11 +4,14 @@
 
 ## Prerequisites
 
-You need 
+You need for building
+
+* the Maven build tool
+
+You need for running it
 
 * tomcat 8
 * java 8 (or better)
-* the Maven build tool
 * Active MQ. I use version 5.11.1
 
 ## Configuration
@@ -104,10 +107,10 @@ There are three source trees,
 Doing
 
 ```
-mvn install
+mvn clean ; mvn install
 ```
 
-in project root builds all three trees
+in project root removes old stuff and builds new fresh ones in all three source trees
 
 ## Installation
 
@@ -129,11 +132,30 @@ which is installed by copying it to your apache tomcat servlet
 container. We are assuming that your tomcat is run by a user with the
 same name __tomcat__
 
+The web interface starts at 
+
+```
+http(s)://<your_host_port>/import/
+```
+
 The other two directories contain the jars
 
 ```
 repository-pull-1.0.one-jar.jar
 database-push-1.0.one-jar.jar
+```
+
+I start them (as root) using
+
+cd repository-pull ; sudo ./run-command.sh
+cd database-push ; sudo ./run-command.sh 
+
+in each of those directories there should be a ```run_directory```
+owned by __tomcat__. Those programs are creating far too much log
+info. There is a script for cleaning:
+
+```
+./clean_logs.sh
 ```
 
 ### Data
@@ -146,10 +168,21 @@ You will need a some document projects to start with. Like
 * SKS_tei
 * trykkefrihedsskrifter
 
-Propose that you create a directory /home/text-service/ and checkout
-whatever texts you need there.  The directory where the texts are
-living should be read- and writable for the user running the tomcat,
-who is named __tomcat__.
+Propose that you create a directory
+
+```
+/home/text-service/
+```
+
+and checkout whatever texts you need there. Note the script
+
+```
+./clone.sh
+```
+
+You'll need an account on github with access to the texts. The
+directory where the texts are living should be read- and writable for
+the user running the tomcat, who is named __tomcat__.
 
 We also have the 
 
