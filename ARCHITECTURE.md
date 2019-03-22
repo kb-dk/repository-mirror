@@ -12,11 +12,12 @@
 
 ![Workflow](architecture/architecture.svg)
 
-### 1. An external repository is registered by the user who must also provide credentials for the remote git repository
+### 1. An external repository is registered in the database
 
-We do not need this, unless the repository is private
+A user at a remote git repository is given read access to that
+repository. We do not need this, unless the repository is private
 
-### 2. The user selects a branch
+### 2. The user selects a destination
 
 Depending on the destination status the user needs to enter slightly different data
 
@@ -27,14 +28,13 @@ Depending on the destination status the user needs to enter slightly different d
 The two statuses store data in separate databases and only the latter
 is public. The staging service is a test site for the editorial users.
 
-### 3. The system queues the branch and induces pull operations
+### 3. The user selects branch and induces pull operations
 
-Getting data from the repository according to 2 above. Running
-asynchronously using [ActiveMQ](#4-activemq) Multiple jobs per
+Running asynchronously using [ActiveMQ](#4-activemq) Multiple jobs per
 repository should not be permitted. The system should ensure this is
 impossible.
 
-### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
+### 4. Upon successful pull (3 above), the system queues loading and indexing of data
 
 1. Mirrors the data in local git repository
 2. Store them in database (eXist)
@@ -46,13 +46,13 @@ Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 
 Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
 
-### 5. If failure in 3 above, messages should be passed to those who can do something about it
+### 5. If failure in 3-4 above, messages should be passed to those who can do something about it
 
 Task should be stored somewhere for re-execution
 
 ### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
 
-### 7. If failure, go to 5.
+### 7. If failure, go to 4.
 
 ## Ideas
 
