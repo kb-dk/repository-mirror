@@ -12,15 +12,11 @@
 
 ![Workflow](architecture/architecture.svg)
 
-### 0. One or more responsible library users register as a content providers
-
-Done using [in our user database: AD/LDAP](#3-ldap-authentication-and-authorization)
-
 ### 1. An external repository is registered by the user who must also provide credentials for the remote git repository
 
 We do not need this, unless the repository is private
 
-### 2. The user selects a commit or a named release to retrieve
+### 2. The user selects a branch
 
 Depending on the destination status the user needs to enter slightly different data
 
@@ -28,20 +24,25 @@ Depending on the destination status the user needs to enter slightly different d
 
 2. **production** - The user chooses a named release for publication
 
-The two statuses store data in separate databases and only the latter is public. The staging service is a test site for the editorial users.
+The two statuses store data in separate databases and only the latter
+is public. The staging service is a test site for the editorial users.
 
-### 3. The system queues the clone and pull operations
+### 3. The system queues the branch and induces pull operations
 
-Getting data from the repository according to 2 above. Running asynchronously using [ActiveMQ](#4-activemq)
-Multiple jobs per repository should not be permitted. The system should ensure this is impossible.
+Getting data from the repository according to 2 above. Running
+asynchronously using [ActiveMQ](#4-activemq) Multiple jobs per
+repository should not be permitted. The system should ensure this is
+impossible.
 
 ### 4. Upon successful cloning (3 above), the system queues loading and indexing of data
 
-1. Store in database (eXist)
-2. Request indexing service for index documents
-3. Store the index documents in index (Solr)
+1. Mirrors the data in local git repository
+2. Store them in database (eXist)
+3. Request indexing service for index documents
+4. Store the index documents in index (Solr)
 
-Most of this software is already written and available in [Solr and Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
+Most of this software is already written and available in [Solr and
+Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 
 Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
 
@@ -52,7 +53,6 @@ Task should be stored somewhere for re-execution
 ### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
 
 ### 7. If failure, go to 5.
-
 
 ## Ideas
 
@@ -71,7 +71,8 @@ ones to a remote server.
 
 ### 2. Duplicating/mirroring repository
 
-A true mirror (if we are synchronising without pushing things to the origin, I believe). Not sure that helps
+A true mirror (if we are synchronising without pushing things to the
+origin, I believe). Not sure that helps
 
 https://help.github.com/articles/duplicating-a-repository/
 
