@@ -69,7 +69,7 @@ the fact that the database might contain earlier changes. These will
 be overwritten below when we queue up the operations in the op HashMap
 for execution in the next step in the "conveyor belt" 
 
-([See RunPull.java, line 57 and forward](/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
+([See RunPull.java, line 57 and forward](https://github.com/Det-Kongelige-Bibliotek/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
 
 Most of this software is already written and available in [Solr and
 Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
