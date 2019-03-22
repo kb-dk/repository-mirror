@@ -1,5 +1,4 @@
-
-[README](README.md) | Architecture
+[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md)
 
 # Tools for the mirroring of repositories 
 
