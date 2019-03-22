@@ -14,6 +14,10 @@ Each collection in the text portal should have a description as the ones here
 | [collection-holberg.xml](collection-holberg.xml) | /exist/rest/db/text-retriever/holberg/ |
 | [collection-tfs.xml](collection-tfs.xml) |  /exist/rest/db/text-retriever/tfs/ |
 
+These are syntactically TEI bibliographic records. The RNG/RNC schemas
+used are in the source tree ([tei_all.rng](tei_all.rng) and
+[tei_all.rnc](tei_all.rnc))
+
 The xquery script
 
 ```
