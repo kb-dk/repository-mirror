@@ -122,7 +122,7 @@ public class RunLoad {
 			    .set("c", collection)
 			    .expand();
 
-			feedback_message = feedback_message + "Import " + URI;
+			feedback_message = feedback_message + doc + " imported to " + URI;
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);
@@ -159,7 +159,7 @@ public class RunLoad {
 			String commit_res = htclient.restGet(solr_commit_uri);
 
 			logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-			feedback_message = feedback_message + "; change committed to index" ;
+			feedback_message = feedback_message + " change in " + URI + " committed to index" ;
 
 		    } else {
 			res =  htclient.restHead(URI);
