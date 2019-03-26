@@ -31,6 +31,15 @@
 	  feedback_consumer.close();
 	  jms_session.close();
 	  connection.close();
+	</jsp:scriptlet>
+	<strong>
+	  <jsp:scriptlet>
+	  if (message instanceof TextMessage) {
+	     out.print(message.getJMSTimestamp());
+          }
+	  </jsp:scriptlet>
+	</strong>
+	<jsp:scriptlet>
 	  out.print(msg);
 	</jsp:scriptlet>
 
