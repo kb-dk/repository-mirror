@@ -305,7 +305,7 @@ public class GitClient {
 		.call();
 	    return res.toString();
 	} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-	    logger.error("git prob: " + gitProblem);
+	    logger.error("git prob: " + gitProblem + " trying to pull from " + local_name);
 	    return "git pull failed";
 	}
     }
