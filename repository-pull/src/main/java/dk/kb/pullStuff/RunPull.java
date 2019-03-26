@@ -37,19 +37,12 @@ public class RunPull {
             connection = connectionFactory.createConnection();
             connection.start();
 
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-            String queue = System.getProperty("queue");
-            if (queue == null ) queue = consts.getConstants().getProperty("queue.name");
-
+            session                      = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            String queue                 = consts.getConstants().getProperty("queue.name");
             Destination pull_destination = session.createQueue(queue);
-
-            String push_queue = System.getProperty("queue.load.name");
-            if (push_queue == null ) push_queue = consts.getConstants().getProperty("queue.load.name");
-
+            String push_queue            = consts.getConstants().getProperty("queue.load.name");
             Destination push_destination = session.createQueue(push_queue);
-
-	    pull_consumer = session.createConsumer(pull_destination);
+	    pull_consumer                = session.createConsumer(pull_destination);
 	    
 	    producer = session.createProducer(push_destination);
 	    producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);

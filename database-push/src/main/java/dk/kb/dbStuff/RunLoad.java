@@ -27,12 +27,13 @@ public class RunLoad {
 
     public static void main(String args[]) {
 
-	String host = System.getProperty("queue.uri");
-        if (host == null) host = consts.getConstants().getProperty("queue.uri");
+	String host = consts.getConstants().getProperty("queue.uri");
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
         Connection connection = null;
         Session session = null;
         MessageConsumer consumer = null;
+
+	MessageProducer feedback_producer = null;
 
 	ApiClient htclient = new ApiClient();
 
@@ -40,9 +41,8 @@ public class RunLoad {
             connection = connectionFactory.createConnection();
             connection.start();
 
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            String queue = System.getProperty("queue.load.name");
-            if (queue == null ) queue = consts.getConstants().getProperty("queue.load.name");
+            session      = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            String queue = consts.getConstants().getProperty("queue.load.name");
             Destination destination = session.createQueue(queue);
 
             consumer = session.createConsumer(destination);
@@ -70,6 +70,10 @@ public class RunLoad {
 		    String op         = arr[5];
 
                     logger.info("Received: " + msg);
+
+		    String feedback_message = "";
+
+		    // URIs for rest based communication with the backends
 
 		    String tmplt = consts.getConstants().getProperty("file.template");
 		    String db_uri = consts.getConstants().getProperty(target);
@@ -118,14 +122,18 @@ public class RunLoad {
 			    .set("c", collection)
 			    .expand();
 
+			feedback_message = feedback_message + document + " imported to " + URI;
+
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);
 			if(solrized_res == null) {
 			    logger.info("solrizr: got null");
+			    feedback_message = feedback_message + "; indexing failure";
 			} else {
 			    logger.info("solrizr: status 200 OK");
 			    String index_res = htclient.restPost(solrized_res,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri);
+			    feedback_message = feedback_message + "; indexing success";
 			}
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
@@ -134,8 +142,11 @@ public class RunLoad {
 
 			logger.info("delete command: " + solrDel);
 
+			feedback_message = feedback_message + "Delete " + URI;
+
 			String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			res = res + "\n" + solr_del_res;
+			feedback_message = feedback_message + "; deleted from index" ;
 		    } else if(op.matches(".*GET.*")) { 
 			logger.info("GET operation = " + op);
 		    } else if(op.matches(".*COMMIT.*")) { 
@@ -148,10 +159,22 @@ public class RunLoad {
 			String commit_res = htclient.restGet(solr_commit_uri);
 
 			logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
+			feedback_message = feedback_message + " change in " + URI + " committed to index" ;
 
-		} else {
+		    } else {
 			res =  htclient.restHead(URI);
 		    }
+
+		    // Setting up feedback messaging to user
+
+		    String feedback_queue = collection + "_feedback";
+		    Destination feedback_destination = session.createQueue(feedback_queue);
+		    feedback_producer = session.createProducer(feedback_destination);
+		    feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		    TextMessage text_message = session.createTextMessage(feedback_message);
+		    feedback_producer.send(text_message);
+		    feedback_producer.close();
+
 
                 } catch (Exception e) {
                     logger.error("Error connecting " + e);
