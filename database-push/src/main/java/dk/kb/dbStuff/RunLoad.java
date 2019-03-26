@@ -122,7 +122,7 @@ public class RunLoad {
 			    .set("c", collection)
 			    .expand();
 
-			feedback_message = feedback_message + doc + " imported to " + URI;
+			feedback_message = feedback_message + document + " imported to " + URI;
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);

@@ -8,6 +8,33 @@
       <style type="text/css">
 	@import "../css/simple-style.css";
       </style>
+      <script type="text/javascript">
+	// <![CDATA[
+	var myVar = setInterval(myTimer, 5000);
+
+	var parser = new DOMParser();
+
+	function myTimer() {
+  	   var d = new Date();
+	   var log_element = document.getElementById("feedback_log");
+	   xhr = new XMLHttpRequest();
+
+	   xhr.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+	         var p = parser.parseFromString(this.responseText, 'text/html').getElementById("one_single_paragraph");
+		 if(p) {
+	            log_element.appendChild(p);
+                 } else {
+		    alert("failed");
+		 }
+	      }
+	   };
+
+	   xhr.open("GET", "./get_feedback.jspx?collection=adl", true);
+	   xhr.send(); 
+	}
+	// ]]>
+      </script>
     </head>
     <body>
       <h1><img src="../img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Data til tekstportalen</h1>
@@ -34,6 +61,8 @@
 	  </ul>
 	</div>
 	<button onclick="window.location.href='../'">Importér mere</button>
+      </div>
+      <div id="feedback_log">
       </div>
     </body>
   </html>

@@ -5,33 +5,36 @@
   <jsp:directive.page import="org.apache.activemq.ActiveMQConnectionFactory"/>
   <jsp:directive.page import="javax.jms.*"/>
   <jsp:directive.page import="dk.kb.text.ConfigurableConstants"/>
-  <p>
-    <jsp:scriptlet>
-      // Reading message from ActiveMQ as to what's going on
-      String                           collection = request.getParameter("collection");
-      String                       feedback_queue = collection + "_feedback";
-      dk.kb.text.ConfigurableConstants     consts = dk.kb.text.ConfigurableConstants.getInstance();
-      String                                 host = consts.getConstants().getProperty("queue.uri");
-      ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
-      javax.jms.Connection             connection = connectionFactory.createConnection();
-      javax.jms.Session               jms_session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
-      javax.jms.Destination feedback_destination  = jms_session.createQueue(feedback_queue);
-      javax.jms.MessageConsumer feedback_consumer = jms_session.createConsumer(feedback_destination);
-      connection.start();
+  <html>
+    <body>
+      <p id="one_single_paragraph">
+	<jsp:scriptlet>
+	  // Reading message from ActiveMQ as to what's going on
+	  String                           collection = request.getParameter("collection");
+	  String                       feedback_queue = collection + "_feedback";
+	  dk.kb.text.ConfigurableConstants     consts = dk.kb.text.ConfigurableConstants.getInstance();
+	  String                                 host = consts.getConstants().getProperty("queue.uri");
+	  ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
+	  javax.jms.Connection             connection = connectionFactory.createConnection();
+	  javax.jms.Session               jms_session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+	  javax.jms.Destination feedback_destination  = jms_session.createQueue(feedback_queue);
+	  javax.jms.MessageConsumer feedback_consumer = jms_session.createConsumer(feedback_destination);
+	  connection.start();
 
-      // eventually we should use receiveNoWait()
-      Message message = feedback_consumer.receive();
-      String msg = "";
-      if (message instanceof TextMessage) {
-         TextMessage textMessage = (TextMessage) message;
-         msg = textMessage.getText();
-      }
+	  Message message = feedback_consumer.receive();
+	  String msg = "";
+	  if (message instanceof TextMessage) {
+	     TextMessage textMessage = (TextMessage) message;
+	     msg = textMessage.getText();
+	  }
 
-      feedback_consumer.close();
-      jms_session.close();
-      connection.close();
-      out.print(msg);
-    </jsp:scriptlet>
+	  feedback_consumer.close();
+	  jms_session.close();
+	  connection.close();
+	  out.print(msg);
+	</jsp:scriptlet>
 
-  </p>
+      </p>
+    </body>
+  </html>
 </jsp:root>
