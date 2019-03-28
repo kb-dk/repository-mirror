@@ -133,7 +133,7 @@ public class RunLoad {
 			    logger.info("solrizr: status 200 OK");
 			    String index_res = htclient.restPost(solrized_res,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri);
-			    feedback_message = feedback_message + "; indexing success";
+			    feedback_message = feedback_message + " sending doc to index ";
 			}
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
@@ -142,11 +142,11 @@ public class RunLoad {
 
 			logger.info("delete command: " + solrDel);
 
-			feedback_message = feedback_message + "Delete " + URI;
+			feedback_message = feedback_message + "Delete " + URI + " ";
 
 			String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			res = res + "\n" + solr_del_res;
-			feedback_message = feedback_message + "; deleted from index" ;
+			feedback_message = feedback_message + " doc deleted from index" ;
 		    } else if(op.matches(".*GET.*")) { 
 			logger.info("GET operation = " + op);
 		    } else if(op.matches(".*COMMIT.*")) { 
@@ -159,7 +159,7 @@ public class RunLoad {
 			String commit_res = htclient.restGet(solr_commit_uri);
 
 			logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-			feedback_message = feedback_message + " change in " + URI + " committed to index" ;
+			feedback_message = feedback_message + " the changes in " + URI + " are now committed to index" ;
 
 		    } else {
 			res =  htclient.restHead(URI);

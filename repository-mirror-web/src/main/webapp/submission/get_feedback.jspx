@@ -22,14 +22,19 @@
 
 	Message message = null;
 	boolean OK = true;
-	String msg = "";
+        String msg = "";
+
 	while(OK) {
-	    message = feedback_consumer.receiveNoWait();
-	    if (message instanceof TextMessage) {
+	    message = feedback_consumer.receive(1000);
+	    OK = message != null;
+
+	    if (OK) {
 		TextMessage textMessage = (TextMessage) message;
 		msg = msg + textMessage.getText();
+	    } else {
+
 	    }
-	    OK = message != null;
+
 	}
 	feedback_consumer.close();
 	jms_session.close();
