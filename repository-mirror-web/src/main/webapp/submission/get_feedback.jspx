@@ -7,44 +7,51 @@
   <jsp:directive.page import="dk.kb.text.ConfigurableConstants"/>
   <html>
     <body>
+      <jsp:scriptlet>
+	// Reading messages from ActiveMQ as to what's going on
+	String                           collection = request.getParameter("collection");
+	String                       feedback_queue = collection + "_feedback";
+	dk.kb.text.ConfigurableConstants     consts = dk.kb.text.ConfigurableConstants.getInstance();
+	String                                 host = consts.getConstants().getProperty("queue.uri");
+	ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
+	javax.jms.Connection             connection = connectionFactory.createConnection();
+	javax.jms.Session               jms_session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
+	javax.jms.Destination feedback_destination  = jms_session.createQueue(feedback_queue);
+	javax.jms.MessageConsumer feedback_consumer = jms_session.createConsumer(feedback_destination);
+	connection.start();
+
+	Message message = null;
+	boolean OK = true;
+	String msg = "";
+	while(OK) {
+	    message = feedback_consumer.receiveNoWait();
+	    if (message instanceof TextMessage) {
+		TextMessage textMessage = (TextMessage) message;
+		msg = msg + textMessage.getText();
+	    }
+	    OK = message != null;
+	}
+	feedback_consumer.close();
+	jms_session.close();
+	connection.close();
+      </jsp:scriptlet>
+
       <p class="one_single_paragraph">
-	<jsp:scriptlet>
-	  // Reading message from ActiveMQ as to what's going on
-	  String                           collection = request.getParameter("collection");
-	  String                       feedback_queue = collection + "_feedback";
-	  dk.kb.text.ConfigurableConstants     consts = dk.kb.text.ConfigurableConstants.getInstance();
-	  String                                 host = consts.getConstants().getProperty("queue.uri");
-	  ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
-	  javax.jms.Connection             connection = connectionFactory.createConnection();
-	  javax.jms.Session               jms_session = connection.createSession(false, javax.jms.Session.AUTO_ACKNOWLEDGE);
-	  javax.jms.Destination feedback_destination  = jms_session.createQueue(feedback_queue);
-	  javax.jms.MessageConsumer feedback_consumer = jms_session.createConsumer(feedback_destination);
-	  connection.start();
-
-	  Message message = feedback_consumer.receive();
-	  String msg = "";
-	  if (message instanceof TextMessage) {
-	     TextMessage textMessage = (TextMessage) message;
-	     msg = textMessage.getText();
-	  }
-
-	  feedback_consumer.close();
-	  jms_session.close();
-	  connection.close();
-	</jsp:scriptlet>
 	<strong>
 	  <jsp:scriptlet>
-	  if (message instanceof TextMessage) {
-	     java.time.LocalDate date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp()).atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-	     out.print(date.toString());
-          }
+	    if (message instanceof TextMessage) {
+		java.time.LocalDate date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp())
+		.atZone(java.time.ZoneId.systemDefault())
+		.toLocalDate();
+		out.print(date.toString());
+	    }
 	  </jsp:scriptlet>
-	</strong>
+        </strong>
 	<jsp:scriptlet>
 	  out.print(msg);
 	</jsp:scriptlet>
-
       </p>
+
     </body>
   </html>
 </jsp:root>
