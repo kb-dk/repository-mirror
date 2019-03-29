@@ -57,27 +57,21 @@
       <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Dataimport til tekstportalen</h1>
 
       <div>
+	
+	<h1> Importér (<jsp:scriptlet>out.print(request.getHeader("X-Forwarded-User"));</jsp:scriptlet>)</h1>
 
-	<h1> Importér </h1>
+	<!--
 
-	<ul>
-	   <jsp:scriptlet>
             java.util.Enumeration enumeration = request.getHeaderNames(); 
 	    while (enumeration.hasMoreElements()) 
 	    { 
 	    String name = (String)enumeration.nextElement();
 	    String value = request.getHeader(name);
-	   </jsp:scriptlet>
-	    <li>
-	      <jsp:scriptlet>
-		out.print(name + " = " + value);
-	      </jsp:scriptlet>
-	    </li>
-	   <jsp:scriptlet>
+	    out.print(name + " = " + value);
 	    }
-	   </jsp:scriptlet>
 
-	</ul>	
+	-->
+
 
 	<form method="get" action="submission/">
 	  <fieldset id="destination">
