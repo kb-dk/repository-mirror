@@ -16,3 +16,19 @@ adl:first_trusted_user second_trusted_user
 sks:third_trusted_user
 ```
 
+```
+ProxyPass /import "ajp://localhost:8009/import/"
+ProxyPassReverse /import "ajp://localhost:8009/import/"
+ProxyPassReverseCookiePath /import /import
+
+<LocationMatch ^/(import)/+.*>
+
+ <Limit>
+    AuthType Basic
+    AuthName "Text service"
+    AuthUserFile /home/xml-store/passwordfile
+    Require valid-user 
+  </Limit>
+
+</LocationMatch>
+```
