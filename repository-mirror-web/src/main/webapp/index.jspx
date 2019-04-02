@@ -60,17 +60,17 @@
 	
 	<h1> Importér (<jsp:scriptlet>out.print(request.getHeader("X-Forwarded-User"));</jsp:scriptlet>)</h1>
 
-	<!--
-
+	<pre>
+	 <jsp:scriptlet>
             java.util.Enumeration enumeration = request.getHeaderNames(); 
 	    while (enumeration.hasMoreElements()) 
 	    { 
-	    String name = (String)enumeration.nextElement();
-	    String value = request.getHeader(name);
-	    out.print(name + " = " + value);
+	       String name = (String)enumeration.nextElement();
+	       String value = request.getHeader(name);
+	       out.print(name + " = " + value + "\n");
 	    }
-
-	-->
+	 </jsp:scriptlet>
+	</pre>
 
 
 	<form method="get" action="submission/">
