@@ -12,7 +12,10 @@
       String default_destination = "staging";
       String destination = default_destination;
 
-      String coll = "adl";
+      String user_name  = request.getHeader("X-Forwarded-User");
+      String group_name = request.getHeader("X-Forwarded-Group");
+
+      String coll = "choose";
       String reg  = ";";
 
       if(request.getParameter("repository") != null) {
@@ -33,6 +36,12 @@
       pageContext.setAttribute("dest", destination);
       pageContext.setAttribute("repo", repository);
 
+      if(request.getParameter("repository") != null) {
+         pageContext.setAttribute("group_home", "/import/" + group_name );
+      } else {
+         pageContext.setAttribute("group_home", "/import/" + coll );
+      }
+
   </jsp:scriptlet>
 
   <html>
@@ -44,7 +53,8 @@
       <script type="text/javascript">
 	function changeRepo() {
 	  var repo_sel = document.getElementById("sel_repo");
-	  window.location.href='./?repository=' + repo_sel.value + '&amp;destination=' + '<c:out value="${dest}"/>';
+	  var new_coll = repo_sel.value ?  repo_sel.value.replace(/;.*$/g,"") : "choose";
+	  window.location.href='/import/' + new_coll + '/?repository=' + repo_sel.value + '&amp;destination=' + '<c:out value="${dest}"/>';
 	}
 	function changeDestination() {
 	  var dest_sel = document.getElementById("sel_dest");
@@ -57,7 +67,7 @@
       <h1><img src="img/logo.svg" width="8%" alt="Det Kgl. Bibliotek"/> Dataimport til tekstportalen</h1>
 
       <div>
-
+	
 	<h1> Importér </h1>
 
 	<form method="get" action="submission/">
