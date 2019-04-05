@@ -101,14 +101,13 @@
 	<version>1.4.4</version>
 	<executions>
 	  <execution>
-	    <id>pull</id>
-            <configuration>
-                <mainClass>dk.kb.pullStuff.RunPull</mainClass>
-		<finalName>run-pull.jar</finalName>
-            </configuration>
             <goals>
-                <goal>one-jar</goal>
+	      <goal>one-jar</goal>
             </goals>
+	    <configuration>
+	      <mainClass>dk.kb.pullStuff.RunPull</mainClass>
+	      <finalName>run-pull.jar</finalName>
+	    </configuration>
 	  </execution>
 	</executions>
       </plugin>
