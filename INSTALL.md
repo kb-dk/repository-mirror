@@ -152,8 +152,23 @@ cd repository-pull ; sudo ./run-command.sh
 cd database-push ; sudo ./run-command.sh 
 
 in each of those directories there should be a ```run_directory```
-owned by __tomcat__. Those programs are creating far too much log
-info. There is a script for cleaning:
+owned by __tomcat__.
+
+Note that they won't run, unless the paths to 
+
+```
+repository-mirror/repository-pull/run_directory
+repository-mirror/database-push/run_directory
+```
+are read, executable and writable to tomcat user
+
+```
+repository-mirror/repository-pull/target
+repository-mirror/database-push/target
+```
+are read and executable to tomcat user
+
+The programs are creating far too much log info. There is a script for cleaning:
 
 ```
 ./clean_logs.sh
