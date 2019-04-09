@@ -54,6 +54,7 @@ SKS_tei/data/v1.9/ee1/txt.xml
 ^.*data\/v1.9\/
 ```
 with the string in /bibl/ref. Concatenate this to the acronym in 1.
+
 3. The result will be sks/ee1/txt.xml 
 4. The dokument URI will be if we concatenate this with the base URI of the text-retriever, e.g., http://xstorage-test-01.kb.dk/exist/rest/db/text-retriever/. I.e.,  http://xstorage-test-01.kb.dk:8080/exist/rest/db/text-retriever/sks/ee1/txt.xml
 
