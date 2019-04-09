@@ -3,5 +3,5 @@
       corresp="holberg" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
   <title>Ludvig Holbergs Skrifter</title>
-  <ref corresp="texts">holberg/</ref>
+  <ref corresp="holberg/">texts/</ref>
 </bibl>

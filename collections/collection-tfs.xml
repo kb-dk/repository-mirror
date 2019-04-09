@@ -3,5 +3,5 @@
       corresp="tfs" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/trykkefrihedsskrifter.git">
   <title>Trykkefrihedens Skrifter</title>
-  <ref corresp="texts">trykkefrihedsskrifter/tei_dir/</ref>
+  <ref corresp="trykkefrihedsskrifter/tei_dir/">texts/</ref>
 </bibl>

@@ -3,5 +3,5 @@
       corresp="sks" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/SKS_tei.git">
   <title>Søren Kierkegaards Skrifter</title>
-  <ref corresp="/">data/v1.9/</ref>
+  <ref corresp="data/v1.9/">/</ref>
 </bibl>

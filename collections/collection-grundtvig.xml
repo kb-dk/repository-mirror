@@ -3,5 +3,5 @@
       corresp="grundtvig" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
   <title>Grundtvigs Værker</title>
-  <ref corresp="texts">grundtvig/</ref>
+  <ref corresp="grundtvig/">texts/</ref>
 </bibl>

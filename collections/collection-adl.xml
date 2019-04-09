@@ -3,14 +3,14 @@
   <bibl corresp="adl" 
 	copyOf="https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources.git">
     <title>ADL's tekster</title>
-    <ref corresp="texts" >texts/</ref>
+    <ref corresp="texts/" >texts/</ref>
   </bibl>
 
   <bibl corresp="adl" 
 	copyOf="https://github.com/Det-Kongelige-Bibliotek/adl-text-sources.git">
     <title>ADL's redaktionelle material</title>
-    <ref corresp="authors">authors/</ref>
-    <ref corresp="periods">periods/</ref>
+    <ref corresp="authors/">authors/</ref>
+    <ref corresp="periods/">periods/</ref>
   </bibl>
 
 </listBibl>

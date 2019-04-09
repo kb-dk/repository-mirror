@@ -3,5 +3,5 @@
       corresp="pmm" 
       copyOf="https://github.com/Det-Kongelige-Bibliotek/other_tei_projects.git">
   <title>Poul Martin Møller</title>
-  <ref corresp="texts">pmm/</ref>
+  <ref corresp="pmm/">texts/</ref>
 </bibl>

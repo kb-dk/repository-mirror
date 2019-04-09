@@ -174,6 +174,8 @@ The programs are creating far too much log info. There is a script for cleaning:
 ./clean_logs.sh
 ```
 
+Run it as root, you won't be allowed to delete tomcat's log files.
+
 ### Data
 
 You will need a some document projects to start with. Like
@@ -198,7 +200,8 @@ and checkout whatever texts you need there. Note the script
 
 You'll need an account on github with access to the texts. The
 directory where the texts are living should be read- and writable for
-the user running the tomcat, who is named __tomcat__.
+the user running the tomcat, who is named __tomcat__. As a matter of
+fact, it is best to clone them as tomcat user.
 
 We also have the 
 
