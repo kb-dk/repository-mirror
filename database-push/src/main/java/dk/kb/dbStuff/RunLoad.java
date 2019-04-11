@@ -126,8 +126,18 @@ public class RunLoad {
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);
-			htclient.getHttpHeader("X-Volume-ID");
+			String volume_id = htclient.getHttpHeader("X-Volume-ID");
 
+			// This is definately overkill for ADL, but
+			// necessary for, let's say Grundtvig
+			if(volume_id != "") {
+			    String solrDel = solrDeleteVolumeCmd(volume_id);		
+			    logger.info("delete command: " + solrDel);
+			    feedback_message = feedback_message + "Delete volume " + URI + " ";
+			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
+			    res = res + "\n" + solr_del_res;
+			    feedback_message = feedback_message + " volume deleted from index" ;
+			}
 
 			if(solrized_res == null) {
 			    logger.info("solrizr: got null");
