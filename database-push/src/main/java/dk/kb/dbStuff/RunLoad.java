@@ -130,7 +130,7 @@ public class RunLoad {
 
 			// This is definately overkill for ADL, but
 			// necessary for, let's say Grundtvig
-			if(volume_id != "") {
+			if(volume_id.length() > 0) {
 			    String solrDel = solrDeleteVolumeCmd(volume_id);		
 			    logger.info("delete command: " + solrDel);
 			    feedback_message = feedback_message + "Delete volume " + URI + " ";
