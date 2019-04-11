@@ -43,6 +43,8 @@ public class ApiClient {
     private int    port;
     private String realm  = "";
 
+    CloseableHttpResponse ht_response = null;
+
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private Logger logger = configureLog4j();
 
@@ -77,9 +79,9 @@ public class ApiClient {
 	    HttpGet request = new HttpGet(URI);
 	    httpClient = HttpClients.createDefault();
 	    if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
-	    CloseableHttpResponse response = httpClient.execute(request);
-	    HttpEntity entity = response.getEntity();
-	    int statusCode = response.getStatusLine().getStatusCode();
+	    ht_response = httpClient.execute(request);
+	    HttpEntity entity = ht_response.getEntity();
+	    int statusCode = ht_response.getStatusLine().getStatusCode();
 	    logger.info("GOT " +  statusCode + " for GET " + URI);
 	    if(statusCode == 200) {
 		contents = EntityUtils.toString(entity);
@@ -90,6 +92,14 @@ public class ApiClient {
 	}
 	try { if(httpClient != null) httpClient.close(); } catch(java.io.IOException e) {logger.info(logStackTrace(e));}
 	return contents;
+    }
+
+    public String getHttpHeader(String headName) {
+	String header= "";
+	if(ht_response != null && ht_response.containsHeader(headName)) {
+	    header = ht_response.getFirstHeader(headName).getValue();
+	}
+	return header;
     }
 
     public String restHead(String URI) {

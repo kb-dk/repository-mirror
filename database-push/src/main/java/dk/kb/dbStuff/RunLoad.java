@@ -126,6 +126,9 @@ public class RunLoad {
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);
+			htclient.getHttpHeader("X-Volume-ID");
+
+
 			if(solrized_res == null) {
 			    logger.info("solrizr: got null");
 			    feedback_message = feedback_message + "; indexing failure";
@@ -138,7 +141,7 @@ public class RunLoad {
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
 			res = htclient.restDelete(URI);
-			String solrDel = solrDeletionCmd(collection,document);		
+			String solrDel = solrDeleteDocCmd(collection,document);		
 
 			logger.info("delete command: " + solrDel);
 
@@ -200,7 +203,18 @@ public class RunLoad {
     // this is for deleting single TEI documents, which may correspond
     // to many solr records
 
-    private static String solrDeletionCmd (String collection, String document) {
+    private static String solrDeleteVolumeCmd(String volume_id) {
+	
+	String delete_query = "volume_id_ssi:" + volume_id;
+
+	// don't use query *:*, that is dangerous
+
+	String solr_del = "<delete><query>" + delete_query + "</query></delete>";
+
+	return solr_del;
+    }
+
+    private static String solrDeleteDocCmd (String collection, String document) {
 	
 	String doc_part = document
 	    .replaceAll("\\.xml$","-root")
@@ -213,6 +227,7 @@ public class RunLoad {
 
 	return solr_del;
     }
+
 
 
     private static Logger configureLog4j() {
