@@ -75,7 +75,7 @@ public class RunLoad {
 
 		    // URIs for rest based communication with the backends
 
-		    String tmplt = consts.getConstants().getProperty("file.template");
+		    String tmplt  = consts.getConstants().getProperty("file.template");
 		    String db_uri = consts.getConstants().getProperty(target);
 
 		    String credField = target + ".credentials";
@@ -126,6 +126,19 @@ public class RunLoad {
 
 			logger.info("solrizr: " + solrizrURI);
 			String solrized_res = htclient.restGet(solrizrURI);
+			String volume_id = htclient.getHttpHeader("X-Volume-ID");
+
+			// This is definately overkill for ADL, but
+			// necessary for, let's say Grundtvig
+			if(volume_id.length() > 0) {
+			    String solrDel = solrDeleteVolumeCmd(volume_id);		
+			    logger.info("delete command: " + solrDel);
+			    feedback_message = feedback_message + "Delete volume " + URI + " ";
+			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
+			    res = res + "\n" + solr_del_res;
+			    feedback_message = feedback_message + " volume deleted from index" ;
+			}
+
 			if(solrized_res == null) {
 			    logger.info("solrizr: got null");
 			    feedback_message = feedback_message + "; indexing failure";
@@ -138,7 +151,7 @@ public class RunLoad {
 		    } else if(op.matches(".*DELETE.*")) { 
 			logger.info("delete operation = " + op);
 			res = htclient.restDelete(URI);
-			String solrDel = solrDeletionCmd(collection,document);		
+			String solrDel = solrDeleteDocCmd(collection,document);		
 
 			logger.info("delete command: " + solrDel);
 
@@ -200,7 +213,18 @@ public class RunLoad {
     // this is for deleting single TEI documents, which may correspond
     // to many solr records
 
-    private static String solrDeletionCmd (String collection, String document) {
+    private static String solrDeleteVolumeCmd(String volume_id) {
+	
+	String delete_query = "volume_id_ssi:" + volume_id;
+
+	// don't use query *:*, that is dangerous
+
+	String solr_del = "<delete><query>" + delete_query + "</query></delete>";
+
+	return solr_del;
+    }
+
+    private static String solrDeleteDocCmd (String collection, String document) {
 	
 	String doc_part = document
 	    .replaceAll("\\.xml$","-root")
@@ -213,6 +237,7 @@ public class RunLoad {
 
 	return solr_del;
     }
+
 
 
     private static Logger configureLog4j() {
