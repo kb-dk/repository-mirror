@@ -35,15 +35,15 @@ public class FilePathHack {
 	    String file = this.path.replaceAll("^.*data/v1.9/","");
 	    uri = this.collection + "/" + file;
 	} else if(collection.equals("gv")) {
-	    String pat = "(18\\n\\n)_(\\n+[a-zA-Z]?)_?(\\n+)?_(com|intro|txr|txt|v0)$";
+	    String pat = "(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v0).xml$";
 	    Pattern cpat = Pattern.compile(pat);
-	    Matcher mat  = cpat.matcher(this.path);
-	    if(mat.matches()) {
-		uri = mat.group(1) + "/" + mat.group(2);
-		if(mat.group(3).length() >0) {
-		    uri = uri + "/" + mat.group(3);
+	    Matcher match  = cpat.matcher(this.path);
+	    if(match.matches()) {
+		uri = match.group(1) + "/" + match.group(2);
+		if(match.group(3).length() >0) {
+		    uri = uri + "/" + match.group(3);
 		}
-		uri = uri + "/" + mat.group(4);
+		uri = uri + "/" + match.group(4);
 	    }
 	    
 	} else {
