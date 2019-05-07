@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/xhtml+xml; charset=utf-8"/>
+    <title>GV Mappestruktur</title>
+    <meta name="generator" content="LibreOffice 6.0.7.3 (Linux)"/>
+    <meta name="author" content="Kim Steen Ravn"/>
+    <meta name="created" content="2019-03-14T08:41:00"/>
+    <meta name="changedby" content="Kim Steen Ravn"/>
+    <meta name="changed" content="2019-04-11T09:50:00"/>
+    <meta name="AppVersion" content="16.0000"/>
+    <meta name="Company" content="Aarhus University"/>
+    <meta name="DocSecurity" content="0"/>
+    <meta name="HyperlinksChanged" content="false"/>
+    <meta name="LinksUpToDate" content="false"/>
+    <meta name="ScaleCrop" content="false"/>
+    <meta name="ShareDoc" content="false"/>
+  </head>
+  <body lang="da-DK" link="#0563c1" dir="ltr">
+   
+    <p>
+Repositoriet med XML-filer hedder: <b>GV</b>. Det ligger på
+adressen:</p>
+    <p><a name="_GoBack"/><font color="#0563c1"><u><a href="https://github.com/GrundtvigsVaerker">https://github.com/GrundtvigsVaerker</a></u></font>.</p>
+    <p>
+
+
+
+</p>
+    <p>
+
+
+
+</p>
+    <p>
+      <u>Mappestruktur</u>
+    </p>
+    <p>
+
+
+
+</p>
+    <p>
+Mappestrukturen i repositoriet er følgende.</p>
+    <p>
+Filerne ligger i mapper navngivet efter årstal kaldet årstalsmapper.</p>
+    <p>
+I hver årstalsmappe ligger der en mappe for hvert værk navngivet
+med pågældende årstal efterfulgt af underscore og et tal, f.eks.
+1807_73. Tallet efter underscore stammer fra Steen Johansens
+bibliografi over Grundtvigs værker. På side 4 er vist et eksempel
+på en side fra bibliografien. Tallet kalder vi SJ-nummeret. Mapperne
+i årstalsmapperne indeholder de XML-filer der var og bliver
+udgangspunktet for de færdige filer.</p>
+    <p>
+I årstalsmappen ligger også en mappen navngivet med årstal
+efterfulgt af GV, f.eks. 1807GV. Den mappe kalder vi GV-mappen. I
+GV-mappen gentages struktur og navne fra årstalsmappen.</p>
+    <p>
+Det er i GV-mappen man finder færdige filer og de filer, der aktuelt
+arbejdes på til den næste version.</p>
+    <p>
+Filerne i GV-mapperne udgør altså tilsammen alle tidligere
+versioner af <font color="#0563c1"><u><a href="">http://grundtvigsværker.dk</a></u></font>
+og den version som aktuelt er under forberedelse.</p>
+    <p>
+Det er altså GV-mapperne hvorfra KB skal publicere udgaven i
+tekstportalen.</p>
+    <p>
+ 
+</p>
+    <p>
+For året 1807 ser strukturen således ud:</p>
+    <p>
+
+
+
+</p>
+    <p><b>1807</b> (= årstalsmappe)</p>
+    <p>
+   1807_61</p>
+    <p>
+   1807_63</p>
+    <p>
+   1807_65</p>
+    <p>
+   1807_67</p>
+    <p>
+   1807_73</p>
+    <p><b>1807GV</b> (= GV-mappe)</p>
+    <p>
+      1807_61</p>
+    <p>
+      1807_63</p>
+    <p>
+      1807_65</p>
+    <p>
+      1807_67</p>
+    <p>
+      1807_73</p>
+    <p>
+
+
+
+</p>
+    <p>
+
+
+
+</p>
+    <p>
+      <u>XML-filer</u>
+    </p>
+    <p>
+
+
+
+</p>
+    <p><b>Filnavne</b>:</p>
+    <p>
+
+
+
+</p>
+    <p>
+Mapperne under GV-mappen indeholder hver i alt fem XML-filer:</p>
+    <p>
+../../</p>
+    <p>
+1807_73</p>
+    <p>
+         1807_73_com.xml</p>
+    <p>
+         1807_73_intro.xml</p>
+    <p>
+         1807_73_txr.xml</p>
+    <p>
+         1807_73_txt.xml</p>
+    <p>
+         1807_73_v0.xml</p>
+    <p>
+Filerne navngives på følgende måde: årstal_SJ-nummer_type.xml.</p>
+    <p>
+Hvis et nummer i Steen Johansens bibliografi refererer til f.eks. et
+tidsskrift, hvor Grundtvig har skrevet to eller flere bidrag,
+tilføjes endnu et nummer efter SJ-nummeret:</p>
+    <p>
+../../</p>
+    <p>
+1816_297_11</p>
+    <p>
+         1816_297_11_com.xml</p>
+    <p>
+         1816_297_11_intro.xml</p>
+    <p>
+         1816_297_11_txr.xml</p>
+    <p>
+         1816_297_11_txt.xml</p>
+    <p>
+         1816_297_11_v0.xml</p>
+    <p>
+Det ekstra nummer angiver den pågældende teksts nummer i rækken af
+bidrag fra Grundtvig. I eksemplet er 1816_297_11 altså Grundtvigs
+11. bidrag under Steen Johansens hovednummer 297.</p>
+    <p>
+
+
+
+</p>
+    <p><b>Filtyper</b>:</p>
+    <p>
+
+
+
+</p>
+    <p>
+Typerne er: 
+</p>
+    <ul>
+      <li>
+      <p>
+	*txt.xml er tekstfilen med Grundtvigs tekst</p>
+      </li>
+      <li>
+      <p>
+	*com.xml indeholder punktkommentaren til tekstfilen</p>
+      </li>
+      <li>
+      <p>
+	*txr.xml indeholder tekstredegørelsen til tekstfilen</p>
+      </li>
+      <li>
+      <p>
+	*intro.xml er indledning til tekstfilen</p>
+      </li>
+      <li>
+      <p>
+	*v0.xml oplyser om varianter til teksten</p>
+      </li>
+    </ul>
+    <p>
+Der findes <b>altid</b> én punktkommentar, én tekstredegørelse og
+én variantfil til hver tekstfil.</p>
+    <p>
+Der er en undtagelse fra reglen om fem filer i hver mappe under
+GV-mappen. Undtagelsen gælder for indledninger. En indledning kan
+være indledning for to eller flere tekster. I de tilfælde ligger
+den fælles indledning <b>altid</b> i mappen med det laveste
+SJ-nummer for de tekster indledningen er fælles for.</p>
+    <p>
+I mappen https://github.com/GrundtvigVaerker/GV/1818/1818GV/1818_329
+findes filen 1818_329_intro.xml. 
+</p>
+    <p>
+Den indledning er fælles for teksterne 1818_329_txt.xml,
+1818_330_txt.xml, 1818_331_txt.xml og 1818_332_txt.xml, hvorfor der i
+disse tre mappen ikke findes en xml-fil af typen *intro.xml.</p>
+    <p>
+Det fremgår af &lt;teiHeader&gt; i indledningen, hvilke tekster den
+er fælles indledning for.</p>
+    <p>
+
+
+</p>
+    <p>
+Side fra Steen Johansens bibliografi:</p>
+    <p>
+
+
+
+</p>
+    <p>
+      <img src="GV_repositorie_html_591ea4ba83b77cad.png" name="Billede 1" align="bottom" hspace="1" width="491" height="776" border="0" alt=""/>
+    </p>
+    <p>
+
+
+
+</p>
+  </body>
+</html>
