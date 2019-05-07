@@ -35,6 +35,12 @@ public class FilePathHack {
 	    String file = this.path.replaceAll("^.*data/v1.9/","");
 	    uri = this.collection + "/" + file;
 	} else if(collection.equals("gv")) {
+
+	    // A data directory should match (GNU find regexp)
+	    // '^.*18[0-9][0-9]GV.*\$'
+	    // This (perl) regexp is the one we use for extracting data
+	    // (18\d\d)_(\d+[a-zA-Z]?)_?(\d+)?_(com|intro|txr|txt|v0).xml$
+
 	    String pat = "(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v0).xml$";
 	    Pattern cpat = Pattern.compile(pat);
 	    Matcher match  = cpat.matcher(this.path);
