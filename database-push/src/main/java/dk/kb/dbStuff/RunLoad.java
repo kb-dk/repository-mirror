@@ -125,7 +125,7 @@ public class RunLoad {
 				.set("c", collection)
 				.expand();
 
-			    feedback_message = feedback_message + document + " imported to " + URI;
+			    feedback_message = feedback_message + document + " imported to " + URI + "\n";
 
 			    logger.info("solrizr: " + solrizrURI);
 			    String solrized_res = htclient.restGet(solrizrURI);
@@ -136,10 +136,10 @@ public class RunLoad {
 			    if(volume_id.length() > 0) {
 				String solrDel = solrDeleteVolumeCmd(volume_id);		
 				logger.info("delete command: " + solrDel);
-				feedback_message = feedback_message + "Delete volume " + URI + " ";
+				feedback_message = feedback_message + "Delete volume " + URI + "\n";
 				String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 				res = res + "\n" + solr_del_res;
-				feedback_message = feedback_message + " volume deleted from index" ;
+				feedback_message = feedback_message + " volume deleted from index\n" ;
 			    }
 
 			    if(solrized_res == null) {
@@ -158,11 +158,11 @@ public class RunLoad {
 
 			    logger.info("delete command: " + solrDel);
 
-			    feedback_message = feedback_message + "Delete " + URI + " ";
+			    feedback_message = feedback_message + "Delete " + URI + "\n";
 
 			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			    res = res + "\n" + solr_del_res;
-			    feedback_message = feedback_message + " doc deleted from index" ;
+			    feedback_message = feedback_message + " doc deleted from index\n" ;
 			} else if(op.matches(".*GET.*")) { 
 			    logger.info("GET operation = " + op);
 			} else if(op.matches(".*COMMIT.*")) { 
@@ -175,22 +175,25 @@ public class RunLoad {
 			    String commit_res = htclient.restGet(solr_commit_uri);
 
 			    logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-			    feedback_message = feedback_message + " the changes in " + URI + " are now committed to index" ;
+			    feedback_message = feedback_message + " the changes in " + URI + " are now committed to index\n" ;
 
 			} else {
 			    res =  htclient.restHead(URI);
 			}
-
-			// Setting up feedback messaging to user
-
-			String feedback_queue = collection + "_feedback";
-			Destination feedback_destination = session.createQueue(feedback_queue);
-			feedback_producer = session.createProducer(feedback_destination);
-			feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-			TextMessage text_message = session.createTextMessage(feedback_message);
-			feedback_producer.send(text_message);
-			feedback_producer.close();
+		    } else {
+			feedback_message = feedback_message + " " + document + " doesn't seem to belong in database\n";
 		    }
+
+		    // Setting up feedback messaging to user
+
+		    String feedback_queue = collection + "_feedback";
+		    Destination feedback_destination = session.createQueue(feedback_queue);
+		    feedback_producer = session.createProducer(feedback_destination);
+		    feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		    TextMessage text_message = session.createTextMessage(feedback_message);
+		    feedback_producer.send(text_message);
+		    feedback_producer.close();
+
 
                 } catch (Exception e) {
                     logger.error("Error connecting " + e);
