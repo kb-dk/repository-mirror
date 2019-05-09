@@ -86,108 +86,111 @@ public class RunLoad {
 		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
                     logger.info("creds user: " + user + " creds passwd: " + passwd);
+		    
+		    FilePathHack fileFixer = new FilePathHack();
+		    fileFixer.setTarget(target);
+		    fileFixer.setCollection(collection);
+		    fileFixer.setDocument(document);
 
-		    String URI = UriTemplate.fromTemplate(consts.getConstants().getProperty("file.template"))
-			.set("exist_hostport", consts.getConstants().getProperty(target) )
-			.set("collection", collection)
-			.set("file", document)
-			.expand();
+		    if(fileFixer.validDocPath()) {
 
-		    String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
-		    String database_host = consts.getConstants().getProperty(target).split(":")[0];
-		    String port_number   = consts.getConstants().getProperty(target).split(":")[1];
-		    int    port = Integer.parseInt(port_number);
-		    String realm = "exist";
-		    htclient.setLogin(user,passwd,database_host,port,realm);
+			String URI = fileFixer.getServicePath();
 
-                    logger.info("URI  " + URI);
-                    logger.info("File " + file);
+			String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+			String database_host = consts.getConstants().getProperty(target).split(":")[0];
+			String port_number   = consts.getConstants().getProperty(target).split(":")[1];
+			int    port = Integer.parseInt(port_number);
+			String realm = "exist";
+			htclient.setLogin(user,passwd,database_host,port,realm);
 
-		    String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
-		    String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
-			.set("solr_hostport", index_server)
-			.expand();
+			logger.info("URI  " + URI);
+			logger.info("File " + file);
 
-		    String res = "";
-		    if(op.matches(".*PUT.*")) { 
-			logger.info("operation = " + op);
-
-			res = htclient.restPut(file, URI);
-			logger.info("res: " + res);
-
-			String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
-			    .set("exist_hostport", consts.getConstants().getProperty(target) )
-			    .set("op", "solrize")
-			    .set("doc", document)
-			    .set("c", collection)
+			String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
+			String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
+			    .set("solr_hostport", index_server)
 			    .expand();
 
-			feedback_message = feedback_message + document + " imported to " + URI;
+			String res = "";
+			if(op.matches(".*PUT.*")) { 
+			    logger.info("operation = " + op);
 
-			logger.info("solrizr: " + solrizrURI);
-			String solrized_res = htclient.restGet(solrizrURI);
-			String volume_id = htclient.getHttpHeader("X-Volume-ID");
+			    res = htclient.restPut(file, URI);
+			    logger.info("res: " + res);
 
-			// This is definately overkill for ADL, but
-			// necessary for, let's say Grundtvig
-			if(volume_id.length() > 0) {
-			    String solrDel = solrDeleteVolumeCmd(volume_id);		
+			    String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+				.set("exist_hostport", consts.getConstants().getProperty(target) )
+				.set("op", "solrize")
+				.set("doc", document)
+				.set("c", collection)
+				.expand();
+
+			    feedback_message = feedback_message + document + " imported to " + URI;
+
+			    logger.info("solrizr: " + solrizrURI);
+			    String solrized_res = htclient.restGet(solrizrURI);
+			    String volume_id = htclient.getHttpHeader("X-Volume-ID");
+
+			    // This is definately overkill for ADL, but
+			    // necessary for, let's say Grundtvig
+			    if(volume_id.length() > 0) {
+				String solrDel = solrDeleteVolumeCmd(volume_id);		
+				logger.info("delete command: " + solrDel);
+				feedback_message = feedback_message + "Delete volume " + URI + " ";
+				String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
+				res = res + "\n" + solr_del_res;
+				feedback_message = feedback_message + " volume deleted from index" ;
+			    }
+
+			    if(solrized_res == null) {
+				logger.info("solrizr: got null");
+				feedback_message = feedback_message + "; indexing failure";
+			    } else {
+				logger.info("solrizr: status 200 OK");
+				String index_res = htclient.restPost(solrized_res,solr_index_uri);
+				logger.info("index_result " + index_res + " from " + solr_index_uri);
+				feedback_message = feedback_message + " sending doc to index ";
+			    }
+			} else if(op.matches(".*DELETE.*")) { 
+			    logger.info("delete operation = " + op);
+			    res = htclient.restDelete(URI);
+			    String solrDel = solrDeleteDocCmd(collection,document);		
+
 			    logger.info("delete command: " + solrDel);
-			    feedback_message = feedback_message + "Delete volume " + URI + " ";
+
+			    feedback_message = feedback_message + "Delete " + URI + " ";
+
 			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			    res = res + "\n" + solr_del_res;
-			    feedback_message = feedback_message + " volume deleted from index" ;
-			}
+			    feedback_message = feedback_message + " doc deleted from index" ;
+			} else if(op.matches(".*GET.*")) { 
+			    logger.info("GET operation = " + op);
+			} else if(op.matches(".*COMMIT.*")) { 
 
-			if(solrized_res == null) {
-			    logger.info("solrizr: got null");
-			    feedback_message = feedback_message + "; indexing failure";
-			} else {
-			    logger.info("solrizr: status 200 OK");
-			    String index_res = htclient.restPost(solrized_res,solr_index_uri);
-			    logger.info("index_result " + index_res + " from " + solr_index_uri);
-			    feedback_message = feedback_message + " sending doc to index ";
-			}
-		    } else if(op.matches(".*DELETE.*")) { 
-			logger.info("delete operation = " + op);
-			res = htclient.restDelete(URI);
-			String solrDel = solrDeleteDocCmd(collection,document);		
-
-			logger.info("delete command: " + solrDel);
-
-			feedback_message = feedback_message + "Delete " + URI + " ";
-
-			String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
-			res = res + "\n" + solr_del_res;
-			feedback_message = feedback_message + " doc deleted from index" ;
-		    } else if(op.matches(".*GET.*")) { 
-			logger.info("GET operation = " + op);
-		    } else if(op.matches(".*COMMIT.*")) { 
-
-			String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
-			    .set("solr_hostport", index_server)
-			    .set("commit", "true")
-			    .expand();
+			    String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
+				.set("solr_hostport", index_server)
+				.set("commit", "true")
+				.expand();
 		    
-			String commit_res = htclient.restGet(solr_commit_uri);
+			    String commit_res = htclient.restGet(solr_commit_uri);
 
-			logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-			feedback_message = feedback_message + " the changes in " + URI + " are now committed to index" ;
+			    logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
+			    feedback_message = feedback_message + " the changes in " + URI + " are now committed to index" ;
 
-		    } else {
-			res =  htclient.restHead(URI);
+			} else {
+			    res =  htclient.restHead(URI);
+			}
+
+			// Setting up feedback messaging to user
+
+			String feedback_queue = collection + "_feedback";
+			Destination feedback_destination = session.createQueue(feedback_queue);
+			feedback_producer = session.createProducer(feedback_destination);
+			feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			TextMessage text_message = session.createTextMessage(feedback_message);
+			feedback_producer.send(text_message);
+			feedback_producer.close();
 		    }
-
-		    // Setting up feedback messaging to user
-
-		    String feedback_queue = collection + "_feedback";
-		    Destination feedback_destination = session.createQueue(feedback_queue);
-		    feedback_producer = session.createProducer(feedback_destination);
-		    feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		    TextMessage text_message = session.createTextMessage(feedback_message);
-		    feedback_producer.send(text_message);
-		    feedback_producer.close();
-
 
                 } catch (Exception e) {
                     logger.error("Error connecting " + e);

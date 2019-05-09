@@ -14,17 +14,13 @@ but that was wrong.
 */
 public class FilePathHack {
 
+    private String target     = null;
     private String collection = null;
     private String path       = null;
-    private String baseUri    = null;
-    private String target     = null;
+
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 
     public FilePathHack() {}
-
-    public void setBaseUri(String bUri) {
-	this.baseUri = bUri;
-    }
 
     public void setTarget(String trgt) {
 	this.target = trgt;
@@ -36,7 +32,7 @@ public class FilePathHack {
     }
 
 	
-    public void setGitPath(String path) {
+    public void setDocument(String path) {
 	this.path = path;
     }
 

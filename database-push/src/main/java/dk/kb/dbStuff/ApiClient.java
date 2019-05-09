@@ -154,6 +154,8 @@ public class ApiClient {
 	    boolean apacheHttpApiWorks = true;
 	    if(apacheHttpApiWorks) {
 		String text = readFile(file);
+		// here we need to xsl transform the text to add
+		// xml:id on all elements that haven't got it already
 		contents = doingItApacheWay(text, URI);
 	    } else {
 		DirtyPutHack hack = new DirtyPutHack();
