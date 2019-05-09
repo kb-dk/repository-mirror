@@ -51,6 +51,12 @@
       <artifactId>handy-uri-templates</artifactId>
       <version>2.1.7</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+    <dependency>
+      <groupId>net.sf.saxon</groupId>
+      <artifactId>Saxon-HE</artifactId>
+      <version>9.8.0-14</version>
+    </dependency>
     <dependency>
       <groupId>org.eclipse.jgit</groupId>
       <artifactId>org.eclipse.jgit</artifactId>

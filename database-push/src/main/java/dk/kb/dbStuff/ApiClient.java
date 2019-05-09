@@ -35,6 +35,13 @@ import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.TransformerFactory;
+import net.sf.saxon.TransformerFactoryImpl;
+import javax.xml.transform.*;
+
 public class ApiClient {
 
     private String user = "";
@@ -48,7 +55,22 @@ public class ApiClient {
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
     private Logger logger = configureLog4j();
 
-    public ApiClient() {}
+    private TransformerFactory trans_fact = new TransformerFactoryImpl();
+    private Transformer transform = null;
+
+    public ApiClient() {
+	this.init();
+    }
+
+    private void init() {
+	try {
+	    java.io.File src = new java.io.File(consts.getConstants().getProperty("xsl.add_id"));
+	    javax.xml.transform.stream.StreamSource source = new javax.xml.transform.stream.StreamSource();
+	    this.transform = trans_fact.newTransformer(source);
+	} catch(TransformerConfigurationException xerror) {
+
+	}
+    }
 
     public void setLogin(String user, String password, String host, int port, String realm) {
 	this.user    = user;
@@ -153,9 +175,13 @@ public class ApiClient {
 	try {
 	    boolean apacheHttpApiWorks = true;
 	    if(apacheHttpApiWorks) {
-		String text = readFile(file);
-		// here we need to xsl transform the text to add
-		// xml:id on all elements that haven't got it already
+		String text = null;
+		if(this.transform != null) {
+		    // here we need to xsl transform the text to add
+		    // xml:id on all elements that haven't got it already
+		} else {
+		    text = readFile(file);
+		}
 		contents = doingItApacheWay(text, URI);
 	    } else {
 		DirtyPutHack hack = new DirtyPutHack();
@@ -182,6 +208,20 @@ public class ApiClient {
 	} finally {
 	    br.close();
 	}
+    }
+
+    public org.w3c.dom.Document readDom(String fileName) throws java.io.IOException {
+	java.io.File srcFile = new java.io.File(fileName);
+	org.w3c.dom.Document doc = null;
+	try {
+	    javax.xml.parsers.DocumentBuilder builder =  javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	    doc = builder.parse(srcFile);
+	} catch (ParserConfigurationException parser) {
+	} catch (SAXException sax) {
+	}
+
+	return doc;
+
     }
 
 
