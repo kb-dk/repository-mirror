@@ -1,5 +1,6 @@
 package dk.kb.dbStuff;
 
+import com.damnhandy.uri.template.UriTemplate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +16,20 @@ public class FilePathHack {
 
     private String collection = null;
     private String path       = null;
+    private String baseUri    = null;
+    private String target     = null;
+    private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 
     public FilePathHack() {}
+
+    public void setBaseUri(String bUri) {
+	this.baseUri = bUri;
+    }
+
+    public void setTarget(String trgt) {
+	this.target = trgt;
+    }
+
 
     public void setCollection(String coll) {
 	this.collection = coll;
@@ -27,35 +40,59 @@ public class FilePathHack {
 	this.path = path;
     }
 
+    public boolean validDocPath() {
+	if(collection.equals("gv")) {
+	    if(this.path.matches("^.*18[0-9][0-9]GV.*$")) {
+		return true;
+	    } else {
+		return false;
+	    }
+	} else {
+	    return true;
+	}
+    }
+
     public String getServicePath() {
-	String uri = "";
+
 	if(collection.equals("adl")) {
-	    uri = this.collection + "/" + this.path;
+	    return this.encodeUri(this.path);
 	} else if(collection.equals("sks")) {
 	    String file = this.path.replaceAll("^.*data/v1.9/","");
-	    uri = this.collection + "/" + file;
+	    return this.encodeUri(file);
 	} else if(collection.equals("gv")) {
+	    if(this.validDocPath()) {
+		// A data directory should match (GNU find regexp)
+		// '^.*18[0-9][0-9]GV.*\$'
+		// This (perl) regexp is the one we use for extracting data
+		// (18\d\d)_(\d+[a-zA-Z]?)_?(\d+)?_(com|intro|txr|txt|v0).xml$
 
-	    // A data directory should match (GNU find regexp)
-	    // '^.*18[0-9][0-9]GV.*\$'
-	    // This (perl) regexp is the one we use for extracting data
-	    // (18\d\d)_(\d+[a-zA-Z]?)_?(\d+)?_(com|intro|txr|txt|v0).xml$
+		String file = "";
 
-	    String pat = "(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v0).xml$";
-	    Pattern cpat = Pattern.compile(pat);
-	    Matcher match  = cpat.matcher(this.path);
-	    if(match.matches()) {
-		uri = match.group(1) + "/" + match.group(2);
-		if(match.group(3).length() >0) {
-		    uri = uri + "/" + match.group(3);
+		String pat = "(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v0).xml$";
+		Pattern cpat = Pattern.compile(pat);
+		Matcher match  = cpat.matcher(this.path);
+		if(match.matches()) {
+		    file = match.group(1) + "_" + match.group(2);
+		    if(match.group(3).length() >0) {
+			file = file + "_" + match.group(3);
+		    }
+		    file = file + "/" + match.group(4);
 		}
-		uri = uri + "/" + match.group(4);
+		return this.encodeUri(file);
 	    }
-	    
 	} else {
-	    uri = this.collection + "/" + this.path;
+	    return this.encodeUri(this.path);
 	}
-	return uri;
+	return "";
+    }
+
+    public String encodeUri(String document) {
+	String URI = UriTemplate.fromTemplate(consts.getConstants().getProperty("file.template"))
+	    .set("exist_hostport", consts.getConstants().getProperty(this.target) )
+	    .set("collection", this.collection)
+	    .set("file", document)
+	    .expand();
+	return URI;
     }
 
 }
