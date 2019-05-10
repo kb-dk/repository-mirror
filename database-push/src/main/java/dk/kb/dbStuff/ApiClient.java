@@ -32,12 +32,14 @@ import org.apache.log4j.PropertyConfigurator;
 import java.util.Properties;
 
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerFactory;
 import net.sf.saxon.TransformerFactoryImpl;
 import javax.xml.transform.*;
@@ -56,7 +58,7 @@ public class ApiClient {
     private Logger logger = configureLog4j();
 
     private TransformerFactory trans_fact = new TransformerFactoryImpl();
-    private Transformer transform = null;
+    private Transformer transformer = null;
 
     public ApiClient() {
 	this.init();
@@ -66,7 +68,7 @@ public class ApiClient {
 	try {
 	    java.io.File src = new java.io.File(consts.getConstants().getProperty("xsl.add_id"));
 	    javax.xml.transform.stream.StreamSource source = new javax.xml.transform.stream.StreamSource();
-	    this.transform = trans_fact.newTransformer(source);
+	    this.transformer = trans_fact.newTransformer(source);
 	} catch(TransformerConfigurationException xerror) {
 
 	}
@@ -176,9 +178,19 @@ public class ApiClient {
 	    boolean apacheHttpApiWorks = true;
 	    if(apacheHttpApiWorks) {
 		String text = null;
-		if(this.transform != null) {
+		if(this.transformer != null) {
 		    // here we need to xsl transform the text to add
 		    // xml:id on all elements that haven't got it already
+		    // and make sure that the root element has xml:id="root"
+		    org.w3c.dom.Document doc = this.readDom(file);
+		    java.io.StringWriter wrtr = new java.io.StringWriter();
+		    DOMSource source = new DOMSource(doc);
+		    StreamResult result = new StreamResult(wrtr);
+		    try {
+			this.transformer.transform(source, result);
+		    } catch(TransformerException trprblm) {
+		    }
+		    text = wrtr.toString();
 		} else {
 		    text = readFile(file);
 		}
@@ -216,15 +228,13 @@ public class ApiClient {
 	try {
 	    javax.xml.parsers.DocumentBuilder builder =  javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	    doc = builder.parse(srcFile);
-	} catch (ParserConfigurationException parser) {
-	} catch (SAXException sax) {
+	} catch (javax.xml.parsers.ParserConfigurationException parser) {
+	} catch (org.xml.sax.SAXException sax) {
 	}
 
 	return doc;
 
     }
-
-
 
     public String doingItApacheWay(String text, String URI)  throws java.io.IOException {
 
