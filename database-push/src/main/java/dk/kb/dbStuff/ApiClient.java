@@ -70,7 +70,7 @@ public class ApiClient {
 	    javax.xml.transform.stream.StreamSource source = new javax.xml.transform.stream.StreamSource();
 	    this.transformer = trans_fact.newTransformer(source);
 	} catch(TransformerConfigurationException xerror) {
-
+	    logger.info(logStackTrace(xerror));
 	}
     }
 
@@ -189,6 +189,7 @@ public class ApiClient {
 		    try {
 			this.transformer.transform(source, result);
 		    } catch(TransformerException trprblm) {
+			logger.info(logStackTrace(trprblm));
 		    }
 		    text = wrtr.toString();
 		} else {
@@ -229,7 +230,9 @@ public class ApiClient {
 	    javax.xml.parsers.DocumentBuilder builder =  javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	    doc = builder.parse(srcFile);
 	} catch (javax.xml.parsers.ParserConfigurationException parser) {
+	    logger.info(logStackTrace(parser));
 	} catch (org.xml.sax.SAXException sax) {
+	    logger.info(logStackTrace(sax));
 	}
 
 	return doc;
