@@ -1,4 +1,4 @@
-[README](../README.md) | [Architecture](../ARCHITECTURE.md) | [Installation](../INSTALL.md) | [Collections](./README.md)
+[README](../README.md) | [Architecture](../ARCHITECTURE.md) | [Installation](../INSTALL.md) | [Access control](../htaccess/README.md) | [Collections](./README.md)
 
 
 # Collections

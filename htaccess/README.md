@@ -1,3 +1,5 @@
+[README](../README.md) | [Architecture](../ARCHITECTURE.md) | [Installation](../INSTALL.md) | [Access control](../htaccess/README.md) | [Collections](../collections/README.md)
+
 
 # Access Control
 

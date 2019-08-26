@@ -29,7 +29,7 @@ to the name
 config_secret.xml
 ```
 
-and edit it under that name that name. As of writing this, the file [looks like this](CONFIG.md)
+and edit it under that name that name (if your software developers don't provide one for you). As of writing this, the file [looks like this](CONFIG.md)
 
 Before building you can run 
 
