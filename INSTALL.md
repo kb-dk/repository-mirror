@@ -7,7 +7,7 @@
 
 You need for building
 
-* the Maven build tool
+* the Maven build tool, version 3 or better
 
 For running it you need
 
