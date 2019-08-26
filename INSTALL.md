@@ -39,7 +39,7 @@ which copies the config.xml to the source trees. After use run
 
 ```del_config.sh```
 
-## How to build
+## 3. How to build
 
 There are three source trees,
 
@@ -55,7 +55,11 @@ mvn clean ; mvn install
 
 in project root removes old stuff and builds new fresh ones in all three source trees
 
-## Installation
+## 4. Installation
+
+### ActiveMQ
+
+Make sure that the ActiveMQ daemon is configured and running. 
 
 The products from building are in the directories
 
@@ -90,8 +94,10 @@ database-push-1.0.one-jar.jar
 
 I start them (as root) using
 
+```
 cd repository-pull ; sudo ./run-command.sh
 cd database-push ; sudo ./run-command.sh 
+```
 
 in each of those directories there should be a ```run_directory```
 owned by __tomcat__.
