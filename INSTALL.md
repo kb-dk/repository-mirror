@@ -9,11 +9,11 @@ You need for building
 
 * the Maven build tool
 
-You need for running it
+For running it you need
 
-* tomcat 8
-* java 8 (or better)
+* tomcat 8 java 8 (or better)
 * Active MQ. I use version 5.11.1
+* A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (httpd 2.4 or better). See [Access control README](htaccess/README.md)
 
 ## Configuration
 
