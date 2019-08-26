@@ -69,6 +69,8 @@ The products from building are in the directories
 ./repository-mirror-web/target
 ```
 
+### Web UI
+
 The last one contains a web archive
 
 ```
@@ -84,6 +86,8 @@ The web interface starts at
 ```
 http(s)://<your_host_port>/import/
 ```
+
+### Daemons
 
 The other two directories contain the jars
 
