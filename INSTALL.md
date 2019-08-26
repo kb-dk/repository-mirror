@@ -141,17 +141,20 @@ You will need a some document projects to start with. Like
 * SKS_tei
 * trykkefrihedsskrifter
 
-Propose that you create a directory
+Create a directory called
 
 ```
 /home/text-service/
 ```
 
-and checkout whatever texts you need there. Note the script
+which should be owned by and read and writable to tomcat. Clone
+whatever texts you need there. Note the script
 
 ```
 ./clone.sh
 ```
+
+Run it as tomcat!
 
 You'll need an account on github with access to the texts. The
 directory where the texts are living should be read- and writable for
