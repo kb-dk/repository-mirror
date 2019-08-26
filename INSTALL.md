@@ -36,6 +36,9 @@ and edit it under that name that name. As of writing this, the file looks like t
 
 <properties>
     <comment>Configuration for text service daemon.</comment>
+
+    <entry key="xsl.add_id">/xsl/add-id.xsl</entry>
+
     <entry key="queue.uri">tcp://[Active MQ hostport]</entry>
     <entry key="queue.name">text-git-pull</entry>
     <entry key="queue.load.name">text-db-load</entry>
