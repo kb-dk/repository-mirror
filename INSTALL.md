@@ -29,7 +29,7 @@ to the name
 config_secret.xml
 ```
 
-and edit it under that name that name. As of writing this, the file looks like this
+and edit it under that name that name. As of writing this, the file [looks like this](CONFIG.md)
 
 Before building you can run 
 
@@ -128,7 +128,7 @@ The programs are creating far too much log info. There is a script for cleaning:
 
 Run it as root, you won't be allowed to delete tomcat's log files.
 
-### Data
+## 5.  Data
 
 You will need a some document projects to start with. Like
 
@@ -155,7 +155,9 @@ directory where the texts are living should be read- and writable for
 the user running the tomcat, who is named __tomcat__. As a matter of
 fact, it is best to clone them as tomcat user.
 
-We also have the 
+## 6. See also
+
+You might need to have the 
 
 * [solr-and-snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
 
