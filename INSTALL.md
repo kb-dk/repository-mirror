@@ -28,18 +28,20 @@ to the name
 config_secret.xml
 ```
 
-and edit it under that name that name (if your software developers don't provide one for you). As of writing this, the file [looks like this](CONFIG.md). The system
+and edit it under that name that name (if your software developers don't provide one for you). As of writing this, the file [looks like this](CONFIG.md). The system accesses other services as
 
-* needs a git user
-* eXist DB admin user
+* a git user
+* an eXist DB admin user
 
-Before building you can run 
+Before building run 
 
 ```add_config.sh```
 
-which copies the config.xml to the source trees. After use run 
+which copies the config.xml to the source trees. After use you can run 
 
 ```del_config.sh```
+
+to ensure that there is no configuration files everywhere.
 
 ## 3. How to build
 
@@ -73,10 +75,10 @@ The products from building are in the directories
 
 ### Web UI
 
-The last one contains a web archive
+The last directory mentioned above a web archive
 
 ```
-import.war
+./repository-mirror-web/target/import.war
 ```
 
 which is installed by copying it to your apache tomcat servlet
@@ -105,8 +107,7 @@ cd repository-pull ; sudo ./run-command.sh
 cd database-push ; sudo ./run-command.sh 
 ```
 
-in each of those directories there should be a ```run_directory```
-owned by __tomcat__.
+in each of those directories there should be a ```run_directory``` owned by __tomcat__.
 
 Note that they won't run, unless the paths to 
 
