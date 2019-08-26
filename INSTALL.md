@@ -148,7 +148,7 @@ Create a directory called
 ```
 
 which should be owned by and read and writable to tomcat. Clone
-whatever texts you need there. Note the script
+whatever texts you need there. [Note the script](./clone.sh)
 
 ```
 ./clone.sh
