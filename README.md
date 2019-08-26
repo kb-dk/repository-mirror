@@ -1,7 +1,4 @@
 
-[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md) | [config.xml](CONFIG.md) | [Access control](./htaccess/README.md) | [Collections](./collections/README.md)
-
-
 # Repository mirror
 
 A tool for mirroring data from a GIT repository into a digital library
@@ -18,4 +15,14 @@ www.adl.dk, those tools are the only you'll need. This is for
 providing access to some of those functions for people not very much
 into working on stuff from a Unix shell prompt while saving (we hope)
 the admin's time.
+
+## Table of contents
+
+* [README](README.md)
+* [Architecture](ARCHITECTURE.md)
+* [Installation](INSTALL.md)
+* [config.xml](CONFIG.md)
+* [Access control](./htaccess/README.md)
+* [Collections](./collections/README.md)
+
 
