@@ -16,7 +16,7 @@ providing access to some of those functions for people not very much
 into working on stuff from a Unix shell prompt while saving (we hope)
 the admin's time.
 
-## Table of contents
+## TOC for documentation
 
 * [README](README.md)
 * [Architecture](ARCHITECTURE.md)
