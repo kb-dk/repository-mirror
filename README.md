@@ -1,5 +1,6 @@
 
-[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md) | [Collections](./collections/README.md)
+[README](README.md)|[Architecture](ARCHITECTURE.md)|[Installation](INSTALL.md)|[config.xml](CONFIG.md)|[Access control](./htaccess/README.md)|[Collections](./collections/README.md)
+
 
 # Repository mirror
 
