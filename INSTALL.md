@@ -81,7 +81,7 @@ The last directory mentioned above a web archive
 ./repository-mirror-web/target/import.war
 ```
 
-which is installed by copying it to your apache tomcat servlet
+which is **installed by copying it to your apache tomcat servlet**
 container. We are assuming that your tomcat is run by a user with the
 same name __tomcat__
 
@@ -93,14 +93,88 @@ http(s)://<your_host_port>/import/
 
 ### Daemons
 
-The other two directories contain the jars
+In each of the directories
+
+```
+./repository-pull/
+./database-push/
+```
+
+there should be a ```run_directory``` owned by __tomcat__.
+
+Note that the daemons will not run, unless the paths to 
+
+```
+repository-mirror/repository-pull/run_directory
+repository-mirror/database-push/run_directory
+```
+are read, executable and writable to tomcat user, and the same is true for the these
+
+```
+repository-mirror/repository-pull/target
+repository-mirror/database-push/target
+```
+
+containing the the jars
 
 ```
 repository-pull-1.0.one-jar.jar
 database-push-1.0.one-jar.jar
 ```
+#### Repository Pull Service
 
-I start them (as root) using
+You start repository-pull using systemd
+
+```
+ sudo vi /etc/systemd/system/repository_pull.service
+
+```
+
+paste this into the editor and save:
+
+```
+[Unit]
+Description=Repository Pull Java Daemon
+
+[Service]
+WorkingDirectory=/home/text-service/repository-mirror/repository-pull/run_directory
+ExecStart=/bin/java -jar ../target/repository-pull-1.0.one-jar.jar
+User=tomcat
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### Database Push Service
+
+```
+ sudo vi /etc/systemd/system/database_push.service
+```
+
+Paste the following into the editor
+
+```
+[Unit]
+Description=Database Push Java Daemon
+
+[Service]
+WorkingDirectory=/home/text-service/repository-mirror/database-push/run_directory
+ExecStart=/bin/java -jar ../target/database-push-1.0.one-jar.jar
+User=tomcat
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### While developing
+
+While developing, I start them (as root) using
 
 ```
 cd repository-pull ; sudo ./run-command.sh
