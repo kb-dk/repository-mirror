@@ -106,8 +106,10 @@ public class RunLoad {
 			logger.info("URI  " + URI);
 			logger.info("File " + file);
 
+			String index_name   =  consts.getConstants().getProperty(target + "." + "index_name");
 			String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
 			String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
+			    .set("index_name", index_name)
 			    .set("solr_hostport", index_server)
 			    .expand();
 
@@ -168,6 +170,7 @@ public class RunLoad {
 			} else if(op.matches(".*COMMIT.*")) { 
 
 			    String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
+				.set("index_name", index_name)
 				.set("solr_hostport", index_server)
 				.set("commit", "true")
 				.expand();
