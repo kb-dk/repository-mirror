@@ -14,6 +14,8 @@ For running it you need
 * Active MQ. I use version 5.11.1
 * A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (httpd 2.4 or better). See [Access control README](htaccess/README.md)
 
+Start by cloning this repository, or if applicable, download one of the releases.
+
 ## 2. Configuration
 
 Copy the file
