@@ -75,6 +75,42 @@ mvn install -Dmaven.test.skip=true
 
 ## 4. Installation
 
+### Data
+
+You will need a some document projects to start with. Like
+
+* adl-text-sources
+* other_tei_projects
+* [public-adl-text-sources](https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources)
+* SKS_tei
+* trykkefrihedsskrifter
+
+Create a directory called
+
+```
+/home/text-service/
+```
+
+which should be owned by and read and writable to tomcat. Clone
+whatever texts you need there. [Note the script](./git-clone-corpus.sh)
+
+```
+./git-clone-corpus.sh
+```
+
+Each of those should have a branch called ```installed_corpus```. There is a script doing that.
+
+```
+./git-clone-corpus.sh
+```
+
+Run both as tomcat, or the versioning will not work!
+
+You'll need an account on github with access to the texts. The
+directory where the texts are living should be read- and writable for
+the user running the tomcat, who is named __tomcat__. As a matter of
+fact, it is best to clone them as tomcat user.
+
 ### ActiveMQ
 
 Make sure that the ActiveMQ daemon is configured and running. 
@@ -223,41 +259,6 @@ The programs are creating far too much log info. There is a script for cleaning:
 
 Run it as root, you won't be allowed to delete tomcat's log files.
 
-## 5.  Data
-
-You will need a some document projects to start with. Like
-
-* adl-text-sources
-* other_tei_projects
-* [public-adl-text-sources](https://github.com/Det-Kongelige-Bibliotek/public-adl-text-sources)
-* SKS_tei
-* trykkefrihedsskrifter
-
-Create a directory called
-
-```
-/home/text-service/
-```
-
-which should be owned by and read and writable to tomcat. Clone
-whatever texts you need there. [Note the script](./git-clone-corpus.sh)
-
-```
-./git-clone-corpus.sh
-```
-
-Each of those should have a branch called ```installed_corpus```. There is a script doing that.
-
-```
-./git-clone-corpus.sh
-```
-
-Run both as tomcat, or the versioning will not work!
-
-You'll need an account on github with access to the texts. The
-directory where the texts are living should be read- and writable for
-the user running the tomcat, who is named __tomcat__. As a matter of
-fact, it is best to clone them as tomcat user.
 
 ## 6. See also
 
