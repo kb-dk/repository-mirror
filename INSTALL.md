@@ -30,7 +30,9 @@ to the name
 config_secret.xml
 ```
 
-and edit it under that name that name (if your software developers don't provide one for you). As of writing this, the file [looks like this](CONFIG.md). The system accesses other services as
+and edit it under that name that name (if your software developers
+don't provide one for you). As of writing this, the file [looks like
+this](CONFIG.md). The system accesses other services as
 
 * a git user
 * an eXist DB admin user
@@ -63,7 +65,13 @@ Doing
 mvn clean ; mvn install
 ```
 
-in project root removes old stuff and builds new fresh ones in all three source trees
+in project root removes old stuff and builds new fresh ones in all
+three source trees. Occasionally we see that installation fails
+because of a broken unit test, then do
+
+```
+mvn install -Dmaven.test.skip=true
+```
 
 ## 4. Installation
 
@@ -110,17 +118,16 @@ In each of the directories
 
 there should be a ```run_directory``` owned by __tomcat__.
 
-Note that the daemons will not run, unless the paths to 
+Note that the daemons will not run, unless the paths to executables
+and data are read, executable and (when applicable) writable to tomcat
+user. Run these
 
 ```
-repository-mirror/repository-pull/run_directory
-repository-mirror/database-push/run_directory
-```
-are read, executable and writable to tomcat user, and the same is true for the these
-
-```
-repository-mirror/repository-pull/target
-repository-mirror/database-push/target
+cd repository-mirror
+chown -r tomcat repository-pull/run_directory
+chown -r tomcat database-push/run_directory
+chown -r tomcat repository-pull/target
+chown -r tomcat database-push/target
 ```
 
 containing the the jars
@@ -156,6 +163,8 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
+__NB:__ Note the /home/text-service/repository-mirror/ path in the script. Changed that if necessary.
+
 #### Database Push Service
 
 ```
@@ -179,6 +188,7 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 ```
+__NB:__ Note the /home/text-service/repository-mirror/ path in the script. Changed that if necessary.
 
 ### While developing
 
