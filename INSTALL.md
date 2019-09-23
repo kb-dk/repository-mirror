@@ -101,7 +101,7 @@ whatever texts you need there. [Note the script](./git-clone-corpus.sh)
 Each of those should have a branch called ```installed_corpus```. There is a script doing that.
 
 ```
-./git-clone-corpus.sh
+./git-branch-corpus.sh
 ```
 
 Run both as tomcat, or the versioning will not work!
