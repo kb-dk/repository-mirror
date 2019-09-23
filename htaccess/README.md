@@ -1,9 +1,9 @@
 [README](../README.md) | [Architecture](../ARCHITECTURE.md) | [Installation](../INSTALL.md) | [config.xml](../CONFIG.md) | [Access control](../htaccess/README.md) | [Collections](../collections/README.md)
 
 
-# Access Control
+# HTTPD and Access Control
 
-make a password file using htpasswd
+make passwords file using htpasswd
 
 ```
 htpasswd -bc passwordfile first_trusted_user magic_word
@@ -18,7 +18,10 @@ adl:first_trusted_user second_trusted_user
 sks:third_trusted_user
 ```
 
-There is no hard-coded file-paths like  /home/xml-store/passwordfile and /home/text-service/groupfile, but if you use those two, you can just copy the file text-import.conf to your apache configuration file area.
+There are no hard-coded file-paths like /home/xml-store/passwordfile
+and /home/text-service/groupfile, but if you use those two, you can
+just copy the file text-import.conf to your apache configuration file
+area.
 
 ```
 ProxyPassMatch /import/(css/|img/|adl/|sks/|gv/|choose/)?(.*$) "ajp://localhost:8009/import/$2"

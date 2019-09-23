@@ -12,7 +12,7 @@ For running it you need
 
 * tomcat 8 & java 8 (or better. it is tested with version 8)
 * Active MQ. I use version 5.11.1
-* A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (httpd 2.4 or better). See [Access control README](htaccess/README.md)
+* A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (httpd 2.4 or better).
 
 Start by cloning this repository, or if applicable, download one of the releases.
 
@@ -44,6 +44,10 @@ which copies the config.xml to the source trees. After use you can run
 ```del_config.sh```
 
 to ensure that there is no configuration files everywhere.
+
+### HTTPD and Access Control
+
+See [Access control README](htaccess/README.md)
 
 ## 3. How to build
 
@@ -92,6 +96,8 @@ The web interface starts at
 ```
 http(s)://<your_host_port>/import/
 ```
+
+For instance ```localhost:8080``` if you run it on your workstation.
 
 ### Daemons
 
@@ -224,13 +230,19 @@ Create a directory called
 ```
 
 which should be owned by and read and writable to tomcat. Clone
-whatever texts you need there. [Note the script](./clone.sh)
+whatever texts you need there. [Note the script](./git-clone-corpus.sh)
 
 ```
-./clone.sh
+./git-clone-corpus.sh
 ```
 
-Run it as tomcat!
+Each of those should have a branch called ```installed_corpus```. There is a script doing that.
+
+```
+./git-clone-corpus.sh
+```
+
+Run both as tomcat, or the versioning will not work!
 
 You'll need an account on github with access to the texts. The
 directory where the texts are living should be read- and writable for
