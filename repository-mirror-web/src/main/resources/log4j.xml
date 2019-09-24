@@ -1,0 +1,35 @@
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <!-- Console appender for All classes-->
+  <appender name="console"
+	    class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <!-- This pattern also includes the service name -->
+      <param name="ConversionPattern"
+	     value="web-hooker [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
+    </layout>
+  </appender>
+
+  <!-- File appender -->
+  <appender name="repository-mirror"
+	    class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="maxFileSize" value="10000KB" />
+    <param name="maxBackupIndex" value="2" />
+    <param name="File" value="${catalina.home}/logs/repository-mirror.log" />
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern"
+	     value="web-hooker [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
+    </layout>
+  </appender>
+
+
+  <!-- Catch all logger. Set to debug, if external jars fails -->
+  <root>
+    <level value="info"/>
+    <appender-ref ref="request-route-hook" />
+  </root>
+
+</log4j:configuration>
