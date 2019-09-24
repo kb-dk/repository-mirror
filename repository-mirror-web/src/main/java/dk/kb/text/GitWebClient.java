@@ -18,7 +18,7 @@ import java.util.regex.*;
 public class GitWebClient {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
-    private static Logger logger = configureLog4j();
+    private static Logger logger = Logger.getLogger(GitWebClient.class);
 
     private Git git = null;
 
@@ -124,7 +124,6 @@ public class GitWebClient {
 	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
 
 	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
 
 	Properties props = new Properties();
 	props.put("log4j.rootLogger", level+", FILE");
