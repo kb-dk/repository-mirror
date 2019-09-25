@@ -8,7 +8,7 @@
     <layout class="org.apache.log4j.PatternLayout">
       <!-- This pattern also includes the service name -->
       <param name="ConversionPattern"
-	     value="web-hooker [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
+	     value="repo-mirror [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
     </layout>
   </appender>
 
@@ -21,15 +21,15 @@
     <param name="Append" value="true" />
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern"
-	     value="web-hooker [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
+	     value="repo-mirror [%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n" />
     </layout>
   </appender>
 
 
   <!-- Catch all logger. Set to debug, if external jars fails -->
   <root>
-    <level value="info"/>
-    <appender-ref ref="request-route-hook" />
+    <level value="debug"/>
+    <appender-ref ref="repository-mirror" />
   </root>
 
 </log4j:configuration>
