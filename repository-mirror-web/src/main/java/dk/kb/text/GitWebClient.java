@@ -18,7 +18,7 @@ import java.util.regex.*;
 public class GitWebClient {
 
     private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
-    private static Logger logger = configureLog4j();
+    private static Logger logger = Logger.getLogger(GitWebClient.class);
 
     private Git git = null;
 
@@ -116,28 +116,6 @@ public class GitWebClient {
 	    logger.error("git prob: " + gitProblem);
 	    return "git failed";
 	}
-    }
-
-    private static Logger configureLog4j() {
-
-	String level = "info";
-	if (System.getProperty("loglevel") != null ) level = System.getProperty("loglevel");
-
-	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("logfile") != null) file = System.getProperty("logfile");
-
-	Properties props = new Properties();
-	props.put("log4j.rootLogger", level+", FILE");
-	props.put("log4j.appender.FILE", "org.apache.log4j.DailyRollingFileAppender");
-	props.put("log4j.appender.FILE.File",file);
-	props.put("log4j.appender.FILE.ImmediateFlush","true");
-	props.put("log4j.appender.FILE.Threshold",level);
-	props.put("log4j.appender.FILE.Append","true");
-	props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
-	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
-	PropertyConfigurator.configure(props);
-	Logger logger = Logger.getLogger(GitWebClient.class);
-	return logger;
     }
 
 }
