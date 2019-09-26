@@ -12,7 +12,7 @@ For running it you need
 
 * tomcat 8 & java 8 (or better. it is tested with version 8). Add ```<welcome-file>index.jspx</welcome-file>``` to the welcome-file-list in its web.xml
 * Active MQ. I use version 5.11.1
-* A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (httpd 2.4 or better).
+* A modern Apache HTTPD supporting [Apache Expressions](https://httpd.apache.org/docs/2.4/expr.html) (tested on httpd 2.4.29 and better).
 
 Start by cloning this repository, or if applicable, download one of the releases.
 
