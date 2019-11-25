@@ -23,15 +23,19 @@ return <option>{string($d)}</option>
 
 return
 <select onchange="changeRepo()" id="sel_repo" name="repository"> {
-for $item in distinct-values($list) 
-   for $bibl in collection($coll)//t:bibl[@corresp = $item]
-	let $val := $bibl/@copyOf
-	let $tit := $bibl/t:title/text()
-	let $att := local:get-project-name(string($val))
-	let $opt := if($att = $repository) then
-	   element option { attribute value {concat($item,";",$att)},  attribute selected {"selected"}, $tit } 
-	else
-	   element option { attribute value {concat($item,";",$att)}, $tit } 
-	return $opt
+	(
+	element option { attribute value {"choose;collection"}, "Collection" },
+	for $item in distinct-values($list) 
+	    for $bibl in collection($coll)//t:bibl[@corresp = $item]
+	        let $val := $bibl/@copyOf
+	        let $tit := $bibl/t:title/text()
+	        let $att := local:get-project-name(string($val))
+	        let $opt := 
+	            if($att = $repository) then
+	               element option { attribute value {concat($item,";",$att)},  attribute selected {"selected"}, $tit } 
+	            else
+	               element option { attribute value {concat($item,";",$att)}, $tit } 
+ 	        return $opt
+)
 } </select>
 

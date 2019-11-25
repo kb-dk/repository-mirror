@@ -6,7 +6,7 @@
 
       dk.kb.text.ConfigurableConstants consts = dk.kb.text.ConfigurableConstants.getInstance();
 
-      String default_repository  = "adl;public-adl-text-sources";
+      String default_repository  = "choose;collection"; //"adl;public-adl-text-sources";
       String repository = "";
 
       String default_destination = "staging";
@@ -14,6 +14,10 @@
 
       String user_name  = request.getHeader("X-Forwarded-User");
       String group_name = request.getHeader("X-Forwarded-Group");
+
+      pageContext.setAttribute("user_name", user_name);
+      pageContext.setAttribute("group_name", group_name);
+
 
       String coll = "choose";
       String reg  = ";";
@@ -114,22 +118,25 @@
 	    <jsp:expression>select</jsp:expression>
 	  
 	  </fieldset>
+	  <c:choose>
+	    <c:when test='${group_name != "choose"}'>
+	      <fieldset id="branches" style="clear: both;">
+		<legend>Branches</legend>
+		<select id="branch" name="branch">
+		  <jsp:scriptlet>
+		    dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(repository); 
+		    git.gitFetch();
+		    out.print(git.gitBranches());
+		  </jsp:scriptlet>
+		</select>
+	      </fieldset>
 
-	  <fieldset id="branches" style="clear: both;">
-	    <legend>Branches</legend>
-	    <select id="branch" name="branch">
-	      <jsp:scriptlet>
-		dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(repository); 
-		git.gitFetch();
-		out.print(git.gitBranches());
-	      </jsp:scriptlet>
-	    </select>
-	  </fieldset>
-
-	  <fieldset id="submit">
-	    <legend for="repo">Alt OK? Kør!</legend>
-	    <input id="publish-field" class="publish-field" type="submit" name="send" value="Importér"/>
-	  </fieldset>
+	      <fieldset id="submit">
+		<legend for="repo">Alt OK? Kør!</legend>
+		<input id="publish-field" class="publish-field" type="submit" name="send" value="Importér"/>
+	      </fieldset>
+	    </c:when>
+	  </c:choose>
 
 	</form>
       </div>
