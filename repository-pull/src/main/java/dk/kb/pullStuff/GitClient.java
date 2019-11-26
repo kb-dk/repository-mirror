@@ -10,6 +10,7 @@ import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
@@ -27,6 +28,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 public class GitClient {
@@ -38,7 +40,6 @@ public class GitClient {
 	private String repository       = "";
 	private String branch           = "";
 	private String published_branch = "";
-	private String target           = "";
 
 	String branchId = "";
 
@@ -60,11 +61,6 @@ public class GitClient {
 	public void setPublishedBranch(String branch) {
 		this.published_branch = branch;
 	}
-
-	public void setTarget(String target) {
-		this.target = target;
-	}
-
 
 	private void init() {
 
@@ -107,8 +103,8 @@ public class GitClient {
 			//LogCommand log =  git.log();
 			Repository repo = git.getRepository();
 
-			String local_branch = this.branch.replaceAll("(.*?/)","");
-			String published_branch = this.published_branch.replaceAll("(.*?/)","");
+			String local_branch = this.branch;//.replaceAll("(.*?/)","");
+			String published_branch = this.published_branch;//.replaceAll("(.*?/)","");
 
 			logger.error("diff between: " + this.branch + " and " + this.published_branch);
 
@@ -136,7 +132,14 @@ public class GitClient {
 
 	private java.util.HashMap<String,String> listDiff(Repository repo,
 													  ObjectId oldCommit,
-													  ObjectId newCommit) throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+													  ObjectId newCommit)
+			throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+		if(oldCommit == null) {
+			throw new IllegalArgumentException("oldCommit is null");
+		}
+		if(newCommit == null) {
+			throw new IllegalArgumentException("newCommit is null");
+		}
 
 		java.util.List<DiffEntry> diffs = git.diff()
 				.setOldTree(prepareTreeParser(repo, oldCommit))
@@ -312,6 +315,28 @@ public class GitClient {
 	public String gitPull() {
 		// We choose the remote
 		return gitPullFromBranch(this.branch);
+	}
+
+	public void gitPullAll() {
+		ListBranchCommand branches = git.branchList();
+		branches.setListMode(ListBranchCommand.ListMode.ALL);
+		try {
+			List<Ref> res = branches.call();
+
+			for(Ref ref : res) {
+				if(ref.getName().contains("origin")) {
+					String branchName = ref.getName().replaceAll(".*origin/","");
+					logger.info("Pulling branch: " + branchName);
+					git.pull()
+							.setCredentialsProvider(credentials)
+							.setRemote("origin")
+							.setRemoteBranchName(branchName)
+							.call();
+				}
+			}
+		} catch (GitAPIException e) {
+			logger.error("Could not perform a git pull --all", e);
+		}
 	}
 
 	public String gitPullFromBranch(String branch) {
