@@ -81,7 +81,8 @@ public class RunLoad {
 		}
 	}
 
-	protected static void handleMessage(ApiClient htclient, Session session, String msg) throws JMSException {
+	protected static synchronized void handleMessage(ApiClient htclient, Session session, String msg)
+			throws JMSException {
 		String reg = ";";
 		String[] arr = msg.split(reg);
 
