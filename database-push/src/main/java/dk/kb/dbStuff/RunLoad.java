@@ -22,77 +22,101 @@ import java.util.Properties;
  */
 public class RunLoad {
 
-    private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
-    static Logger logger = configureLog4j();
+	private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
+	static Logger logger = configureLog4j();
 
-    public static void main(String args[]) {
+	public static void main(String args[]) {
 
-	String host = consts.getConstants().getProperty("queue.uri");
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
-        Connection connection = null;
-        Session session = null;
-        MessageConsumer consumer = null;
+		String host = consts.getConstants().getProperty("queue.uri");
+		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
+		Connection connection = null;
+		Session session = null;
+		MessageConsumer consumer = null;
 
-	MessageProducer feedback_producer = null;
+		MessageProducer feedback_producer = null;
 
-	ApiClient htclient = new ApiClient();
+		ApiClient htclient = new ApiClient();
 
-        try {
-            connection = connectionFactory.createConnection();
-            connection.start();
+		try {
+			connection = connectionFactory.createConnection();
+			connection.start();
 
-            session      = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            String queue = consts.getConstants().getProperty("queue.load.name");
-            Destination destination = session.createQueue(queue);
+			session      = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			String queue = consts.getConstants().getProperty("queue.load.name");
+			Destination destination = session.createQueue(queue);
 
-            consumer = session.createConsumer(destination);
+			consumer = session.createConsumer(destination);
 
-            while (true) {
-                String msg = null;
-                try {
-                    logger.info("Waiting for next message");
-                    Message message = consumer.receive();
-                    if (message instanceof TextMessage) {
-                        TextMessage textMessage = (TextMessage) message;
-                        msg = textMessage.getText();
-                    } else {
-                        msg = message.toString();
-                    }
+			while (true) {
+				String msg = null;
+				try {
+					logger.info("Waiting for next message");
+					Message message = consumer.receive();
+					if (message instanceof TextMessage) {
+						TextMessage textMessage = (TextMessage) message;
+						msg = textMessage.getText();
+					} else {
+						msg = message.toString();
+					}
 
-		    String reg = ";";
-		    String[] arr = msg.split(reg);
+					handleMessage(htclient, session, msg);
+				} catch (Exception e) {
+					logger.error("Error connecting " + e);
+					logger.error("Waiting 6 seconds and try again");
 
-		    String collection = arr[0];
-		    String repository = arr[1];
-		    String branch     = arr[2];
-		    String target     = arr[3];
-		    String document   = arr[4];
-		    String op         = arr[5];
+					e.printStackTrace();
+					Thread.sleep(6000);
+				}
+			}
+		} catch (Exception e) {
+			logger.fatal("Stopping execution ",e);
+		} finally {
+			try {
+				consumer.close();
+				session.close();
+				connection.close();
+			} catch (Exception e) {
+				logger.fatal("error while shutting donw ",e);
+			}
+		}
+	}
 
-                    logger.info("Received: " + msg);
+	protected static void handleMessage(ApiClient htclient, Session session, String msg) throws JMSException {
+		String reg = ";";
+		String[] arr = msg.split(reg);
 
-		    String feedback_message = "";
+		if(arr.length < 6) {
+			throw new IllegalArgumentException("Cannot comprehend message. Needs more parts.");
+		}
+		String collection = arr[0];
+		String repository = arr[1];
+		String branch     = arr[2];
+		String target     = arr[3];
+		String document   = arr[4];
+		String op         = arr[5];
 
-		    // URIs for rest based communication with the backends
+		logger.info("Received: " + msg);
 
-		    String tmplt  = consts.getConstants().getProperty("file.template");
-		    String db_uri = consts.getConstants().getProperty(target);
+		// URIs for rest based communication with the backends
 
-		    String credField = target + ".credentials";
+		String tmplt  = consts.getConstants().getProperty("file.template");
+		String db_uri = consts.getConstants().getProperty(target);
 
-                    logger.info("credField: " + credField);
+		String credField = target + ".credentials";
 
-		    String user   = consts.getConstants().getProperty(credField).split(reg)[0];
-		    String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
+		logger.info("credField: " + credField);
 
-                    logger.info("creds user: " + user + " creds passwd: " + passwd);
-		    
-		    FilePathHack fileFixer = new FilePathHack();
-		    fileFixer.setTarget(target);
-		    fileFixer.setCollection(collection);
-		    fileFixer.setDocument(document);
+		String user   = consts.getConstants().getProperty(credField).split(reg)[0];
+		String passwd = consts.getConstants().getProperty(credField).split(reg)[1];
 
-		    if(fileFixer.validDocPath()) {
+		logger.info("creds user: " + user + " creds passwd: " + passwd);
+
+		FilePathHack fileFixer = new FilePathHack();
+		fileFixer.setTarget(target);
+		fileFixer.setCollection(collection);
+		fileFixer.setDocument(document);
+
+		if(fileFixer.validDocPath()) {
 
 			String URI = fileFixer.getServicePath();
 
@@ -108,165 +132,145 @@ public class RunLoad {
 
 			String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
 			String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
-			    .set("solr_hostport", index_server)
-			    .expand();
+					.set("solr_hostport", index_server)
+					.expand();
 
-			String res = "";
-			if(op.matches(".*PUT.*")) { 
-			    logger.info("operation = " + op);
+			if(op.matches(".*PUT.*")) {
+				logger.info("operation = " + op);
 
-			    res = htclient.restPut(file, URI);
-			    logger.info("res: " + res);
+				String putRes = htclient.restPut(file, URI);
+				logger.info("HTTP PUT result: " + putRes);
 
-			    String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
-				.set("exist_hostport", consts.getConstants().getProperty(target) )
-				.set("op", "solrize")
-				.set("doc", document)
-				.set("c", collection)
-				.expand();
+				String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+						.set("exist_hostport", consts.getConstants().getProperty(target) )
+						.set("op", "solrize")
+						.set("doc", document)
+						.set("c", collection)
+						.expand();
 
-			    feedback_message = feedback_message + document + " imported to " + URI + "\n";
+				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
 
-			    logger.info("solrizr: " + solrizrURI);
-			    String solrized_res = htclient.restGet(solrizrURI);
-			    String volume_id = htclient.getHttpHeader("X-Volume-ID");
+				logger.info("solrizr: " + solrizrURI);
+				String solrized_res = htclient.restGet(solrizrURI);
 
-			    // This is definately overkill for ADL, but
-			    // necessary for, let's say Grundtvig
-			    if(volume_id.length() > 0) {
-				String solrDel = solrDeleteVolumeCmd(volume_id);		
+				if(solrized_res == null) {
+					logger.info("solrizr: got null");
+					sendMessage(session, collection, "Failed to index the document '" + document + "\n");
+				} else {
+					logger.info("solrizr: status 200 OK");
+					String volume_id = htclient.getHttpHeader("X-Volume-ID");
+
+					// This is definately overkill for ADL, but
+					// necessary for, let's say Grundtvig
+					if(volume_id.length() > 0) {
+						String solrDel = solrDeleteVolumeCmd(volume_id);
+						logger.info("delete command: " + solrDel);
+						sendMessage(session, collection, "Deleting volume at " + URI + "\n");
+						String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
+						logger.info("HTTP POST delete operation result: " + solr_del_res);
+						sendMessage(session, collection, "Successfully deleted volume from index\n");
+					}
+
+					String index_res = htclient.restPost(solrized_res,solr_index_uri);
+					logger.info("index_result " + index_res + " from " + solr_index_uri);
+					sendMessage(session, collection, "sending doc '" + document + "' to index\n");
+				}
+			} else if(op.matches(".*DELETE.*")) {
+				logger.info("delete operation = " + op);
+				String res = htclient.restDelete(URI);
+				String solrDel = solrDeleteDocCmd(collection,document);
+
 				logger.info("delete command: " + solrDel);
-				feedback_message = feedback_message + "Delete volume " + URI + "\n";
+				sendMessage(session, collection,
+						"Performing delete on document '" + document + "' at URI '" + URI + "'\n");
+
 				String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 				res = res + "\n" + solr_del_res;
-				feedback_message = feedback_message + " volume deleted from index\n" ;
-			    }
+				sendMessage(session, collection,
+						"Successfully deleted document '" + document + "' at URI '" + URI + "'\n");
+			} else if(op.matches(".*GET.*")) {
+				logger.info("GET operation = " + op);
+			} else if(op.matches(".*COMMIT.*")) {
+				String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
+						.set("solr_hostport", index_server)
+						.set("commit", "true")
+						.expand();
 
-			    if(solrized_res == null) {
-				logger.info("solrizr: got null");
-				feedback_message = feedback_message + "; indexing failure";
-			    } else {
-				logger.info("solrizr: status 200 OK");
-				String index_res = htclient.restPost(solrized_res,solr_index_uri);
-				logger.info("index_result " + index_res + " from " + solr_index_uri);
-				feedback_message = feedback_message + " sending doc to index ";
-			    }
-			} else if(op.matches(".*DELETE.*")) { 
-			    logger.info("delete operation = " + op);
-			    res = htclient.restDelete(URI);
-			    String solrDel = solrDeleteDocCmd(collection,document);		
+				String commit_res = htclient.restGet(solr_commit_uri);
 
-			    logger.info("delete command: " + solrDel);
-
-			    feedback_message = feedback_message + "Delete " + URI + "\n";
-
-			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
-			    res = res + "\n" + solr_del_res;
-			    feedback_message = feedback_message + " doc deleted from index\n" ;
-			} else if(op.matches(".*GET.*")) { 
-			    logger.info("GET operation = " + op);
-			} else if(op.matches(".*COMMIT.*")) { 
-
-			    String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
-				.set("solr_hostport", index_server)
-				.set("commit", "true")
-				.expand();
-		    
-			    String commit_res = htclient.restGet(solr_commit_uri);
-
-			    logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-			    feedback_message = feedback_message + " the changes in " + URI + " are now committed to index\n" ;
-
+				logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
+				sendMessage(session, collection,"Finished! The changes in " + URI + " are now committed to index.\n");
 			} else {
-			    res =  htclient.restHead(URI);
+				String res = htclient.restHead(URI);
+				logger.info("Other operation result: " + res);
 			}
-		    } else {
-			feedback_message = feedback_message + " " + document + " doesn't seem to belong in database\n";
-		    }
+		} else {
+			sendMessage(session, collection, "The document '" + document
+					+ "' doesn't seem to belong in database. Cannot perform operation.\n");
+		}
+	}
 
-		    // Setting up feedback messaging to user
+	protected static void sendMessage(Session session, String collection, String message) throws JMSException {
+		String feedback_queue = collection + "_feedback";
+		Destination feedback_destination = session.createQueue(feedback_queue);
+		MessageProducer feedbackProducer = session.createProducer(feedback_destination);
+		feedbackProducer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		TextMessage text_message = session.createTextMessage(message);
+		feedbackProducer.send(text_message);
+		feedbackProducer.close();
+	}
 
-		    String feedback_queue = collection + "_feedback";
-		    Destination feedback_destination = session.createQueue(feedback_queue);
-		    feedback_producer = session.createProducer(feedback_destination);
-		    feedback_producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		    TextMessage text_message = session.createTextMessage(feedback_message);
-		    feedback_producer.send(text_message);
-		    feedback_producer.close();
+	// this is for deleting single TEI documents, which may correspond
+	// to many solr records
 
+	private static String solrDeleteVolumeCmd(String volume_id) {
 
-                } catch (Exception e) {
-                    logger.error("Error connecting " + e);
-                    logger.error("Waiting 6 seconds and try again");
+		String delete_query = "volume_id_ssi:" + volume_id;
 
-                    e.printStackTrace();
-                    Thread.sleep(6000);
-                }
-            }
-        } catch (Exception e) {
-            logger.fatal("Stopping execution ",e);
-        } finally {
-            try {
-                consumer.close();
-                session.close();
-                connection.close();
-            } catch (Exception e) {
-                logger.fatal("error while shutting donw ",e);
-            }
-        }
-    }
+		// don't use query *:*, that is dangerous
 
-    // this is for deleting single TEI documents, which may correspond
-    // to many solr records
+		String solr_del = "<delete><query>" + delete_query + "</query></delete>";
 
-    private static String solrDeleteVolumeCmd(String volume_id) {
-	
-	String delete_query = "volume_id_ssi:" + volume_id;
+		return solr_del;
+	}
 
-	// don't use query *:*, that is dangerous
+	private static String solrDeleteDocCmd (String collection, String document) {
 
-	String solr_del = "<delete><query>" + delete_query + "</query></delete>";
+		String doc_part = document
+				.replaceAll("\\.xml$","-root")
+				.replaceAll("/","-");
+		String delete_query = "volume_id_ssi:" + collection + "-" + doc_part;
 
-	return solr_del;
-    }
+		// don't use query *:*, that is dangerous
 
-    private static String solrDeleteDocCmd (String collection, String document) {
-	
-	String doc_part = document
-	    .replaceAll("\\.xml$","-root")
-	    .replaceAll("/","-");
-	String delete_query = "volume_id_ssi:" + collection + "-" + doc_part; 
+		String solr_del = "<delete><query>" + delete_query + "</query></delete>";
 
-	// don't use query *:*, that is dangerous
-
-	String solr_del = "<delete><query>" + delete_query + "</query></delete>";
-
-	return solr_del;
-    }
+		return solr_del;
+	}
 
 
 
-    private static Logger configureLog4j() {
+	private static Logger configureLog4j() {
 
-	String level = consts.getConstants().getProperty("queue.loglevel");
-	if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
+		String level = consts.getConstants().getProperty("queue.loglevel");
+		if (System.getProperty("queue.loglevel") != null ) level = System.getProperty("queue.loglevel");
 
-	String file = consts.getConstants().getProperty("queue.logfile");
-	if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
+		String file = consts.getConstants().getProperty("queue.logfile");
+		if (System.getProperty("queue.logfile") != null) file = System.getProperty("queue.logfile");
 
-	Properties props = new Properties();
-	props.put("log4j.rootLogger", level+", FILE");
-	props.put("log4j.appender.FILE", "org.apache.log4j.DailyRollingFileAppender");
-	props.put("log4j.appender.FILE.File",file);
-	props.put("log4j.appender.FILE.ImmediateFlush","true");
-	props.put("log4j.appender.FILE.Threshold",level);
-	props.put("log4j.appender.FILE.Append","true");
-	props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
-	props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
-	PropertyConfigurator.configure(props);
-	Logger logger = Logger.getLogger(RunLoad.class);
-	logger.info("logging at level " + level + " in file " + file + "\n");
-	return logger;
-    }
-  
+		Properties props = new Properties();
+		props.put("log4j.rootLogger", level+", FILE");
+		props.put("log4j.appender.FILE", "org.apache.log4j.DailyRollingFileAppender");
+		props.put("log4j.appender.FILE.File",file);
+		props.put("log4j.appender.FILE.ImmediateFlush","true");
+		props.put("log4j.appender.FILE.Threshold",level);
+		props.put("log4j.appender.FILE.Append","true");
+		props.put("log4j.appender.FILE.layout", "org.apache.log4j.PatternLayout");
+		props.put("log4j.appender.FILE.layout.conversionPattern","[%d{yyyy-MM-dd HH.mm:ss}] %-5p %C{1} %M: %m %n");
+		PropertyConfigurator.configure(props);
+		Logger logger = Logger.getLogger(RunLoad.class);
+		logger.info("logging at level " + level + " in file " + file + "\n");
+		return logger;
+	}
+
 }
