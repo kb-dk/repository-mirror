@@ -98,10 +98,6 @@ public class RunLoad {
 
 		logger.info("Received: " + msg);
 
-		// URIs for rest based communication with the backends
-
-		String tmplt  = consts.getConstants().getProperty("file.template");
-		String db_uri = consts.getConstants().getProperty(target);
 
 		String credField = target + ".credentials";
 
