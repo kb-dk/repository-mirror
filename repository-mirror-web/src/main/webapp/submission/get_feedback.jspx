@@ -31,8 +31,9 @@
 	    if (OK) {
 		TextMessage textMessage = (TextMessage) message;
 		msg = msg + textMessage.getText();
+		pageContext.setAttribute("got_text", "yes" );
 	    } else {
-
+		pageContext.setAttribute("got_text", "no" );
 	    }
 
 	}
@@ -41,21 +42,24 @@
 	connection.close();
       </jsp:scriptlet>
 
-      <p class="one_single_paragraph">
-	<strong>
-	  <jsp:scriptlet>
-	    if (message instanceof TextMessage) {
-		java.time.LocalDate date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp())
-		.atZone(java.time.ZoneId.systemDefault())
-		.toLocalDate();
+      <c:choose>
+	<c:when test='${got_text == "yes"}'>
+	  <p class="one_single_paragraph">
+	    <strong>
+	      <jsp:scriptlet>
+	        java.time.LocalDate date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp())
+	           .atZone(java.time.ZoneId.systemDefault())
+		    .toLocalDate();
 		out.print(date.toString());
-	    }
-	  </jsp:scriptlet>
-        </strong>
-	<jsp:scriptlet>
-	  out.print(msg);
-	</jsp:scriptlet>
-      </p>
+	      </jsp:scriptlet>
+	    </strong>
+	    <br/>
+	    <jsp:scriptlet>
+	      out.print(msg);
+	    </jsp:scriptlet>
+	  </p>
+	</c:when>
+      </c:choose>
 
     </body>
   </html>
