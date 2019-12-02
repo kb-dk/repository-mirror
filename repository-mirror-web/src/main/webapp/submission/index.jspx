@@ -67,6 +67,7 @@
       </div>
       <div id="feedback_log">
 	<h2><c:out value="${repo}"/> log</h2>
+	<p>Bemærk, dette kan tage adskillige minutter. Vent til afslutningsmeddelelsen.</p>
       </div>
     </body>
   </html>
