@@ -11,9 +11,11 @@ public class GitClientTest extends ExtendedTestCase {
 
     @Test//(enabled = false)
     public void testInstantiation() {
-        File dir = new File("..");
+	addDescription("This is testing if the code is living in a git project");
+        File dir = new File("../..");
 
-        ConfigurableConstants.getInstance().getConstants().setProperty("data.home", dir.getAbsoluteFile().getParentFile().getParentFile().getParentFile().getAbsolutePath());
+        ConfigurableConstants.getInstance().getConstants().setProperty("data.home", dir.getAbsoluteFile().getAbsolutePath());
+
         GitClient client = new GitClient("repository-mirror");
 
         Assert.assertNotNull(client.git);

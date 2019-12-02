@@ -83,11 +83,14 @@ public class RunLoad {
 
 	protected static synchronized void handleMessage(ApiClient htclient, Session session, String msg)
 			throws JMSException {
+		logger.info("Received: " + msg);
+
 		String reg = ";";
 		String[] arr = msg.split(reg);
 
 		if(arr.length < 6) {
-			throw new IllegalArgumentException("Cannot comprehend message. Needs more parts.");
+			throw new IllegalArgumentException("Cannot comprehend message. Needs at least 6 parts (separated by '"
+					+ reg + "'): " + msg);
 		}
 		String collection = arr[0];
 		String repository = arr[1];
@@ -95,9 +98,6 @@ public class RunLoad {
 		String target     = arr[3];
 		String document   = arr[4];
 		String op         = arr[5];
-
-		logger.info("Received: " + msg);
-
 
 		String credField = target + ".credentials";
 
@@ -127,8 +127,10 @@ public class RunLoad {
 			logger.info("URI  " + URI);
 			logger.info("File " + file);
 
+			String index_name   =  consts.getConstants().getProperty(target + "." + "index_name");
 			String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
 			String solr_index_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("indexing.template"))
+					.set("index_name", index_name)
 					.set("solr_hostport", index_server)
 					.expand();
 
@@ -148,9 +150,9 @@ public class RunLoad {
 				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
 
 				logger.info("solrizr: " + solrizrURI);
-				String solrized_res = htclient.restGet(solrizrURI);
+				String solrizedRes = htclient.restGet(solrizrURI);
 
-				if(solrized_res == null) {
+				if(solrizedRes == null) {
 					logger.info("solrizr: got null");
 					sendMessage(session, collection, "Failed to index the document '" + document + "\n");
 				} else {
@@ -163,12 +165,13 @@ public class RunLoad {
 						String solrDel = solrDeleteVolumeCmd(volume_id);
 						logger.info("delete command: " + solrDel);
 						sendMessage(session, collection, "Deleting volume at " + URI + "\n");
+
 						String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 						logger.info("HTTP POST delete operation result: " + solr_del_res);
 						sendMessage(session, collection, "Successfully deleted volume from index\n");
 					}
 
-					String index_res = htclient.restPost(solrized_res,solr_index_uri);
+					String index_res = htclient.restPost(solrizedRes,solr_index_uri);
 					logger.info("index_result " + index_res + " from " + solr_index_uri);
 					sendMessage(session, collection, "sending doc '" + document + "' to index\n");
 				}
@@ -192,11 +195,13 @@ public class RunLoad {
 						.set("solr_hostport", index_server)
 						.set("commit", "true")
 						.expand();
+                sendMessage(session, collection,"Finalizing operations by committing the changes in " + URI
+                        + " to index.\n");
 
 				String commit_res = htclient.restGet(solr_commit_uri);
 
 				logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-				sendMessage(session, collection,"Finished! The changes in " + URI + " are now committed to index.\n");
+				sendMessage(session, collection,"Finished!\n");
 			} else {
 				String res = htclient.restHead(URI);
 				logger.info("Other operation result: " + res);
@@ -221,7 +226,6 @@ public class RunLoad {
 	// to many solr records
 
 	private static String solrDeleteVolumeCmd(String volume_id) {
-
 		String delete_query = "volume_id_ssi:" + volume_id;
 
 		// don't use query *:*, that is dangerous
@@ -245,8 +249,6 @@ public class RunLoad {
 		return solr_del;
 	}
 
-
-
 	private static Logger configureLog4j() {
 
 		String level = consts.getConstants().getProperty("queue.loglevel");
@@ -269,5 +271,4 @@ public class RunLoad {
 		logger.info("logging at level " + level + " in file " + file + "\n");
 		return logger;
 	}
-
 }
