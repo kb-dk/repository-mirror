@@ -22,7 +22,8 @@
 
 	Message message = null;
 	boolean OK = true;
-        String msg = "";
+
+        java.util.ArrayList msgs = new java.util.ArrayList();
 
 	while(OK) {
 	    message = feedback_consumer.receive(1000);
@@ -30,32 +31,42 @@
 
 	    if (OK) {
 		TextMessage textMessage = (TextMessage) message;
-		msg = msg + textMessage.getText();
+
+		java.time.LocalDateTime date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp())
+  		   .atZone(java.time.ZoneId.systemDefault())
+		   .toLocalDateTime();
+
+		   String text = date.toString() + ": "+ textMessage.getText();
+
+		msgs.add(text);
+
 	    } else {
 
 	    }
+ 	}
 
+        pageContext.setAttribute("msgs_list", msgs );
+
+	if(msgs.size()==0) {
+           pageContext.setAttribute("got_text", "no" );
+	} else {
+	   pageContext.setAttribute("got_text", "yes" );
 	}
+
 	feedback_consumer.close();
 	jms_session.close();
 	connection.close();
       </jsp:scriptlet>
 
-      <p class="one_single_paragraph">
-	<strong>
-	  <jsp:scriptlet>
-	    if (message instanceof TextMessage) {
-		java.time.LocalDate date = java.time.Instant.ofEpochMilli(message.getJMSTimestamp())
-		.atZone(java.time.ZoneId.systemDefault())
-		.toLocalDate();
-		out.print(date.toString());
-	    }
-	  </jsp:scriptlet>
-        </strong>
-	<jsp:scriptlet>
-	  out.print(msg);
-	</jsp:scriptlet>
-      </p>
+      <c:choose>
+	<c:when test='${got_text == "yes"}'>
+	  <c:forEach items="${msgs_list}" var="itm">
+	    <p class="one_single_paragraph">
+	      <c:out value="${itm}"/><br/>
+	    </p>
+	  </c:forEach>
+	</c:when>
+      </c:choose>
 
     </body>
   </html>
