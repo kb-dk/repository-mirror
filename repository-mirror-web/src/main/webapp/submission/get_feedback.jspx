@@ -60,11 +60,11 @@
 
       <c:choose>
 	<c:when test='${got_text == "yes"}'>
-	  <p class="one_single_paragraph">
-	    <c:forEach items="${msgs_list}" var="itm">
+	  <c:forEach items="${msgs_list}" var="itm">
+	    <p class="one_single_paragraph">
 	      <c:out value="${itm}"/><br/>
-	    </c:forEach>
-	  </p>
+	    </p>
+	  </c:forEach>
 	</c:when>
       </c:choose>
 
