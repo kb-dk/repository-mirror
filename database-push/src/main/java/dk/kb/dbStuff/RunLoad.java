@@ -147,10 +147,21 @@ public class RunLoad {
 						.set("c", collection)
 						.expand();
 
+				String capabilitizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
+						.set("exist_hostport", consts.getConstants().getProperty(target) )
+						.set("op", "solrize")
+						.set("doc", document)
+						.set("c", collection)
+						.expand();
+
 				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
 
 				logger.info("solrizr: " + solrizrURI);
-				String solrizedRes = htclient.restGet(solrizrURI);
+				String capabilitizrRes = null;
+				if(collection.matches(".*adl.*")) {
+				    capabilitizrRes = htclient.restGet(capabilitizrURI);
+				}
+				String solrizedRes     = htclient.restGet(solrizrURI);
 
 				if(solrizedRes == null) {
 					logger.info("solrizr: got null");
