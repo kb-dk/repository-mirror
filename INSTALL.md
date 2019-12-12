@@ -16,6 +16,8 @@ For running it you need
 
 Start by cloning this repository, or if applicable, download one of the releases.
 
+**Please note that [Collections](./collections/README.md) README contain prerequisites for the database.**
+
 ## 2. Configuration
 
 Copy the file
