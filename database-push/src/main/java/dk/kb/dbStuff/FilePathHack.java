@@ -64,7 +64,7 @@ public class FilePathHack {
 
 		String file = "";
 
-		String pat = "(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v0).xml$";
+		String pat = ".+(18\\d\\d)_(\\d+[a-zA-Z]?)_?(\\d+)?_(com|intro|txr|txt|v\d+).xml$";
 		Pattern cpat = Pattern.compile(pat);
 		Matcher match  = cpat.matcher(this.path);
 		if(match.matches()) {
