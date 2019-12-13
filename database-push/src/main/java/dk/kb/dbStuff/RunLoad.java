@@ -116,7 +116,7 @@ public class RunLoad {
 		if(fileFixer.validDocPath()) {
 
 			String URI = fileFixer.getServicePath();
-
+			String existFile = fileFixer.getDocument();
 			String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
 			String database_host = consts.getConstants().getProperty(target).split(":")[0];
 			String port_number   = consts.getConstants().getProperty(target).split(":")[1];
@@ -143,14 +143,14 @@ public class RunLoad {
 				String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
 						.set("exist_hostport", consts.getConstants().getProperty(target) )
 						.set("op", "solrize")
-						.set("doc", document)
+						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
 
 				String capabilitizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
 						.set("exist_hostport", consts.getConstants().getProperty(target) )
 						.set("op", "solrize")
-						.set("doc", document)
+						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
 
@@ -158,8 +158,9 @@ public class RunLoad {
 
 				logger.info("solrizr: " + solrizrURI);
 				String capabilitizrRes = null;
-				if(collection.matches(".*adl.*")) {
+				if(collection.toLowerCase().matches(".*(gv)|(sks).*")) {
 				    capabilitizrRes = htclient.restGet(capabilitizrURI);
+				    logger.debug("capability: " +  capabilitizrRes);
 				}
 				String solrizedRes     = htclient.restGet(solrizrURI);
 
@@ -206,8 +207,8 @@ public class RunLoad {
 						.set("solr_hostport", index_server)
 						.set("commit", "true")
 						.expand();
-                sendMessage(session, collection,"Finalizing operations by committing the changes in " + URI
-                        + " to index.\n");
+				sendMessage(session, collection,"Finalizing operations by committing the changes in " + URI
+					    + " to index.\n");
 
 				String commit_res = htclient.restGet(solr_commit_uri);
 
