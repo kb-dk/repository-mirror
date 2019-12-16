@@ -1,5 +1,4 @@
-[README](../README.md) | [Architecture](../ARCHITECTURE.md) | [Installation](../INSTALL.md) | [config.xml](CONFIG.md) | [Access control](../htaccess/README.md) | [Collections](./README.md)
-
+[README](README.md) | [Architecture](ARCHITECTURE.md) | [Installation](INSTALL.md) | [Upgrading](UPGRADE.md) | [config.xml](CONFIG.md) | [Access control](./htaccess/README.md) | [Collections](./collections/README.md)
 
 # Collections
 
