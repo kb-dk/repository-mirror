@@ -60,14 +60,24 @@ public class FilePathHack {
 	    this.file = this.path;
 	    return this.encodeUri(this.path);
 	} else if(collection.equals("sks")) {
+
+	    // The Kierkegaard text collection has its data under
+	    // data/v1.9/ where v1.9 is a version number In the
+	    // snippet server/database we recast these to paths like
+	    // sks/ee1/txt.xml, i.e., collection name, work acronym
+	    // and file.
+
 	    this.file = this.path.replaceAll("^.*data/v1.9/","");
 	    return this.encodeUri(this.file);
 	} else if(collection.equals("gv")) {
 	    if(this.validDocPath()) {
-		// A data directory should match (GNU find regexp)
-		// '^.*18[0-9][0-9]GV.*\$'
-		// This (perl) regexp is the one we use for extracting data
-		// (18\d\d)_(\d+[a-zA-Z]?)_?(\d+)?_(com|intro|txr|txt|v0).xml$
+
+		// In Grundtvig the repository contain more than we
+		// want, but we'll always find the data files in 
+		// data directories matching regexp '^.*18[0-9][0-9]GV.*\$'
+
+		// files are have names like GV/1830/1830GV/1830_485/1830_485_txt.xml
+		// we recast them to gv/1830_485/txt.xml
 
 		this.file = "";
 
