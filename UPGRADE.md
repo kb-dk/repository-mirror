@@ -7,7 +7,7 @@
 3. stop the database_push & repository_pull daemons
 4. recompile
 5. copy the web application to the [servlet container](./INSTALL.md#web-ui)
-6. restart the  database-push & repository-pull daemons
+6. restart the  database_push & repository_pull daemons
 
 
 
