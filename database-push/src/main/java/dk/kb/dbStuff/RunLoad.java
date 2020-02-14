@@ -152,7 +152,11 @@ public class RunLoad {
 				logger.info("operation = " + op);
 
 				String putRes = htclient.restPut(file, URI);
-				logger.info("HTTP PUT result: " + putRes);
+				if(putRes != null) {
+				    logger.info("HTTP PUT result: " + putRes);
+				} else {
+				    logger.error("HTTP PUT problem:");
+				}
 
 				String solrizrURI =
 				    UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
@@ -220,11 +224,11 @@ public class RunLoad {
 				logger.info("GET operation = " + op);
 			} else if(op.matches(".*COMMIT.*")) {
 				String solr_commit_uri = UriTemplate.fromTemplate(consts.getConstants().getProperty("commit.template"))
-						.set("solr_hostport", index_server)
-						.set("commit", "true")
-						.expand();
-				sendMessage(session, collection,"Finalizing operations by committing the changes in " + URI
-					    + " to index.\n");
+				    .set("solr_hostport", index_server)
+				    .set("index_name",index_name)
+				    .set("commit", "true")
+				    .expand();
+				sendMessage(session, collection,"Finalizing operations by committing the changes in " + URI + " to index.\n");
 
 				String commit_res = htclient.restGet(solr_commit_uri);
 
