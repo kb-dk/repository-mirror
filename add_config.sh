@@ -18,5 +18,6 @@ fi
 
 
 cp $CONF database-push/src/main/resources/config.xml
+cp $CONF database-push/src/test/resources/config.xml
 cp $CONF repository-pull/src/main/resources/config.xml
 cp $CONF repository-mirror-web/src/main/resources/config.xml

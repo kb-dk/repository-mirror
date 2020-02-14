@@ -88,18 +88,21 @@ public class RunLoad {
 		String reg = ";";
 		String[] arr = msg.split(reg);
 
+		// The msg has the following form (for example)
+		// gv;GV;refs/remotes/origin/svend;staging;1841/1841GV/1841_700/1841_700_txt.xml;PUT 
+		
 		if(arr.length < 6) {
 			throw new IllegalArgumentException("Cannot comprehend message. Needs at least 6 parts (separated by '"
 					+ reg + "'): " + msg);
 		}
-		String collection = arr[0];
-		String repository = arr[1];
-		String branch     = arr[2];
-		String target     = arr[3];
-		String document   = arr[4];
-		String op         = arr[5];
+		String collection = arr[0]; // gv
+		String repository = arr[1]; // GV
+		String branch     = arr[2]; // refs/remotes/origin/svend
+		String target     = arr[3]; // staging
+		String document   = arr[4]; // 1841/1841GV/1841_700/1841_700_txt.xml
+		String op         = arr[5]; // PUT
 
-		String credField = target + ".credentials";
+		String credField = target + ".credentials"; // something like staging.credentials
 
 		logger.info("credField: " + credField);
 
@@ -109,23 +112,34 @@ public class RunLoad {
 		logger.info("creds user: " + user + " creds passwd: " + passwd);
 
 		FilePathHack fileFixer = new FilePathHack();
-		fileFixer.setTarget(target);
+		fileFixer.setDatabase(consts.getConstants().getProperty(target));
+		// staging gives something like xstorage-stage-01.kb.dk:8080
 		fileFixer.setCollection(collection);
+		// collection should be something like adl or gv
 		fileFixer.setDocument(document);
+		// 1841/1841GV/1841_700/1841_700_txt.xml
 
 		if(fileFixer.validDocPath()) {
 
 			String URI = fileFixer.getServicePath();
+			// http:// xstorage-stage-01.kb.dk:8080/exist/rest/db/text-retriever/gv/1815_264/txt.xml
+
 			String existFile = fileFixer.getDocument();
+			// 1815_264/txt.xml
+
 			String file = consts.getConstants().getProperty("data.home") + repository + "/" + document;
+			// looks like /home/text-service/GV/1841/1841GV/1841_700/1841_700_txr.xml
+			
 			String database_host = consts.getConstants().getProperty(target).split(":")[0];
 			String port_number   = consts.getConstants().getProperty(target).split(":")[1];
 			int    port = Integer.parseInt(port_number);
 			String realm = "exist";
+			
 			htclient.setLogin(user,passwd,database_host,port,realm);
 
 			logger.info("URI  " + URI);
 			logger.info("File " + file);
+			logger.info("existFile " + existFile);
 
 			String index_name   =  consts.getConstants().getProperty(target + "." + "index_name");
 			String index_server =  consts.getConstants().getProperty(target + "." + "index_hostport");
@@ -140,14 +154,16 @@ public class RunLoad {
 				String putRes = htclient.restPut(file, URI);
 				logger.info("HTTP PUT result: " + putRes);
 
-				String solrizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
+				String solrizrURI =
+				    UriTemplate.fromTemplate(consts.getConstants().getProperty("solrizr.template"))
 						.set("exist_hostport", consts.getConstants().getProperty(target) )
 						.set("op", "solrize")
 						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
 
-				String capabilitizrURI = UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
+				String capabilitizrURI =
+				    UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
 						.set("exist_hostport", consts.getConstants().getProperty(target) )
 						.set("op", "solrize")
 						.set("doc", existFile)
