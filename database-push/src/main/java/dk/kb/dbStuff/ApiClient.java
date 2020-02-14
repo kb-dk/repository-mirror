@@ -280,7 +280,7 @@ public class ApiClient {
 					if (status >= 200 && status < 300 || status==401) {
 						HttpEntity responseEntity = response.getEntity();
 						logger.info("Got " +  status + " for " + URI);
-						return responseEntity != null ? EntityUtils.toString(responseEntity) : null;
+						return responseEntity != null ? EntityUtils.toString(responseEntity) : "";
 					} else {
 						throw new ClientProtocolException("Unexpected response status: " + status);
 					}

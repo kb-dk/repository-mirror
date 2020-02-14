@@ -153,9 +153,9 @@ public class RunLoad {
 
 				String putRes = htclient.restPut(file, URI);
 				if(putRes != null) {
-				    logger.info("HTTP PUT result: " + putRes);
+				    logger.info("HTTP PUT done ");
 				} else {
-				    logger.error("HTTP PUT problem:");
+				    logger.error("HTTP PUT problem");
 				}
 
 				String solrizrURI =
@@ -165,7 +165,8 @@ public class RunLoad {
 						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
-
+				logger.info("solrizing at " + solrizrURI);
+				
 				String capabilitizrURI =
 				    UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
 						.set("exist_hostport", consts.getConstants().getProperty(target) )
@@ -173,10 +174,10 @@ public class RunLoad {
 						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
+				logger.info(capabilitizring" at " + capabilitizrURI);
 
 				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
-
-				logger.info("solrizr: " + solrizrURI);
+				
 				String capabilitizrRes = null;
 				if(collection.toLowerCase().matches(".*(gv)|(sks).*")) {
 				    capabilitizrRes = htclient.restGet(capabilitizrURI);
