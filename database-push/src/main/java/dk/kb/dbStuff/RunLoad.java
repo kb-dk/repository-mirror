@@ -61,8 +61,8 @@ public class RunLoad {
 
 					handleMessage(htclient, session, msg);
 				} catch (Exception e) {
-					logger.error("Error connecting " + e);
-					logger.error("Waiting 6 seconds and try again");
+					logger.info("No message from mQueue. Error connecting " + e);
+					logger.info("Waiting 6 seconds and try again");
 
 					e.printStackTrace();
 					Thread.sleep(6000);
