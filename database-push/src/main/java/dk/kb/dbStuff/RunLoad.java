@@ -169,11 +169,13 @@ public class RunLoad {
 				
 				String capabilitizrURI =
 				    UriTemplate.fromTemplate(consts.getConstants().getProperty("capabilitizr.template"))
-						.set("exist_hostport", consts.getConstants().getProperty(target) )
-						.set("op", "solrize")
-						.set("doc", existFile)
-						.set("c", collection)
-						.expand();
+				    .set("user",user)
+				    .set("password",passwd)
+				    .set("exist_hostport", consts.getConstants().getProperty(target) )
+				    .set("op", "solrize")
+				    .set("doc", existFile)
+				    .set("c", collection)
+				    .expand();
 				logger.info("capabilitizring at " + capabilitizrURI);
 
 				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
