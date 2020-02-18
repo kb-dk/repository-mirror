@@ -174,7 +174,7 @@ public class RunLoad {
 						.set("doc", existFile)
 						.set("c", collection)
 						.expand();
-				logger.info(capabilitizring" at " + capabilitizrURI);
+				logger.info("capabilitizring at " + capabilitizrURI);
 
 				sendMessage(session, collection, "Putting document " + document + " to " + URI + "\n");
 				
