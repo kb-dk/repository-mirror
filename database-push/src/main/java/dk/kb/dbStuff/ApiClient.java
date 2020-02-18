@@ -100,7 +100,11 @@ public class ApiClient {
 		try {
 			HttpGet request = new HttpGet(URI);
 			httpClient = HttpClients.createDefault();
-			if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
+			if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+			    httpClient = HttpClients.createDefault();
+			} else {
+			    httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
+			}
 			ht_response = httpClient.execute(request);
 			HttpEntity entity = ht_response.getEntity();
 			int statusCode = ht_response.getStatusLine().getStatusCode();
