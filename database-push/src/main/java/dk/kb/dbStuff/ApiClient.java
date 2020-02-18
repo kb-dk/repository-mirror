@@ -98,13 +98,15 @@ public class ApiClient {
 		String contents = null;
 		CloseableHttpClient httpClient = null;
 		try {
-			HttpGet request = new HttpGet(URI);
-			httpClient = HttpClients.createDefault();
 			if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+			    logger.info("Have no credentials for " + URI);
 			    httpClient = HttpClients.createDefault();
 			} else {
+			    logger.info("using credentials " +  this.user + " with password " + this.passwd);
 			    httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
 			}
+			HttpGet request = new HttpGet(URI);
+			
 			ht_response = httpClient.execute(request);
 			HttpEntity entity = ht_response.getEntity();
 			int statusCode = ht_response.getStatusLine().getStatusCode();
