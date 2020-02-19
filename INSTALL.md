@@ -16,20 +16,25 @@ For running it you need
 
 Start by cloning this repository, or if applicable, download one of the releases.
 
-**Please note that [Collections](./collections/README.md) README contain prerequisites for the database.**
+**Please note that there are some prerequisites for the database.**
+
+* [Collections](./collections/README.md) README contain info on collection level records required by repository-mirror. 
+* There is also one special script installed with the [solr-and-snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets) package which requires some extra attention, namely [capabilities_generator.xq](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets/blob/master/exporters/common/capabilities_generator.xq). It requires some enhanced permissions, SETUID and SETGID, or it cannot create the capabilities file.
+
+See also the text on [correlations and identifications](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets/blob/master/correlations-and-identifications.md#correlations).
+
+
 
 ## 2. Configuration
 
 Copy the file
 
-```
-config.xml
+```config.xml
 ```
 
 to the name
 
-```
-config_secret.xml
+```config_secret.xml
 ```
 
 and edit it under that name that name (if your software developers
@@ -41,11 +46,13 @@ this](CONFIG.md). The system accesses other services as
 
 Before building run 
 
-```add_config.sh```
+```add_config.sh
+```
 
 which copies the config.xml to the source trees. After use you can run 
 
-```del_config.sh```
+```del_config.sh
+```
 
 to ensure that there is no configuration files everywhere.
 
