@@ -217,12 +217,12 @@ public class RunLoad {
 
 				logger.info("delete command: " + solrDel);
 				sendMessage(session, collection,
-						"Performing delete on document '" + document + "' at URI '" + URI + "'\n");
+						"Deleting document '" + document + "' at in database URI '" + URI + "'\n");
 
 				String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 				res = res + "\n" + solr_del_res;
 				sendMessage(session, collection,
-						"Successfully deleted document '" + document + "' at URI '" + URI + "'\n");
+						"Deleted document '" + document + "' at URI from index '" + URI + "'\n");
 			} else if(op.matches(".*GET.*")) {
 				logger.info("GET operation = " + op);
 			} else if(op.matches(".*COMMIT.*")) {
