@@ -141,6 +141,8 @@ public class RunLoad {
 
 	    logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
 	    sendMessage(session, collection,"Finished!\n");
+	} else if(op.matches(".*EMPTY.*")) {
+	    sendMessage(session, collection,"No revisions found: Nothing to do!");
 	} else {
 
 	    if(fileFixer.validDocPath()) {
