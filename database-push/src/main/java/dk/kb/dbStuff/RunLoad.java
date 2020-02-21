@@ -203,7 +203,7 @@ public class RunLoad {
 
 		    if(solrizedRes == null) {
 			logger.info("solrizr: got null");
-			sendMessage(session, collection, "Failed to index the document '" + document + "\n");
+			sendMessage(session, collection, "Failed to solrize the document (failed to create index) '" + document + "\n");
 		    } else {
 			logger.info("solrizr: status 200 OK");
 			String volume_id = htclient.getHttpHeader("X-Volume-ID");
@@ -217,12 +217,12 @@ public class RunLoad {
 
 			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			    logger.info("HTTP POST delete operation result: " + solr_del_res);
-			    sendMessage(session, collection, "Successfully deleted volume from index\n");
-			}
+			    sendMessage(session, collection, "Successfully deleted volume with volume id " + volume_id + " from index\n");
 
-			String index_res = htclient.restPost(solrizedRes,solr_index_uri);
-			logger.info("index_result " + index_res + " from " + solr_index_uri);
-			sendMessage(session, collection, "sending doc '" + document + "' to index\n");
+			    String index_res = htclient.restPost(solrizedRes,solr_index_uri);
+			    logger.info("index_result " + index_res + " from " + solr_index_uri);
+			    sendMessage(session, collection, "sending doc '" + document + "' to index with volume id " + volume_id + "\n");
+			}
 		    }
 		} else if(op.matches(".*DELETE.*")) {
 		    logger.info("delete operation = " + op);
