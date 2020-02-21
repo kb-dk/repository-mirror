@@ -220,7 +220,7 @@ public class RunLoad {
 			    sendMessage(session, collection, "Successfully deleted volume with volume id " + volume_id + " from index\n");
 
 			    String index_res = htclient.restPost(solrizedRes,solr_index_uri);
-			    logger.info("index_result " + index_res + " from " + solr_index_uri);
+			    logger.info("index_result " + index_res + " from " + solr_index_uri + " for volume id " + volume_id );
 			    sendMessage(session, collection, "sending doc '" + document + "' to index with volume id " + volume_id + "\n");
 			}
 		    }
