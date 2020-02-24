@@ -131,9 +131,10 @@ public class GitClient {
 
 
 	private java.util.HashMap<String,String> listDiff(Repository repo,
-													  ObjectId oldCommit,
-													  ObjectId newCommit)
+							  ObjectId   oldCommit,
+							  ObjectId   newCommit)
 			throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
+	    
 		if(oldCommit == null) {
 			throw new IllegalArgumentException("oldCommit is null");
 		}
