@@ -342,12 +342,12 @@ public class GitClient {
 
 	public String gitPullFromBranch(String branch) {
 
-	    String local_name = branch.replaceAll("(.*?/)","");
+	    String local_name = branch; //.replaceAll("(.*?/)","");
 
 		try {
 			PullResult res = git.pull()
 			    .setCredentialsProvider(credentials)
-			    .setRemote("origin")
+			    //			    .setRemote("origin")
 			    .setRemoteBranchName(local_name)
 			    .call();
 			
