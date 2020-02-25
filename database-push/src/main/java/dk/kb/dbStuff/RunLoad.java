@@ -215,15 +215,13 @@ public class RunLoad {
 			if(volume_id.length() > 0) {
 			    String solrDel = solrDeleteVolumeCmd(volume_id);
 			    logger.info("delete command: " + solrDel);
-			    sendMessage(session, collection, "Deleting volume at " + URI + "\n");
 
 			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			    logger.info("HTTP POST delete operation result: " + solr_del_res);
-			    // sendMessage(session, collection, "Successfully deleted volume with volume id " + volume_id + " from index\n");
 
 			    String index_res = htclient.restPost(solrizedRes,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri + " for volume id " + volume_id );
-			    sendMessage(session, collection, "sending doc '" + document + "' to index with volume id " + volume_id + "\n");
+			    sendMessage(session, collection, "Reindexed '" + document + "' with volume id " + volume_id + "\n");
 			}
 		    }
 		} else if(op.matches(".*DELETE.*")) {
@@ -238,12 +236,9 @@ public class RunLoad {
 		    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 		    res = res + "\n" + solr_del_res;
 		    sendMessage(session, collection,
-				"Deleted document '" + document + "' at URI from index '" + URI + "'\n");
-		} else if(op.matches(".*GET.*")) {
-		    logger.info("GET operation = " + op);
+				"Deleted document '" + document + "' from index\n");
 		} else {
-		    String res = htclient.restHead(URI);
-		    logger.info("Other operation result: " + res);
+		    sendMessage(session, collection, "Operation " + op + " is not supported");
 		}
 	    } else {
 		sendMessage(session, collection, "The document '" + document
