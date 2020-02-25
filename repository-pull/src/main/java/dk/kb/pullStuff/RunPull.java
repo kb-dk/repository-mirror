@@ -58,10 +58,10 @@ public class RunPull {
 			connection = connectionFactory.createConnection();
 			connection.start();
 
-			session                      = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			String queue                 = consts.getConstants().getProperty("queue.name");
+			session                     = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			String queue                = consts.getConstants().getProperty("queue.name");
 			Destination pullDestination = session.createQueue(queue);
-			String push_queue            = consts.getConstants().getProperty("queue.load.name");
+			String push_queue           = consts.getConstants().getProperty("queue.load.name");
 			Destination pushDestination = session.createQueue(push_queue);
 			pullConsumer                = session.createConsumer(pullDestination);
 
