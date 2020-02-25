@@ -219,7 +219,7 @@ public class RunLoad {
 
 			    String solr_del_res = htclient.restPost(solrDel,solr_index_uri);
 			    logger.info("HTTP POST delete operation result: " + solr_del_res);
-			    sendMessage(session, collection, "Successfully deleted volume with volume id " + volume_id + " from index\n");
+			    // sendMessage(session, collection, "Successfully deleted volume with volume id " + volume_id + " from index\n");
 
 			    String index_res = htclient.restPost(solrizedRes,solr_index_uri);
 			    logger.info("index_result " + index_res + " from " + solr_index_uri + " for volume id " + volume_id );
