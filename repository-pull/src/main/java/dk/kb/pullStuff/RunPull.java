@@ -182,6 +182,7 @@ public class RunPull {
 
 		if (op.isEmpty()) {
 			logger.info("OK nothing to do");
+			sendMessage(producer, session, collection, repository, branch, target, "", "EMPTY");
 		} else {
 			logger.info("found operations");
 			java.util.Iterator<String> keys = op.keySet().iterator();

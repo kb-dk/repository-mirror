@@ -98,9 +98,15 @@ public class ApiClient {
 		String contents = null;
 		CloseableHttpClient httpClient = null;
 		try {
+			if( this.user.equalsIgnoreCase("") && this.passwd.equalsIgnoreCase("")) {
+			    logger.info("Have no credentials for " + URI);
+			    httpClient = HttpClients.createDefault();
+			} else {
+			    logger.info("using credentials " +  this.user + " with password " + this.passwd);
+			    httpClient = HttpClients.custom().setDefaultCredentialsProvider( this.setCred() ).build();
+			}
 			HttpGet request = new HttpGet(URI);
-			httpClient = HttpClients.createDefault();
-			if( !this.user.equalsIgnoreCase("") && !this.passwd.equalsIgnoreCase("")) {}
+			
 			ht_response = httpClient.execute(request);
 			HttpEntity entity = ht_response.getEntity();
 			int statusCode = ht_response.getStatusLine().getStatusCode();
@@ -280,7 +286,7 @@ public class ApiClient {
 					if (status >= 200 && status < 300 || status==401) {
 						HttpEntity responseEntity = response.getEntity();
 						logger.info("Got " +  status + " for " + URI);
-						return responseEntity != null ? EntityUtils.toString(responseEntity) : null;
+						return responseEntity != null ? EntityUtils.toString(responseEntity) : "";
 					} else {
 						throw new ClientProtocolException("Unexpected response status: " + status);
 					}
