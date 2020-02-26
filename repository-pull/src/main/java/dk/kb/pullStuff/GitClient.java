@@ -111,8 +111,8 @@ public class GitClient {
 			ObjectId from =   repo.resolve(local_branch);
 			ObjectId to   =   repo.resolve(published_branch);
 
-			//			op = listDiff(repo,from,to);
-			op = listDiff(repo,to,from);
+			op = listDiff(repo,from,to);
+			// op = listDiff(repo,to,from);
 
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 			logger.error("git prob: ", gitProblem);
