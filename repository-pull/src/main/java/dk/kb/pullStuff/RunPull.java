@@ -162,11 +162,11 @@ public class RunPull {
 		// Now we reset the publishedBranch to the state of the remote master.
 		// I.e., we have exactly the same data as in branch master.
 		
-		/* logger.info(git.gitResetTo("origin/master")); */
+		logger.info(git.gitResetTo("origin/master")); 
 
 		// There is something silly in this, at least for GV,
 		// who don't update its development branch more than
-		// four times a year and hardly ever it master
+		// four times a year and hardly ever it merge to master
 
 		// Having done that we merge the remote desired branch into publishedBranch.
 		//
