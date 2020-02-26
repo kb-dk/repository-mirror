@@ -213,7 +213,6 @@ public class RunPull {
 			jme.printStackTrace();
 			logger.error("could not text send message to queue");
 		}
-		
 	}
 
 	private static Logger configureLog4j() {

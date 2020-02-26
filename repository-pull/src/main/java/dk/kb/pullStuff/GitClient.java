@@ -152,7 +152,7 @@ public class GitClient {
 	 * @throws GitAPIException Git error
 	 * @throws IOException IO error
 	 */
-	protected java.util.HashMap<String,String> listOperations(ObjectId oldCommit, ObjectId newCommit)
+	protected HashMap<String,String> listOperations(ObjectId oldCommit, ObjectId newCommit)
 			throws GitAPIException, IOException {
 	    
 		List<DiffEntry> diffs = getDiffs(oldCommit, newCommit);
@@ -195,14 +195,12 @@ public class GitClient {
 
 				logger.info("type=" + type + " We'll " + method + " " + file);
 				operations.put(file,method);
-
 			} else if(type.equals("DELETE")) {
 				String file = diff.getOldPath() + "";
 				String method = "DELETE";
 
 				logger.info("type=" + type + " We'll " + method + " " + file);
 				operations.put(file,method);
-
 			}
 
 			logger.info("Type="+diff.getChangeType() + "\nNew path=" +  diff.getNewPath() + "\nOld Path=" +  diff.getOldPath());
@@ -229,7 +227,6 @@ public class GitClient {
 		walk.dispose();
 
 		return treeParser;
-
 	}
 
 	public String gitBranches() {
@@ -326,28 +323,6 @@ public class GitClient {
 	public String gitPull() {
 		// We choose the remote
 		return gitPullFromBranch(this.branch);
-	}
-
-	public void gitPullAll() {
-		ListBranchCommand branches = git.branchList();
-		branches.setListMode(ListBranchCommand.ListMode.ALL);
-		try {
-			List<Ref> res = branches.call();
-
-			for(Ref ref : res) {
-				if(ref.getName().contains("origin")) {
-					String branchName = ref.getName().replaceAll(".*origin/","");
-					logger.info("Pulling branch: " + branchName);
-					git.pull()
-							.setCredentialsProvider(credentials)
-							.setRemote("origin")
-							.setRemoteBranchName(branchName)
-							.call();
-				}
-			}
-		} catch (GitAPIException e) {
-			logger.error("Could not perform a git pull --all", e);
-		}
 	}
 
 	public String gitPullFromBranch(String branch) {
