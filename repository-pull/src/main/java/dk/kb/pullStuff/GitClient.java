@@ -27,6 +27,7 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -97,8 +98,8 @@ public class GitClient {
 
 
 
-	public  java.util.HashMap<String,String> gitLog() {
-		java.util.HashMap<String,String> op = new java.util.HashMap<String,String>();
+	public HashMap<String,String> gitLog() {
+		HashMap<String,String> op = new HashMap<>();
 		try {
 			//LogCommand log =  git.log();
 			Repository repo = git.getRepository();
@@ -111,31 +112,24 @@ public class GitClient {
 			ObjectId from =   repo.resolve(local_branch);
 			ObjectId to   =   repo.resolve(published_branch);
 
-			//			op = listDiff(repo,from,to);
-			op = listDiff(repo,to,from);
-
-		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: ", gitProblem);
-		} catch (org.eclipse.jgit.errors.AmbiguousObjectException objectProblem) {
-			logger.error("git ambiguity prob: ", objectProblem);
-		} catch(org.eclipse.jgit.errors.IncorrectObjectTypeException e) {
-			logger.error("git prob: ", e);
-		} catch(org.eclipse.jgit.errors.MissingObjectException e) {
-			logger.error("git prob: ", e);
-		} catch(java.io.IOException e) {
-			logger.error("git IO prob: ", e);
+			op = listOperations(to,from);
+		} catch (GitAPIException | IOException e) {
+			logger.error("Exception caught while looking at the git log.", e);
 		}
 		return op;
 	}
 
 	/* Borrowed from dstadler's jgit-cookbook: https://bit.ly/2S7ihzj */
 
-
-	private java.util.HashMap<String,String> listDiff(Repository repo,
-							  ObjectId   oldCommit,
-							  ObjectId   newCommit)
-			throws org.eclipse.jgit.api.errors.GitAPIException, java.io.IOException {
-	    
+	/**
+	 * Retrieves the diffs between two commits potential on different branches.
+	 * @param oldCommit From commit.
+	 * @param newCommit To commit.
+	 * @return The list of git-diffs.
+	 * @throws GitAPIException Git error
+	 * @throws IOException IO error
+	 */
+	protected List<DiffEntry> getDiffs(ObjectId oldCommit, ObjectId newCommit) throws GitAPIException, IOException {
 		if(oldCommit == null) {
 			throw new IllegalArgumentException("oldCommit is null");
 		}
@@ -143,12 +137,27 @@ public class GitClient {
 			throw new IllegalArgumentException("newCommit is null");
 		}
 
-		java.util.List<DiffEntry> diffs = git.diff()
-				.setOldTree(prepareTreeParser(repo, oldCommit))
-				.setNewTree(prepareTreeParser(repo, newCommit))
+		return git.diff()
+				.setOldTree(prepareTreeParser(git.getRepository(), oldCommit))
+				.setNewTree(prepareTreeParser(git.getRepository(), newCommit))
 				.call();
+	}
 
-		java.util.HashMap<String,String> operations = new java.util.HashMap<String,String>() ;
+	/**
+	 * Lists the different operations to traverse between the 'from commit' to the 'to commit'.
+	 *
+	 * @param oldCommit The from commit.
+	 * @param newCommit The to commit.
+	 * @return The list of operations on which files.
+	 * @throws GitAPIException Git error
+	 * @throws IOException IO error
+	 */
+	protected java.util.HashMap<String,String> listOperations(ObjectId oldCommit, ObjectId newCommit)
+			throws GitAPIException, IOException {
+	    
+		List<DiffEntry> diffs = getDiffs(oldCommit, newCommit);
+
+		HashMap<String,String> operations = new HashMap<>() ;
 
 		logger.info("Found: " + diffs.size() + " differences");
 
@@ -204,7 +213,7 @@ public class GitClient {
 		return operations;
 	}
 
-	private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws java.io.IOException  {
+	private AbstractTreeIterator prepareTreeParser(Repository repo,  ObjectId objId) throws IOException  {
 		// from the commit we can build the tree which allows us to construct the TreeParser
 		// noinspection Duplicates
 
