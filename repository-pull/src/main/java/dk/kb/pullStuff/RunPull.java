@@ -129,7 +129,18 @@ public class RunPull {
 
 		// publishedBranch is used for storing data prior to loading it into eXist and then Solr
 
-		String publishedBranch = consts.getConstants().getProperty("published.branch");
+		String use_branch;
+
+		if(target.equals("production")) {
+		    use_branch = "published.branch";
+		} else {
+		    // i.e., target.equals("staging")
+		    use_branch = "previewed.corpus";
+		}
+
+
+		
+		String publishedBranch = consts.getConstants().getProperty( use_branch );
 
 		// branch is the branch we want to mirror. Here we tell our git gateway the names of the two branches
 
