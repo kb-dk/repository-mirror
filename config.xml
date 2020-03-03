@@ -11,7 +11,10 @@ Author: Sigfrid Lundberg (slu@kb.dk)
     <entry key="queue.loglevel">info</entry>
     <entry key="data.home">/home/text-service/</entry>
 
+    <!-- staging and production, respectively -->
     <entry key="published.branch">installed_corpus</entry>
+    <entry key="previewed.branch">previewed_corpus</entry>
+    
     <entry key="xsl.add_id">/xsl/add-id.xsl</entry>
     <entry key="staging.index_name">text-retriever-core</entry>
     <entry key="production.index_name">text-retriever-preview</entry>

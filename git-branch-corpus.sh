@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPOS="public-adl-text-sources adl-text-sources other_tei_projects SKS_tei trykkefrihedsskrifter"
+REPOS="public-adl-text-sources adl-text-sources other_tei_projects SKS_tei trykkefrihedsskrifter GV"
 
 for repo in $REPOS ; do (
 
@@ -11,6 +11,7 @@ for repo in $REPOS ; do (
 	else
 	    echo "branching $repo"
 	    git branch installed_corpus
+	    git branch previewed_corpus
 	fi
 	
 ) done
