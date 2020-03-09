@@ -18,7 +18,6 @@
       pageContext.setAttribute("user_name", user_name);
       pageContext.setAttribute("group_name", group_name);
 
-
       String coll = "choose";
       String reg  = ";";
 

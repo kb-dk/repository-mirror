@@ -127,14 +127,25 @@ public class RunPull {
 		logger.info("Setting repository: " + repository);
 		GitClient git = new GitClient(repository);
 
-		// publishedBranch is used for storing data prior to loading it into eXist and then Solr
+		// workBranch is used for storing data prior to loading it into eXist and then Solr
 
-		String publishedBranch = consts.getConstants().getProperty("published.branch");
+		String use_branch;
+
+		if(target.equals("production")) {
+		    use_branch = "published.branch";
+		} else {
+		    // i.e., target.equals("staging")
+		    use_branch = "previewed.branch";
+		}
+
+
+		
+		String workBranch = consts.getConstants().getProperty( use_branch );
 
 		// branch is the branch we want to mirror. Here we tell our git gateway the names of the two branches
 
 		git.setBranch(branch);
-		git.setPublishedBranch(publishedBranch);
+		git.setPublishedBranch(workBranch);
 
 		// OK, first we fetch. We'll basically get everything that has happened since last fetch.
 		
@@ -145,7 +156,7 @@ public class RunPull {
 		logger.info(git.gitCheckOut());
 		logger.info(git.gitPull());
 
-		// Now we turn to the publishedBranch. This is where we are doing the work.
+		// Now we turn to the workBranch. This is where we are doing the work.
 		// There is no corresponding branch, remotely and hence no need to pull.
 		//
 		// This branch should reflect the status of the last import
@@ -159,7 +170,7 @@ public class RunPull {
 
 		java.util.HashMap<String, String> op = git.gitLog();
 
-		// Now we reset the publishedBranch to the state of the remote master.
+		// Now we reset the workBranch to the state of the remote master.
 		// I.e., we have exactly the same data as in branch master.
 		
 		logger.info(git.gitResetTo("origin/master")); 
@@ -168,7 +179,7 @@ public class RunPull {
 		// who don't update its development branch more than
 		// four times a year and hardly ever it merge to master
 
-		// Having done that we merge the remote desired branch into publishedBranch.
+		// Having done that we merge the remote desired branch into workBranch.
 		//
 		// By doing this in this odd order, we'll be able to take into account the fact that the
 		// database might contain earlier changes. These will be overwritten below
