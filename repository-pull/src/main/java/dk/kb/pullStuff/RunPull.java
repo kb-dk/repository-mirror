@@ -1,7 +1,6 @@
 package dk.kb.pullStuff;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.camel.Produce;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -137,8 +136,6 @@ public class RunPull {
 		    // i.e., target.equals("staging")
 		    use_branch = "previewed.branch";
 		}
-
-
 		
 		String workBranch = consts.getConstants().getProperty( use_branch );
 
@@ -173,7 +170,7 @@ public class RunPull {
 		// Now we reset the workBranch to the state of the remote master.
 		// I.e., we have exactly the same data as in branch master.
 		
-		logger.info(git.gitResetTo("origin/master")); 
+//		logger.info(git.gitResetTo("origin/master"));
 
 		// There is something silly in this, at least for GV,
 		// who don't update its development branch more than
@@ -186,7 +183,7 @@ public class RunPull {
 		// when we queue up the operations in the op HashMap for execution in the next step in
 		// the "conveyor belt"
 
-		logger.info(git.gitMergeToPublished(branch));
+		git.gitSwitchPublished();
 
 		if (op.isEmpty()) {
 			logger.info("OK nothing to do");

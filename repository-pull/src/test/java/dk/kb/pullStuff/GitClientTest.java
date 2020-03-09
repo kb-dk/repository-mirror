@@ -445,19 +445,57 @@ public class GitClientTest extends ExtendedTestCase {
     }
 
     @Test
+    public void testCreatingAndDeletingBranches() throws Exception {
+        addDescription("Test creating and deleting branches");
+        File gitRepoDir = getTestRepo();
+        ConfigurableConstants.getInstance().getConstants().setProperty("data.home", gitRepoDir.getParent());
+        GitClient client = new GitClient(gitRepoDir.getName());
+
+        String branchName = UUID.randomUUID().toString();
+        Assert.assertFalse(client.gitBranches().contains(branchName));
+
+        addStep("Create branch", "Should now be among the branches");
+        client.createBranch(branchName);
+        Assert.assertTrue(client.gitBranches().contains(branchName));
+
+        addStep("Delete branch", "Should no longer be among the branches");
+        client.deleteBranch(branchName);
+        Assert.assertFalse(client.gitBranches().contains(branchName));
+    }
+
+    @Test
     public void testSwitchingBranch() throws Exception {
         addDescription("Test switching branches");
         File gitRepoDir = getTestRepo();
         ConfigurableConstants.getInstance().getConstants().setProperty("data.home", gitRepoDir.getParent());
         GitClient client = new GitClient(gitRepoDir.getName());
 
-        client.gitPullFromBranch("origin/master");
         client.gitCheckOutBranch("origin/master");
-        Assert.assertEquals(client.git.getRepository().getBranch(), "master");
 
-        client.gitPullFromBranch("origin/step1");
-        client.gitCheckOutBranch("origin/step1");
-        Assert.assertEquals(client.git.getRepository().getBranch(), "step1");
+        String publishedBranch = UUID.randomUUID().toString();
 
+        try {
+            client.setBranch("origin/stepA");
+            Assert.assertEquals(client.git.getRepository().getBranch(), "master");
+
+            client.gitCheckOut();
+            Assert.assertEquals(client.git.getRepository().getBranch(), "stepA");
+
+            Assert.assertFalse(client.gitBranches().contains(publishedBranch));
+            client.setPublishedBranch(publishedBranch);
+            Assert.assertTrue(client.gitBranches().contains(publishedBranch));
+
+            Assert.assertEquals(client.git.getRepository().getBranch(), "stepA");
+            client.setBranch("origin/step2");
+            Assert.assertEquals(client.git.getRepository().getBranch(), "stepA");
+
+            addStep("Switch the published branch to the curent branch", "Should delete and recreate branch");
+            client.gitSwitchPublished();
+            Assert.assertEquals(client.git.getRepository().getBranch(), "step2");
+            Assert.assertTrue(client.gitBranches().contains(publishedBranch));
+        } finally {
+            client.deleteBranch(publishedBranch);
+            Assert.assertFalse(client.gitBranches().contains(publishedBranch));
+        }
     }
 }

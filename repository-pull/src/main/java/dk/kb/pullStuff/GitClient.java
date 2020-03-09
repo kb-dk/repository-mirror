@@ -12,6 +12,8 @@ import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.errors.AmbiguousObjectException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
@@ -61,6 +63,9 @@ public class GitClient {
 
 	public void setPublishedBranch(String branch) {
 		this.published_branch = branch;
+		if(!gitBranches().contains(branch)) {
+			createBranch(branch);
+		}
 	}
 
 	private void init() {
@@ -353,33 +358,37 @@ public class GitClient {
 		}
 	}
 
-	public String gitMergeToPublished(String branch) {
-
-		String local_name = branch.replaceAll("(.*?/)","");
-
+	public void gitSwitchPublished() {
 		try {
-			MergeCommand mgCmd = git.merge();
-			Repository repo = git.getRepository();
-			mgCmd.include(repo.resolve(local_name));
-			MergeResult res = mgCmd.call();
-			return res.toString();
-		} catch (org.eclipse.jgit.errors.IncorrectObjectTypeException objectTypeProb) {
-			logger.info("git prob: ", objectTypeProb);
-			return "git pull failed";
-		} catch (org.eclipse.jgit.errors.AmbiguousObjectException ambiguityProb) {
-			logger.info("git prob: ", ambiguityProb);
-			return "git pull failed";
-		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.info("git prob: ", gitProblem);
-			return "git pull failed";
-		} catch(java.io.IOException repoProblem ) {
-			logger.info("IO prob: ", repoProblem);
-			return "git pull failed";
+			gitCheckOutBranch(branch);
+			deleteBranch(published_branch);
+			createBranch(published_branch);
+		} catch (GitAPIException e) {
+			logger.info("git prob: ", e);
+			throw new IllegalStateException("Failed to switch branches.", e);
 		}
-
 	}
 
+	/**
+	 * Creates a branch at the current point with the given name.
+	 * @param branchName The name of the branch.
+	 */
+	protected void createBranch(String branchName) {
+		try {
+			git.branchCreate().setName(branchName).call();
+		} catch (GitAPIException e) {
+			throw new IllegalStateException("Failed to instantiate branch with name '" + branchName + "'", e);
+		}
+	}
 
+	/**
+	 * Deletes the given branch. Will use force!
+	 * @param branchName The name of the branch to delete.
+	 * @throws GitAPIException If it fails to delete the branch.
+	 */
+	protected void deleteBranch(String branchName) throws GitAPIException {
+		git.branchDelete().setBranchNames(branchName).setForce(true).call();
+	}
 
 	// Other stuff
 
