@@ -444,4 +444,20 @@ public class GitClientTest extends ExtendedTestCase {
         Assert.assertEquals(operations.get("test-file2.txt"), "DELETE");
     }
 
+    @Test
+    public void testSwitchingBranch() throws Exception {
+        addDescription("Test switching branches");
+        File gitRepoDir = getTestRepo();
+        ConfigurableConstants.getInstance().getConstants().setProperty("data.home", gitRepoDir.getParent());
+        GitClient client = new GitClient(gitRepoDir.getName());
+
+        client.gitPullFromBranch("origin/master");
+        client.gitCheckOutBranch("origin/master");
+        Assert.assertEquals(client.git.getRepository().getBranch(), "master");
+
+        client.gitPullFromBranch("origin/step1");
+        client.gitCheckOutBranch("origin/step1");
+        Assert.assertEquals(client.git.getRepository().getBranch(), "step1");
+
+    }
 }
