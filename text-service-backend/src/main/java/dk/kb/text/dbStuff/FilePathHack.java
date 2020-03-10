@@ -1,11 +1,11 @@
 package dk.kb.text.dbStuff;
 
 import com.damnhandy.uri.template.UriTemplate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import dk.kb.text.ConfigurableConstants;
 import org.apache.log4j.Logger;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 I had the intention that just about everything should be configurable

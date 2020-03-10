@@ -3,7 +3,9 @@ package dk.kb.text;
 import dk.kb.text.connection.CloseableConnection;
 import dk.kb.text.connection.CloseableMessageConsumer;
 import dk.kb.text.connection.CloseableSession;
+import dk.kb.text.dbStuff.ApiClient;
 import dk.kb.text.dbStuff.RunLoad;
+import dk.kb.text.message.ResponseMediator;
 import dk.kb.text.pullStuff.Invocation;
 import dk.kb.text.pullStuff.RunPull;
 import dk.kb.text.utils.ConfUtils;
@@ -30,7 +32,6 @@ public class TextServiceBackend {
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(host);
         String consumeQueue = ConfigurableConstants.getInstance().getConstants().getProperty("queue.name");
-        String produceQueue= ConfigurableConstants.getInstance().getConstants().getProperty("queue.load.name");
 
         // Use try-with-resource to auto-close connections
         try (CloseableConnection connection = new CloseableConnection(connectionFactory.createConnection());
@@ -38,14 +39,16 @@ public class TextServiceBackend {
                      false, Session.AUTO_ACKNOWLEDGE));){
             Destination pullDestination = session.createQueue(consumeQueue);
 
-            try (CloseableMessageConsumer pullConsumer = new CloseableMessageConsumer(session.createConsumer(pullDestination));) {
+            try (CloseableMessageConsumer pullConsumer = new CloseableMessageConsumer(
+                    session.createConsumer(pullDestination))) {
 
                 while (true) {
                     try {
                         logger.info("Waiting for next message");
                         Message message = pullConsumer.receive();
+                        Invocation invocation = Invocation.extractFromMessage(message);
 
-                        handleMessage(session, message);
+                        handleMessage(session, invocation);
                     } catch (Exception e) {
                         logger.error("Error connecting. Waiting 60 sek and try again.", e);
 
@@ -58,22 +61,33 @@ public class TextServiceBackend {
         }
     }
 
-    protected static void handleMessage(Session session, Message message) {
-        try {
-            Invocation invocation = Invocation.extractFromMessage(message);
-            RunLoad runLoad = new RunLoad(session, invocation);
-            Map<String, String> operations = runPull.performPull(invocation);
+    protected static synchronized void handleMessage(Session session, Invocation invocation) throws JMSException {
+        try (ResponseMediator mediator = new ResponseMediator(session, invocation)) {
+            mediator.sendMessage("Initializing switch for '" + invocation.getTarget() + "' towards branch: '"
+                    + invocation.getBranch() + "' for repository: '" + invocation.getRepository() + "'");
+            try {
+                Map<String, String> operations = runPull.performPull(invocation);
 
-            // load the data
-            for(Map.Entry<String, String> operation : operations.entrySet()) {
-                try {
-                    runLoad.handleOperation(operation.getKey(), operation.getValue());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                mediator.sendMessage("Git repository '" + invocation.getRepository() + "' switched to '"
+                        + invocation.getBranch() + "' for '" + invocation.getTarget() + "'. Found '"
+                        + operations.size() + "' file changes to handle.");
+
+                RunLoad runLoad = new RunLoad(new ApiClient(), invocation, mediator);
+
+                // load the data
+                for (Map.Entry<String, String> operation : operations.entrySet()) {
+                    try {
+                        runLoad.handleOperation(operation.getKey(), operation.getValue());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                runLoad.commit();
+            } catch (Exception e) {
+                logger.error("Failed to handle message '" + invocation + "'", e);
+                mediator.sendMessage("Failed to handle message '" + invocation + "'. Got error message: "
+                        + e.getMessage());
             }
-        } catch (JMSException e) {
-            e.printStackTrace();
         }
     }
 

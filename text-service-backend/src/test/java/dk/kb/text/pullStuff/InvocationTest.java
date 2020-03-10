@@ -2,47 +2,38 @@ package dk.kb.text.pullStuff;
 
 import org.jaccept.structure.ExtendedTestCase;
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.Enumeration;
-
 import java.util.UUID;
 
-public class RunPullTest extends ExtendedTestCase {
+public class InvocationTest extends ExtendedTestCase {
 
     @Test(expectedExceptions = IllegalStateException.class)
     public void testFailureWrongMessageFormat() throws Exception {
         addDescription("Test when sending a wrong format for the message (e.g. not TextMessage)");
-        MessageProducer producer = Mockito.mock(MessageProducer.class);
-        Session session = Mockito.mock(Session.class);
-
         Message msg = Mockito.mock(Message.class);
 
-        RunPull.handleMessage(producer, session, msg);
+        Invocation.extractFromMessage(msg);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testFailureBadMessageFormat() throws Exception {
         addDescription("Test when sending a wrong format for the message (e.g. not TextMessage)");
-        MessageProducer producer = Mockito.mock(MessageProducer.class);
-        Session session = Mockito.mock(Session.class);
 
         TextMessage txtMessage = getTextMessage("NOT ENOUGH PARTS");
 
-        RunPull.handleMessage(producer, session, txtMessage);
+        Invocation.extractFromMessage(txtMessage);
     }
 
-    @Test(enabled = false)
+    @Test
     public void testStuff() throws Exception {
-        addDescription("Test when sending a wrong format for the message (e.g. not TextMessage)");
-        MessageProducer producer = Mockito.mock(MessageProducer.class);
-        Session session = Mockito.mock(Session.class);
+        addDescription("Test that a correctly formatted message is parsed successfully.");
 
         String collection = UUID.randomUUID().toString();
         String repository  = "public-adl-text-sources";
@@ -51,7 +42,12 @@ public class RunPullTest extends ExtendedTestCase {
 
         TextMessage txtMessage = getTextMessage(collection + ";" + repository + ";" + branch + ";" + target);
 
-        RunPull.handleMessage(producer, session, txtMessage);
+        Invocation invocation = Invocation.extractFromMessage(txtMessage);
+
+        Assert.assertEquals(invocation.getCollection(), collection);
+        Assert.assertEquals(invocation.getRepository(), repository);
+        Assert.assertEquals(invocation.getBranch(), branch);
+        Assert.assertEquals(invocation.getTarget(), target);
     }
 
     protected TextMessage getTextMessage(String message) {

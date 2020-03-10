@@ -34,6 +34,10 @@ public class RunPull {
 	 */
 	public RunPull() {}
 
+	public void initializeRepository(Invocation invocation) {
+
+	}
+
 	/**
 	 * Performs the pull.
 	 * @param invocation The invocation with the pull operation.

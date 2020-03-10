@@ -80,4 +80,9 @@ public class Invocation {
     public String getTarget() {
         return target;
     }
+
+    @Override
+    public String toString() {
+        return "Invocation: [" + collection + ";" +repository + ";" + branch + ";" + target + "]";
+    }
 }
