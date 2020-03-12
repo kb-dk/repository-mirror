@@ -17,7 +17,7 @@ public class GitClientTest extends ExtendedTestCase {
 
     String devNull = "/dev/null";
 
-    public File getTestRepo() {
+    public static File getTestRepo() {
         File gitRepoDir = new File("../../TextServiceTests").getAbsoluteFile();
         if(!gitRepoDir.exists()) {
             throw new SkipException("CANNOT FIND REPO AT: " + gitRepoDir.getAbsolutePath());

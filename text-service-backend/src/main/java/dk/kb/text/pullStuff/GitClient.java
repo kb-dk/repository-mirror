@@ -101,24 +101,19 @@ public class GitClient {
 
 
 	public HashMap<String,String> gitLog() {
-		HashMap<String,String> op = new HashMap<>();
 		try {
-			//LogCommand log =  git.log();
 			Repository repo = git.getRepository();
 
-			String local_branch = this.branch;//.replaceAll("(.*?/)","");
-			String published_branch = this.published_branch;//.replaceAll("(.*?/)","");
+			logger.info("Git difference between branches: " + this.branch + " and " + this.published_branch);
 
-			logger.error("diff between: " + this.branch + " and " + this.published_branch);
-
-			ObjectId from =   repo.resolve(local_branch);
+			ObjectId from =   repo.resolve(branch);
 			ObjectId to   =   repo.resolve(published_branch);
 
-			op = listOperations(to,from);
+			return listOperations(to,from);
 		} catch (GitAPIException | IOException e) {
 			logger.error("Exception caught while looking at the git log.", e);
+			throw new IllegalStateException("Failed to retrieve git log.", e);
 		}
-		return op;
 	}
 
 	/* Borrowed from dstadler's jgit-cookbook: https://bit.ly/2S7ihzj */
