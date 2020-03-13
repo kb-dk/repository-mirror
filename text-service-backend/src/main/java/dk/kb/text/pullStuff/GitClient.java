@@ -237,9 +237,9 @@ public class GitClient {
 				blist = blist + lister.next() + "\n";
 			}
 			return res.toString();
-		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: ", gitProblem);
-			return "git branch failed";
+		} catch (org.eclipse.jgit.api.errors.GitAPIException e) {
+			logger.error("Error while retrieving branches: ", e);
+			throw new IllegalStateException("", e);
 		}
 	}
 
