@@ -112,6 +112,7 @@ public class GitClient {
 			ObjectId to   =   repo.resolve(published_branch);
 
 			op = listDiff(repo,from,to);
+			// op = listDiff(repo,to,from);
 
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 			logger.error("git prob: ", gitProblem);
@@ -342,13 +343,15 @@ public class GitClient {
 
 	public String gitPullFromBranch(String branch) {
 
-		String local_name = branch; //.replaceAll("(.*?/)","");
+	    String local_name = branch; //.replaceAll("(.*?/)","");
 
 		try {
 			PullResult res = git.pull()
-					.setCredentialsProvider(credentials)
-					.setRemoteBranchName(local_name)
-					.call();
+			    .setCredentialsProvider(credentials)
+			    //			    .setRemote("origin")
+			    .setRemoteBranchName(local_name)
+			    .call();
+			
 			return res.toString();
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
 			logger.error("git prob: " + gitProblem + " trying to pull from " + local_name, gitProblem);

@@ -23,7 +23,7 @@ import java.util.Properties;
  */
 public class RunPull {
 
-	/*
+    /*
       We have different branches, locally and
       remotely. Two are the ones we work with. One is
       in our remote git text repository and one in the
@@ -94,8 +94,10 @@ public class RunPull {
 		}
 	}
 
-	protected static synchronized void handleMessage(MessageProducer producer, Session session, Message message)
-			throws JMSException {
+	protected static synchronized void handleMessage(MessageProducer producer,
+							 Session session,
+							 Message message) throws JMSException {
+	    
 		String msg = "";
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
@@ -121,61 +123,56 @@ public class RunPull {
 	protected static void performPull(MessageProducer producer, Session session, String collection, String repository,
 									  String branch, String target) {
 		// Initialize our git gateway
+	    
 		logger.info("Setting repository: " + repository);
 		GitClient git = new GitClient(repository);
 
-		// This branch is used for storing data prior
-		// to loading it into eXist and Solr
+		// publishedBranch is used for storing data prior to loading it into eXist and then Solr
 
 		String publishedBranch = consts.getConstants().getProperty("published.branch");
 
-		// Tell our git gateway the names of the two branches
+		// branch is the branch we want to mirror. Here we tell our git gateway the names of the two branches
+
 		git.setBranch(branch);
 		git.setPublishedBranch(publishedBranch);
 
-		// OK, first we fetch. We'll basically get
-		// everything that has happened since last
-		// fetch.
+		// OK, first we fetch. We'll basically get everything that has happened since last fetch.
+		
 		logger.info(git.gitFetch());
 
-		// branch, checkout the desired branch and do
-		// a pull
-
-		//git.gitPullAll();
+		// Now we checkout the desired branch and do a pull
+		
 		logger.info(git.gitCheckOut());
 		logger.info(git.gitPull());
 
-		// publishedBranch. This is where we are doing
-		// the work. There isn't any corresponding
-		// branch remotely so there is no need to
-		// pull.
+		// Now we turn to the publishedBranch. This is where we are doing the work.
+		// There is no corresponding branch, remotely and hence no need to pull.
 		//
-		// This branch should reflect the status of
-		// the last import
+		// This branch should reflect the status of the last import
 
 		logger.info(git.gitCheckOutPublished());
 
-		// Now we have the two branches. In spite of
-		// the name gitLog() this is calculating a
-		// diff, not a log. This is actually returning a
-		// map between an object and operation.
+		// Now we have two branches, out of which branch is in sync with the repository.
+		// In spite of its name gitLog() is calculating a diff, not a log.
+		// It is actually returning a map between an object (path and file name) and operation.
+		// I.e., basically filenames connected to rest GET, PUT, DELETE etc.
 
 		java.util.HashMap<String, String> op = git.gitLog();
 
-		// This resets the publishedBranch to the
-		// state of the remote master. I.e., we have
-		// exactly the same data as in branch master.
-		logger.info(git.gitResetTo("origin/master"));
+		// Now we reset the publishedBranch to the state of the remote master.
+		// I.e., we have exactly the same data as in branch master.
+		
+		logger.info(git.gitResetTo("origin/master")); 
 
-		// Now we merge the remote desired branch with
-		// publishedBranch
+		// There is something silly in this, at least for GV,
+		// who don't update its development branch more than
+		// four times a year and hardly ever it merge to master
+
+		// Having done that we merge the remote desired branch into publishedBranch.
 		//
-		// by doing this in this odd order, we'll be
-		// able to take into account the fact that the
-		// database might contain earlier
-		// changes. These will be overwritten below
-		// when we queue up the operations in the op
-		// HashMap for execution in the next step in
+		// By doing this in this odd order, we'll be able to take into account the fact that the
+		// database might contain earlier changes. These will be overwritten below
+		// when we queue up the operations in the op HashMap for execution in the next step in
 		// the "conveyor belt"
 
 		logger.info(git.gitMergeToPublished(branch));
@@ -206,6 +203,7 @@ public class RunPull {
 				+ target + ";"
 				+ key + ";"
 				+ operation;
+
 		logger.info("sending message = " + message);
 		try {
 			TextMessage text_message = session.createTextMessage(message);
@@ -215,6 +213,7 @@ public class RunPull {
 			jme.printStackTrace();
 			logger.error("could not text send message to queue");
 		}
+		
 	}
 
 	private static Logger configureLog4j() {
