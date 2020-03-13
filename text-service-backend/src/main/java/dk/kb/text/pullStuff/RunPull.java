@@ -1,6 +1,7 @@
 package dk.kb.text.pullStuff;
 
 import dk.kb.text.ConfigurableConstants;
+import dk.kb.text.message.Invocation;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -69,15 +70,15 @@ public class RunPull {
 	}
 
 	protected String getPublishedBranch(Invocation invocation) {
-		String use_branch;
+		String useBranch;
 		if(invocation.getTarget().equals("production")) {
-			use_branch = "published.branch";
+			useBranch = "published.branch";
 		} else {
 			// i.e., target.equals("staging")
-			use_branch = "previewed.branch";
+			useBranch = "previewed.branch";
 		}
 
-		return ConfigurableConstants.getInstance().getConstants().getProperty( use_branch );
+		return ConfigurableConstants.getInstance().getConstants().getProperty( useBranch );
 	}
 
 }

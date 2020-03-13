@@ -3,7 +3,7 @@ package dk.kb.text.dbStuff;
 import com.damnhandy.uri.template.UriTemplate;
 import dk.kb.text.ConfigurableConstants;
 import dk.kb.text.message.ResponseMediator;
-import dk.kb.text.pullStuff.Invocation;
+import dk.kb.text.message.Invocation;
 import org.apache.log4j.Logger;
 
 import javax.jms.JMSException;

@@ -6,7 +6,7 @@ import dk.kb.text.connection.CloseableSession;
 import dk.kb.text.dbStuff.ApiClient;
 import dk.kb.text.dbStuff.RunLoad;
 import dk.kb.text.message.ResponseMediator;
-import dk.kb.text.pullStuff.Invocation;
+import dk.kb.text.message.Invocation;
 import dk.kb.text.pullStuff.RunPull;
 import dk.kb.text.utils.ConfUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -61,6 +61,15 @@ public class TextServiceBackend {
         }
     }
 
+    /**
+     * Handles the invocation message for switching a target (publish/preview) to a given branch.
+     *
+     * Synchronized to avoid conflict of interest.
+     *
+     * @param session The message session for sending replies.
+     * @param invocation The invocation message with detail about target, repository, branch and collection.
+     * @throws JMSException If it fails in the message handling
+     */
     protected static synchronized void handleMessage(Session session, Invocation invocation) throws JMSException {
         try (ResponseMediator mediator = new ResponseMediator(session, invocation)) {
             mediator.sendMessage("Initializing switch for '" + invocation.getTarget() + "' towards branch: '"

@@ -1,7 +1,6 @@
 package dk.kb.text.message;
 
 import dk.kb.text.connection.CloseableMessageProducer;
-import dk.kb.text.pullStuff.Invocation;
 import org.apache.log4j.Logger;
 
 import javax.jms.DeliveryMode;

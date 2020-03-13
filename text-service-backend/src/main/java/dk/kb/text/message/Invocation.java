@@ -1,4 +1,4 @@
-package dk.kb.text.pullStuff;
+package dk.kb.text.message;
 
 import org.apache.log4j.Logger;
 

@@ -1,5 +1,6 @@
-package dk.kb.text.pullStuff;
+package dk.kb.text.message;
 
+import dk.kb.text.message.Invocation;
 import org.jaccept.structure.ExtendedTestCase;
 import org.mockito.Mockito;
 import org.testng.Assert;

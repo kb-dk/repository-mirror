@@ -1,6 +1,7 @@
 package dk.kb.text.pullStuff;
 
 import dk.kb.text.ConfigurableConstants;
+import dk.kb.text.message.Invocation;
 import org.jaccept.structure.ExtendedTestCase;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,19 +15,21 @@ public class RunPullTest extends ExtendedTestCase {
 
     @Test
     public void testRunPull() throws IOException {
-        addDescription("Testing the GIT diffs and operations between master branch and the branch step1.");
+        addDescription("Testing the whole pull procedure when going from 'step2' to 'stepA'");
         File gitRepoDir = GitClientTest.getTestRepo();
         ConfigurableConstants.getInstance().getConstants().setProperty("data.home", gitRepoDir.getParent());
 
+        addStep("Make variables for our invocation", "");
         String collection = UUID.randomUUID().toString();
         String target = "production";
         String repository = gitRepoDir.getName();
         String branch = "step2";
-
         Invocation invocation = new Invocation(collection, repository, branch, target);
+
         RunPull runPull = new RunPull();
 
-        addStep("Ensure that the published branch starts at 'stepA'", "");
+        addStep("Ensure that the published branch starts at 'stepA'",
+                "Both current branch and published branch should point to 'stepA'");
         GitClient client = new GitClient(gitRepoDir.getName());
         client.gitCheckOutBranch("origin/stepA");
         client.setBranch("stepA");
@@ -35,7 +38,8 @@ public class RunPullTest extends ExtendedTestCase {
 
         Assert.assertEquals(client.git.getRepository().getBranch(), "stepA");
 
-        addStep("Perform pull between ", "");
+        addStep("Use invocation to change the published branch from 'stepA' to 'step2'",
+                "Should find two file to put and one to delete.");
         Map<String, String> op = runPull.performPull(invocation);
 
         Assert.assertEquals(op.size(), 3);
