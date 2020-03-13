@@ -1,6 +1,7 @@
 package dk.kb.text.pullStuff;
 
 import dk.kb.text.ConfigurableConstants;
+import dk.kb.text.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.jgit.api.CheckoutCommand;
@@ -51,14 +52,17 @@ public class GitClient {
 	}
 
 	public void setRepository(String repo) {
+		StringUtils.validateString(repo, "repo");
 		this.repository = repo;
 	}
 
 	public void setBranch(String branch) {
+		StringUtils.validateString(branch, "branch");
 		this.branch = branch;
 	}
 
 	public void setPublishedBranch(String branch) {
+		StringUtils.validateString(branch, "branch");
 		this.published_branch = branch;
 		if(!gitBranches().contains(branch)) {
 			createBranch(branch);
@@ -237,7 +241,7 @@ public class GitClient {
 				blist = blist + lister.next() + "\n";
 			}
 			return res.toString();
-		} catch (org.eclipse.jgit.api.errors.GitAPIException e) {
+		} catch (GitAPIException e) {
 			logger.error("Error while retrieving branches: ", e);
 			throw new IllegalStateException("", e);
 		}
