@@ -17,6 +17,12 @@ public class RunLoad {
 	protected static final ConfigurableConstants CONFIG = ConfigurableConstants.getInstance();
 	protected static final Logger logger = Logger.getLogger(RunLoad.class);
 
+	public static final String FINAL_MESSAGE = "Finished!\n";
+	public static final String EMPTY_OPERATION_MESSAGE = "No revisions found: Nothing to do!";
+
+
+	public static final String HEAD_VOLUME_ID_REQUEST = "X-Volume-ID";
+
 	protected final ApiClient apiClient;
 	protected final Invocation invocation;
 	protected final ResponseMediator responseMediator;
@@ -31,6 +37,13 @@ public class RunLoad {
 
 	protected final FilePathHack fileFixer = new FilePathHack();
 
+	/**
+	 * Constructor.
+	 * A new RunLoad should be instantiated for each invocation.
+	 * @param apiClient        The api client for loading and indexing the data.
+	 * @param invocation       The invocation for this load.
+	 * @param responseMediator The mediator for sending responses.
+	 */
 	public RunLoad(ApiClient apiClient, Invocation invocation, ResponseMediator responseMediator) {
 		this.apiClient = apiClient;
 		this.invocation = invocation;
@@ -77,22 +90,23 @@ public class RunLoad {
 		String commit_res = apiClient.restGet(solr_commit_uri);
 
 		logger.info("Commit command " + solr_commit_uri + " result:\n" + commit_res);
-		responseMediator.sendMessage("Finished!\n");
+		responseMediator.sendMessage(FINAL_MESSAGE);
 	}
 
 	public void handleOperation(String document, String op) throws Exception {
-		fileFixer.setDocument(document);
-
 		// Start by dismissing empty operations and invalid document paths.
 		if(op.matches(".*EMPTY.*")) {
-			responseMediator.sendMessage("No revisions found: Nothing to do!");
+			responseMediator.sendMessage(EMPTY_OPERATION_MESSAGE);
 			return;
 		}
+
+		fileFixer.setDocument(document);
 		if(! fileFixer.validDocPath()) {
 			responseMediator.sendMessage( "The document '" + document
 					+ "' doesn't seem to belong in database. Cannot perform operation.\n");
 			return;
 		}
+
 
 		String URI = fileFixer.getServicePath();
 		// http:// xstorage-stage-01.kb.dk:8080/exist/rest/db/text-retriever/gv/1815_264/txt.xml
@@ -158,20 +172,20 @@ public class RunLoad {
 			responseMediator.sendMessage( "Failed to solrize the document (failed to create index) '" + document + "\n");
 		} else {
 			logger.info("solrizr: status 200 OK");
-			String volume_id = apiClient.getHttpHeader("X-Volume-ID");
+			String volumeId = apiClient.getHttpHeader(HEAD_VOLUME_ID_REQUEST);
 
 			// This is definately overkill for ADL, but
 			// necessary for, let's say Grundtvig
-			if(volume_id.length() > 0) {
-				String solrDel = solrDeleteVolumeCmd(volume_id);
+			if(volumeId.length() > 0) {
+				String solrDel = solrDeleteVolumeCmd(volumeId);
 				logger.info("delete command: " + solrDel);
 
 				String solr_del_res = apiClient.restPost(solrDel,solr_index_uri);
 				logger.info("HTTP POST delete operation result: " + solr_del_res);
 
 				String index_res = apiClient.restPost(solrizedRes,solr_index_uri);
-				logger.info("index_result " + index_res + " from " + solr_index_uri + " for volume id " + volume_id );
-				responseMediator.sendMessage( "Reindexed '" + document + "' with volume id " + volume_id + "\n");
+				logger.info("index_result " + index_res + " from " + solr_index_uri + " for volume id " + volumeId );
+				responseMediator.sendMessage( "Reindexed '" + document + "' with volume id " + volumeId + "\n");
 			}
 		}
 	}
