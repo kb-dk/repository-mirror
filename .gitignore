@@ -7,4 +7,6 @@ repository-mirror-web/src/main/resources/config.xml
 repository-mirror-web/target/
 repository-pull/src/main/resources/config.xml
 repository-pull/target/
+text-service-backend/src/main/resources/config.xml
+text-service-backend/src/test/resources/config.xml
 
