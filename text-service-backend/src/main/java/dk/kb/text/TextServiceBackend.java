@@ -92,7 +92,7 @@ public class TextServiceBackend {
                     }
                 }
                 runLoad.commit();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 logger.error("Failed to handle message '" + invocation + "'", e);
                 mediator.sendMessage("Failed to handle message '" + invocation + "'. Got error message: "
                         + e.getMessage());

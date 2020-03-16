@@ -37,6 +37,9 @@ public class GitClientTest extends ExtendedTestCase {
         Assert.assertNotNull(client.git);
 
         String branches= client.gitBranches();
+        List<String> blist = client.gitBranchesAsList();
+        System.err.println(branches);
+        System.err.println(blist);
         Assert.assertNotNull(branches);
         Assert.assertTrue(branches.contains("master"), "must contain a master branch");
     }
@@ -58,6 +61,7 @@ public class GitClientTest extends ExtendedTestCase {
         String to = "step1";
         client.setPublishedBranch(from);
         client.setBranch(to);
+
         ObjectId fromCheckin =   client.git.getRepository().resolve(from);
         ObjectId toCheckin   =   client.git.getRepository().resolve(to);
 

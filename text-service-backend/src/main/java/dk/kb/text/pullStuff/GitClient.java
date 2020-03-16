@@ -1,21 +1,25 @@
 package dk.kb.text.pullStuff;
 
 import dk.kb.text.ConfigurableConstants;
-import dk.kb.text.utils.StringUtils;
+import dk.kb.text.utils.ValidationUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.jgit.api.CheckoutCommand;
+import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
+import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -31,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class GitClient {
 
@@ -42,8 +47,6 @@ public class GitClient {
 	private String branch           = "";
 	private String published_branch = "";
 
-	String branchId = "";
-
 	Git git = null;
 
 	public GitClient(String repo) {
@@ -52,20 +55,28 @@ public class GitClient {
 	}
 
 	public void setRepository(String repo) {
-		StringUtils.validateString(repo, "repo");
+		ValidationUtils.validateString(repo, "repo");
 		this.repository = repo;
 	}
 
-	public void setBranch(String branch) {
-		StringUtils.validateString(branch, "branch");
-		this.branch = branch;
+	public void setBranch(String branch) throws IOException {
+		ValidationUtils.validateString(branch, "branch");
+		this.branch = branch.replaceAll("(.*?/)","");;
+
+		// Ensure, that we have the branch locally
+		if(!gitBranchesAsList().contains(this.branch)) {
+			String currentBranch = git.getRepository().getBranch();
+			gitCheckOutBranch(this.branch);
+			gitPullFromBranch(this.branch);
+			gitCheckOutBranch(currentBranch);
+		}
 	}
 
-	public void setPublishedBranch(String branch) {
-		StringUtils.validateString(branch, "branch");
-		this.published_branch = branch;
-		if(!gitBranches().contains(branch)) {
-			createBranch(branch);
+	public void setPublishedBranch(String workBranch) {
+		ValidationUtils.validateString(workBranch, "workBranch");
+		this.published_branch = workBranch;
+		if(!gitBranches().contains(workBranch)) {
+			createBranch(workBranch);
 		}
 	}
 
@@ -131,12 +142,8 @@ public class GitClient {
 	 * @throws IOException IO error
 	 */
 	protected List<DiffEntry> getDiffs(ObjectId oldCommit, ObjectId newCommit) throws GitAPIException, IOException {
-		if(oldCommit == null) {
-			throw new IllegalArgumentException("oldCommit is null");
-		}
-		if(newCommit == null) {
-			throw new IllegalArgumentException("newCommit is null");
-		}
+		ValidationUtils.validateObject(oldCommit, "oldCommit");
+		ValidationUtils.validateObject(newCommit, "newCommit");
 
 		return git.diff()
 				.setOldTree(prepareTreeParser(git.getRepository(), oldCommit))
@@ -155,7 +162,7 @@ public class GitClient {
 	 */
 	protected HashMap<String,String> listOperations(ObjectId oldCommit, ObjectId newCommit)
 			throws GitAPIException, IOException {
-	    
+
 		List<DiffEntry> diffs = getDiffs(oldCommit, newCommit);
 
 		HashMap<String,String> operations = new HashMap<>() ;
@@ -230,17 +237,38 @@ public class GitClient {
 		return treeParser;
 	}
 
+	/**
+	 * Extract the branches as a list, but remove the 'refs/heads' and 'refs/remote' prefixes.
+	 * It then becomes: 'branch' or 'origin/branch'.
+	 * @return The list of branches.
+	 */
+	public List<String> gitBranchesAsList() {
+		try {
+			ListBranchCommand branches = git.branchList();
+			branches.setListMode(ListBranchCommand.ListMode.ALL);
+			List<Ref> refs = branches.call();
+
+			return refs.stream().map(
+					ref -> ref.getName().replace("refs/heads/", "").replace("refs/remotes/", ""))
+					.collect(Collectors.toList());
+		} catch (GitAPIException e) {
+			logger.error("Error while retrieving branches: ", e);
+			throw new IllegalStateException("", e);
+		}
+	}
+
 	public String gitBranches() {
 		try {
 			ListBranchCommand branches = git.branchList();
 			branches.setListMode(ListBranchCommand.ListMode.ALL);
-			java.util.List<Ref> res      = branches.call();
-			Iterator<Ref> lister =  res.iterator();
-			String blist = "";
-			while(lister.hasNext()) {
-				blist = blist + lister.next() + "\n";
+			StringBuffer stringBuffer = new StringBuffer();
+			List<Ref> refs = branches.call();
+
+			for(Ref ref : refs) {
+				stringBuffer.append(ref.getName());
+				stringBuffer.append("\n");
 			}
-			return res.toString();
+			return stringBuffer.toString();
 		} catch (GitAPIException e) {
 			logger.error("Error while retrieving branches: ", e);
 			throw new IllegalStateException("", e);
@@ -255,46 +283,38 @@ public class GitClient {
 		return gitCheckOutBranch(this.published_branch);
 	}
 
-	public String gitCheckOutBranch(String my_branch) {
-		logger.info("about to check out: " + my_branch);
+	/**
+	 * Checkout a given branch. Ensure that it is instantiated locally.
+	 * @param checkoutBranch The name of the branch to checkout.
+	 * @return Log message?
+	 */
+	public String gitCheckOutBranch(String checkoutBranch) {
+		logger.info("Checking out branch: " + checkoutBranch);
 
 		try {
-			CheckoutCommand co = git.checkout();
+			String localBranch = checkoutBranch.replaceAll("(.*?/)","");
+			String originBranch = "origin/" + localBranch;
 
-			String local_branch = my_branch.replaceAll("(.*?/)","");
-			logger.info("local_branch: " + local_branch);
-			co.setName(local_branch);
-			logger.info("name set to local_branch");
+			CheckoutCommand co = git.checkout();
+			co.setName(localBranch);
 			co.setForce(true);
 
-			co.setStartPoint(my_branch);
-			logger.info("start point set to " + my_branch);
-
-
-			co.setCreateBranch(true);
-			co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
-
-			logger.info("create branch");
-			try {
-				Ref rsult = co.call();
-				this.branchId = rsult.getObjectId().toString();
-				logger.debug("Done checking out");
-				return rsult + "";
-			} catch (org.eclipse.jgit.api.errors.RefAlreadyExistsException branchProbl) {
-				logger.info("not really a git branch problem " + branchProbl);
+			// Checkout locally or from origin.
+			if(gitBranchesAsList().contains(localBranch)) {
+				logger.debug("Checking out local branch: " + localBranch);
 				co.setCreateBranch(false);
-				co.setName(local_branch);
-				co.setForce(true);
-				co.setStartPoint(my_branch);
-				co.setUpstreamMode(org.eclipse.jgit.api.CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM);
-				Ref rsult = co.call();
-				this.branchId = rsult.getObjectId().toString();
-				logger.debug("Done checking out");
-				return rsult + "";
+			} else {
+				logger.debug("Checking out remote branch: " + originBranch);
+				co.setCreateBranch(true);
+				co.setStartPoint(originBranch);
+				co.setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK);
 			}
-		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: ", gitProblem);
-			return "git checkout failed";
+
+			Ref branchRef = co.call();
+			return "Checked out: " + branchRef.getName();
+		} catch (GitAPIException e) {
+			logger.error("git prob: ", e);
+			throw new IllegalStateException("git checkout failed", e);
 		}
 	}
 
@@ -327,20 +347,22 @@ public class GitClient {
 	}
 
 	public String gitPullFromBranch(String branch) {
-
-	    String local_name = branch; //.replaceAll("(.*?/)","");
+		logger.debug("Git Pull for branch: " + branch);
+		String local_name = branch; //.replaceAll("(.*?/)","");
 
 		try {
 			PullResult res = git.pull()
-			    .setCredentialsProvider(credentials)
-			    //			    .setRemote("origin")
-			    .setRemoteBranchName(local_name)
-			    .call();
-			
+					.setCredentialsProvider(credentials)
+					.setRemote("origin")
+					.setRemoteBranchName(local_name)
+					.setStrategy(MergeStrategy.THEIRS)
+					.setRebase(true)
+					.call();
+
 			return res.toString();
-		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
+		} catch (GitAPIException gitProblem) {
 			logger.error("git prob: " + gitProblem + " trying to pull from " + local_name, gitProblem);
-			return "git pull failed";
+			throw new IllegalStateException("git pull failed", gitProblem);
 		}
 	}
 
