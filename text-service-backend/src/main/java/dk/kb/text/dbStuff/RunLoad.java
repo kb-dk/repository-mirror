@@ -129,18 +129,18 @@ public class RunLoad {
 		}
 	}
 
-    String solrizrURICalculator(String existFile, Invocation invocation) { 
-	return UriTemplate.fromTemplate(CONFIG.getConstants().getProperty("solrizr.template"))
-	    .set("exist_hostport", CONFIG.getConstants().getProperty(invocation.getTarget()) )
-	    .set("op", "solrize")
-	    .set("doc", existFile)
-	    .set("c", invocation.getCollection())
-	    .expand();
-    }
-    
+	String solrizrURICalculator(String existFile, Invocation invocation) {
+		return UriTemplate.fromTemplate(CONFIG.getConstants().getProperty("solrizr.template"))
+				.set("exist_hostport", CONFIG.getConstants().getProperty(invocation.getTarget()) )
+				.set("op", "solrize")
+				.set("doc", existFile)
+				.set("c", invocation.getCollection())
+				.expand();
+	}
+
 	protected void performPutOperation(String file, String URI, String existFile, String document)
 			throws JMSException {
-	    
+
 		String putRes = apiClient.restPut(file, URI);
 		if(putRes != null) {
 			logger.info("HTTP PUT done ");
@@ -149,7 +149,7 @@ public class RunLoad {
 		}
 
 		String solrizrURI =  solrizrURICalculator( existFile,invocation);
-	
+
 		logger.info("solrizing at " + solrizrURI);
 
 		String capabilitizrURI =
@@ -196,9 +196,9 @@ public class RunLoad {
 	}
 
 	protected void performDeleteOperation(String file, String URI, String existFile, String document ) throws JMSException {
-	    
+
 		String solrizrURI =  solrizrURICalculator( existFile,invocation);
-	    	String solrizedRes     = apiClient.restGet(solrizrURI);
+		String solrizedRes     = apiClient.restGet(solrizrURI);
 
 		if(solrizedRes == null) {
 			logger.info("solrizr: got null");
@@ -206,7 +206,7 @@ public class RunLoad {
 		} else {
 			logger.info("solrizr: status 200 OK");
 			String volumeId = apiClient.getHttpHeader(HEAD_VOLUME_ID_REQUEST);
-	    
+
 			String res = apiClient.restDelete(URI);
 			String solrDel = solrDeleteVolumeCmd(volumeId);
 
