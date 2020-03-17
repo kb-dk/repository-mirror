@@ -129,17 +129,18 @@ public class RunLoad {
 		}
 	}
 
-    String solrizrURICalculator(String existFile,String collection) { 
+    String solrizrURICalculator(String existFile, Invocation invocation) { 
 	return UriTemplate.fromTemplate(CONFIG.getConstants().getProperty("solrizr.template"))
 	    .set("exist_hostport", CONFIG.getConstants().getProperty(invocation.getTarget()) )
 	    .set("op", "solrize")
 	    .set("doc", existFile)
-	    .set("c", collection)
+	    .set("c", invocation.getCollection())
 	    .expand();
     }
     
 	protected void performPutOperation(String file, String URI, String existFile, String document)
 			throws JMSException {
+	    
 		String putRes = apiClient.restPut(file, URI);
 		if(putRes != null) {
 			logger.info("HTTP PUT done ");
@@ -147,7 +148,7 @@ public class RunLoad {
 			logger.error("HTTP PUT problem");
 		}
 
-		String solrizrURI =  solrizrURICalculator( existFile,invocation.getCollection());
+		String solrizrURI =  solrizrURICalculator( existFile,invocation);
 	
 		logger.info("solrizing at " + solrizrURI);
 
@@ -196,7 +197,7 @@ public class RunLoad {
 
 	protected void performDeleteOperation(String file, String URI, String existFile, String document ) throws JMSException {
 	    
-		String solrizrURI =  solrizrURICalculator( existFile,invocation.getCollection());
+		String solrizrURI =  solrizrURICalculator( existFile,invocation);
 	    	String solrizedRes     = apiClient.restGet(solrizrURI);
 
 		if(solrizedRes == null) {
