@@ -123,7 +123,7 @@ public class RunLoad {
 		if(op.matches(".*PUT.*")) {
 			performPutOperation(file, URI, existFile, document);
 		} else if(op.matches(".*DELETE.*")) {
-			performDeleteOperation(URI, document);
+			performDeleteOperation(file, URI, existFile, document);
 		} else {
 			responseMediator.sendMessage( "Operation " + op + " is not supported");
 		}
@@ -190,7 +190,19 @@ public class RunLoad {
 		}
 	}
 
-	protected void performDeleteOperation(String URI, String document) throws JMSException {
+	protected void performDeleteOperation(String file, String URI, String existFile, String document ) throws JMSException {
+
+	    	String solrizedRes     = apiClient.restGet(solrizrURI);
+
+		if(solrizedRes == null) {
+			logger.info("solrizr: got null");
+			responseMediator.sendMessage( "Failed to solrize the document (failed to create index) '" + document + "\n");
+		} else {
+			logger.info("solrizr: status 200 OK");
+			String volumeId = apiClient.getHttpHeader(HEAD_VOLUME_ID_REQUEST);
+
+
+	    
 		String res = apiClient.restDelete(URI);
 		String solrDel = solrDeleteDocCmd(invocation.getCollection(),document);
 
