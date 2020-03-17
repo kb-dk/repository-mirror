@@ -129,6 +129,15 @@ public class RunLoad {
 		}
 	}
 
+    String solrizrURICalculator(String existFile,String collection) { 
+	return UriTemplate.fromTemplate(CONFIG.getConstants().getProperty("solrizr.template"))
+	    .set("exist_hostport", CONFIG.getConstants().getProperty(invocation.getTarget()) )
+	    .set("op", "solrize")
+	    .set("doc", existFile)
+	    .set("c", collection)
+	    .expand();
+    }
+    
 	protected void performPutOperation(String file, String URI, String existFile, String document)
 			throws JMSException {
 		String putRes = apiClient.restPut(file, URI);
@@ -138,13 +147,8 @@ public class RunLoad {
 			logger.error("HTTP PUT problem");
 		}
 
-		String solrizrURI =
-				UriTemplate.fromTemplate(CONFIG.getConstants().getProperty("solrizr.template"))
-						.set("exist_hostport", CONFIG.getConstants().getProperty(invocation.getTarget()) )
-						.set("op", "solrize")
-						.set("doc", existFile)
-						.set("c", invocation.getCollection())
-						.expand();
+		String solrizrURI =  solrizrURICalculator( existFile,invocation.getCollection());
+	
 		logger.info("solrizing at " + solrizrURI);
 
 		String capabilitizrURI =
@@ -191,7 +195,8 @@ public class RunLoad {
 	}
 
 	protected void performDeleteOperation(String file, String URI, String existFile, String document ) throws JMSException {
-
+	    
+		String solrizrURI =  solrizrURICalculator( existFile,invocation.getCollection());
 	    	String solrizedRes     = apiClient.restGet(solrizrURI);
 
 		if(solrizedRes == null) {
@@ -200,19 +205,17 @@ public class RunLoad {
 		} else {
 			logger.info("solrizr: status 200 OK");
 			String volumeId = apiClient.getHttpHeader(HEAD_VOLUME_ID_REQUEST);
-
-
 	    
-		String res = apiClient.restDelete(URI);
-		String solrDel = solrDeleteDocCmd(invocation.getCollection(),document);
+			String res = apiClient.restDelete(URI);
+			String solrDel = solrDeleteVolumeCmd(volumeId);
 
-		logger.info("delete command: " + solrDel);
-		responseMediator.sendMessage("Deleting document '" + document + "' at in database URI '" + URI + "'\n");
+			logger.info("delete command: " + solrDel);
+			responseMediator.sendMessage("Deleting document '" + document + "' at in database URI '" + URI + "'\n");
 
-		String solr_del_res = apiClient.restPost(solrDel,solr_index_uri);
-		res = res + "\n" + solr_del_res;
-		responseMediator.sendMessage(
-				"Deleted document '" + document + "' from index\n");
+			String solr_del_res = apiClient.restPost(solrDel,solr_index_uri);
+			res = res + "\n" + solr_del_res;
+			responseMediator.sendMessage("Deleted volume with ID '" + volumeId + "' from index\n");
+		}
 	}
 
 	/**
@@ -231,17 +234,4 @@ public class RunLoad {
 		return solrDel;
 	}
 
-	protected String solrDeleteDocCmd(String collection, String document) {
-
-		String docPart = document
-				.replaceAll("\\.xml$","-root")
-				.replaceAll("/","-");
-		String deleteQuery = "volume_id_ssi:" + collection + "-" + docPart;
-
-		// don't use query *:*, that is dangerous
-
-		String solrDel = "<delete><query>" + deleteQuery + "</query></delete>";
-
-		return solrDel;
-	}
 }
