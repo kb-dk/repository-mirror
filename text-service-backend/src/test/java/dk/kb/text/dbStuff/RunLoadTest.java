@@ -101,12 +101,12 @@ public class RunLoadTest extends ExtendedTestCase {
         verify(apiClient).setLogin(anyString(), anyString(), anyString(), anyInt(), anyString());
         verify(apiClient).restPost(anyString(), anyString());
         verify(apiClient).restDelete(anyString());
+        verify(apiClient).restGet(anyString());
+        verify(apiClient).getHttpHeader(anyString());
         verifyNoMoreInteractions(apiClient);
 
         // responseMediator.sendMessage( "Reindexed '" + document + "' with volume id " + volumeId + "\n");
         verify(responseMediator, times(2)).sendMessage(anyString());
         verifyNoMoreInteractions(responseMediator);
     }
-
-
 }
