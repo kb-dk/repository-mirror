@@ -185,7 +185,7 @@ target/text-service-backend-1.0.one-jar.jar
 ```
 #### Start and stop services
 
-You start repository-pull using systemd
+You start the backend using systemd
 
 ```
  sudo vi /etc/systemd/system/text-service-backend.service
@@ -196,7 +196,7 @@ paste this into the editor and save:
 
 ```
 [Unit]
-Description=Repository Pull Java Daemon
+Description=Repository Mirror Java Daemon
 
 [Service]
 WorkingDirectory=/home/text-service/repository-mirror/text-service-backend/run_directory
