@@ -9,5 +9,12 @@
 5. copy the web application to the [servlet container](./INSTALL.md#web-ui)
 6. start (or restart) the text-service-backend service (the database_push & repository_pull daemons are now obsolete) [See INSTALL.md if going from two daemons to one](INSTALL.md#start-and-stop-services)
 
+## Only one service
 
+Recent versions of this package is based on
 
+```
+text-service-backend.service
+```
+
+The previous database_push & repository_pull services should be disabled and removed.
