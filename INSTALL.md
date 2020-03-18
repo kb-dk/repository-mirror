@@ -67,7 +67,7 @@ See [Access control README](htaccess/README.md)
 
 ## 3. How to build
 
-There are three source trees,
+There are two source trees,
 
 * text-service-backend (ActiveMQ consumer and producer)
      * database-push functions (managing database and indexing) and
@@ -80,8 +80,8 @@ Doing
 mvn clean ; mvn install
 ```
 
-in project root removes old stuff and builds new fresh ones in all
-three source trees. Occasionally we see that installation fails
+in project root removes old stuff and builds new fresh ones in both
+source trees. Occasionally we see that installation fails
 because of a broken unit test, then do
 
 ```
