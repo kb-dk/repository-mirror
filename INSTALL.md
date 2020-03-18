@@ -49,12 +49,14 @@ this](CONFIG.md). The system accesses other services as
 
 Before building run 
 
-```add_config.sh
+```
+add_config.sh
 ```
 
 which copies the config.xml to the source trees. After use you can run 
 
-```del_config.sh
+```
+del_config.sh
 ```
 
 to ensure that there is no configuration files everywhere.
