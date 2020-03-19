@@ -14,16 +14,16 @@
 
 ### 1. An external repository is registered in the database
 
-A user at a remote git repository is given read access to that
-repository. We do not need this, unless the repository is private
+Technically the registration is done using the procedure described in a [Collection description](./collections/README.md)
+
+The software need read access to repository and must have credentials if it is private.
 
 ### 2. The user selects a destination
 
 Depending on the destination status the user needs to enter slightly different data
 
-1. **staging** - The user may choose the HEAD or any commit in any branch
-
-2. **production** - The user chooses a named release for publication
+1. **preview**     - The user may choose any branch for testing in a special preview server
+2. **publication** - The user chooses a branch or named release for publication in a public server
 
 The two statuses store data in separate databases and only the latter
 is public. The staging service is a test site for the editorial users.
@@ -43,36 +43,20 @@ impossible.
 
 #### Process
 
-We have different branches, either locally or remotely or both. Two
-are the ones we work with. One is in our remote git text repository
-and one in the remote repository. Their names are in the String
-variables
+We have a local copy of the git repository with all its branches. In
+addition to these we have two branches locally that are never pushed to
+the remote repository. They are named 
 
-* publishedBranch
+* installed_corpus
+* previewed_corpus
 
-and 
-
-* branch
-
+They reflect the statuses in the publication and preview servers,
 respectively.
 
-The former is in the configuration file the latter comes in a message
-from ActiveMQ. __publishedBranch__ is where we do the work. There isn't any
-corresponding branch remotely so there is no need to pull. This branch
-should reflect the status of the last
-
-First we establish which files differ between the two. Then we merge
-the remote desired branch with publishedBranch
-			
-By doing this in this odd order, we'll be able to take into account
-the fact that the database might contain earlier changes. These will
-be overwritten below when we queue up the operations in the op HashMap
-for execution in the next step in the "conveyor belt" ([See RunPull.java, line 57 and forward](https://github.com/Det-Kongelige-Bibliotek/repository-mirror/blob/master/repository-pull/src/main/java/dk/kb/pullStuff/RunPull.java#L57))
-
-Most of this software is already written and available in [Solr and
-Snippets](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets)
-
-Some kind of pipeline implemented using [ActiveMQ](#4-activemq)
+If a user is about to preview or publish a branch X, we use a git diff
+to calculate the set of files that differ between the two. Then we do
+a git pull into the appropriate local branch and store the
+corresponding files into the database from where they are then indexed in SOLR.
 
 ### 5. If failure in 3-4 above, messages should be passed to those who can do something about it
 
@@ -81,37 +65,3 @@ Task should be stored somewhere for re-execution
 ### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
 
 ### 7. If failure, go to 4.
-
-## Ideas
-
-### 1. Git Large File Storage (LFS)
-
-"Git Large File Storage (LFS) replaces large files such as audio
-samples, videos, datasets, and graphics with text pointers inside Git,
-while storing the file contents on a remote server like GitHub.com or
-GitHub Enterprise" Sounds promising :^)
-
-https://git-lfs.github.com/
-
-Imagine correlated correlated or transcribed text and images, videos or sounds. A
-system-dependent way of maintaining links and redirection of local
-ones to a remote server.
-
-### 2. Duplicating/mirroring repository
-
-A true mirror (if we are synchronising without pushing things to the
-origin, I believe). Not sure that helps
-
-https://help.github.com/articles/duplicating-a-repository/
-
-### 3. LDAP authentication and authorization
-
-Should be easy to add an external contributor through Active Directory
-
-https://httpd.apache.org/docs/2.4/mod/mod_authnz_ldap.html
-
-That should relieve us from user management
-
-### 4. activemq
-
-http://activemq.apache.org/
