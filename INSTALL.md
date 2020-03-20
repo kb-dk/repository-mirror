@@ -2,6 +2,7 @@
 
 # Installation
 
+
 ## 1. Prerequisites
 
 You need for building
@@ -27,14 +28,18 @@ See also the text on [correlations and identifications](https://github.com/Det-K
 
 ## 2. Configuration
 
+We assume that you have retrieved or cloned these sources.
+
 Copy the file
 
-```config.xml
+```
+config.xml
 ```
 
 to the name
 
-```config_secret.xml
+```
+config_secret.xml
 ```
 
 and edit it under that name that name (if your software developers
@@ -46,12 +51,14 @@ this](CONFIG.md). The system accesses other services as
 
 Before building run 
 
-```add_config.sh
+```
+add_config.sh
 ```
 
 which copies the config.xml to the source trees. After use you can run 
 
-```del_config.sh
+```
+del_config.sh
 ```
 
 to ensure that there is no configuration files everywhere.
@@ -62,11 +69,12 @@ See [Access control README](htaccess/README.md)
 
 ## 3. How to build
 
-There are three source trees,
+There are two source trees,
 
-* database-push (ActiveMQ consumer, doing the most of the job related to the database and the indexing)
-* repository-pull (ActiveMQ consumer and producer, doing the most of the GIT related jobs)
-* repository-mirror-web (ActiveMQ producer, allowing users to queue things up)
+* text-service-backend (ActiveMQ consumer and producer)
+     * database-push functions (managing database and indexing) and
+	 * repository-pull functions (mirroring GIT and other related jobs)
+* repository-mirror-web (ActiveMQ producer and consumer, allowing users to queue things up)
 
 Doing
 
@@ -74,8 +82,8 @@ Doing
 mvn clean ; mvn install
 ```
 
-in project root removes old stuff and builds new fresh ones in all
-three source trees. Occasionally we see that installation fails
+in project root removes old stuff and builds new fresh ones in both
+source trees. Occasionally we see that installation fails
 because of a broken unit test, then do
 
 ```
@@ -127,8 +135,7 @@ Make sure that the ActiveMQ daemon is configured and running.
 The products from building are in the directories
 
 ```
-./repository-pull/target
-./database-push/target
+./text-service-backend/target
 ./repository-mirror-web/target
 ```
 
@@ -154,39 +161,36 @@ For instance ```localhost:8080``` if you run it on your workstation.
 
 ### Daemons
 
-In each of the directories
+In the directory
 
 ```
-./repository-pull/
-./database-push/
+./text-service-backend/
 ```
 
 there should be a ```run_directory``` owned by __tomcat__.
 
-Note that the daemons will not run, unless the paths to executables
+Note that the daemon will not run, unless the paths to executables
 and data are read, executable and (when applicable) writable to tomcat
 user. Run these
 
 ```
 cd repository-mirror
-chown -r tomcat repository-pull/run_directory
-chown -r tomcat database-push/run_directory
-chown -r tomcat repository-pull/target
-chown -r tomcat database-push/target
+chown -r tomcat ./text-service-backend/run_directory
+chown -r tomcat ./text-service-backend/target
 ```
 
 containing the the jars
 
 ```
-repository-pull-1.0.one-jar.jar
-database-push-1.0.one-jar.jar
+target/text-service-backend-1.0.jar
+target/text-service-backend-1.0.one-jar.jar
 ```
-#### Repository Pull Service
+#### Start and stop services
 
-You start repository-pull using systemd
+You start the backend using systemd
 
 ```
- sudo vi /etc/systemd/system/repository_pull.service
+ sudo vi /etc/systemd/system/text-service-backend.service
 
 ```
 
@@ -194,11 +198,11 @@ paste this into the editor and save:
 
 ```
 [Unit]
-Description=Repository Pull Java Daemon
+Description=Repository Mirror Java Daemon
 
 [Service]
-WorkingDirectory=/home/text-service/repository-mirror/repository-pull/run_directory
-ExecStart=/bin/java -jar ../target/repository-pull-1.0.one-jar.jar
+WorkingDirectory=/home/text-service/repository-mirror/text-service-backend/run_directory
+ExecStart=/bin/java -jar ../target/text-service-backend-1.0.one-jar.jar
 User=tomcat
 Type=simple
 Restart=on-failure
@@ -208,55 +212,31 @@ RestartSec=10
 WantedBy=multi-user.target
 ```
 
-__NB:__ Note the /home/text-service/repository-mirror/ path in the script. Changed that if necessary.
+__NB:__ Note the /home/text-service/repository-mirror/text-service-backend path in the script. Changed that if necessary.
 
-#### Database Push Service
 
-```
- sudo vi /etc/systemd/system/database_push.service
-```
-
-Paste the following into the editor
-
-```
-[Unit]
-Description=Database Push Java Daemon
-
-[Service]
-WorkingDirectory=/home/text-service/repository-mirror/database-push/run_directory
-ExecStart=/bin/java -jar ../target/database-push-1.0.one-jar.jar
-User=tomcat
-Type=simple
-Restart=on-failure
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-```
-__NB:__ Note the /home/text-service/repository-mirror/ path in the script. Changed that if necessary.
 
 ### While developing
 
 While developing, I start them (as root) using
 
 ```
-cd repository-pull ; sudo ./run-command.sh
-cd database-push ; sudo ./run-command.sh 
+cd text-service-backend ; sudo ./run-command.sh
 ```
 
-in each of those directories there should be a ```run_directory``` owned by __tomcat__.
+in each of text-service-backend there should be a ```run_directory``` owned by __tomcat__.
 
 Note that they won't run, unless the paths to 
 
 ```
-repository-mirror/repository-pull/run_directory
-repository-mirror/database-push/run_directory
+repository-mirror/text-service-backend/run_directory
+
 ```
 are read, executable and writable to tomcat user
 
 ```
-repository-mirror/repository-pull/target
-repository-mirror/database-push/target
+repository-mirror/ text-service-backend/target
+
 ```
 are read and executable to tomcat user
 
@@ -266,7 +246,7 @@ The programs are creating far too much log info. There is a script for cleaning:
 ./clean_logs.sh
 ```
 
-Run it as root, you won't be allowed to delete tomcat's log files.
+Run it as root, or you won't be allowed to delete tomcat's log files.
 
 
 ## 6. See also
