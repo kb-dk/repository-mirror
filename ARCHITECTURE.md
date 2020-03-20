@@ -6,7 +6,7 @@
 2. The term **user** is referring to a library patron registrered in our user database. The **user**(s) is(are) the editor(s) responsible for the **repository**
 3. The term **system** is referring to the repository-mirror system
 4. A **release** is a named version (a tag) which can be manipulated using git tag commands and in particular be retrieved in a predictable condition. A branch is dynamic and change until frozen and merged with its master branch.
-5. Here we refer to **commit** is including all revisions up to and including the identified commit in the given branch.
+5. Here we refer to a **commit** as including all revisions up to and including the identified commit in the given branch.
 
 ## Workflow
 
@@ -36,12 +36,7 @@ impossible.
 
 ### 4. Upon successful pull (3 above), the system queues loading and indexing of data
 
-1. Mirrors the data in local git repository
-2. Store them in database (eXist)
-3. Request indexing service for index documents
-4. Store the index documents in index (Solr)
-
-#### Process
+#### 4.1 Mirrors the data in local git repository
 
 We have a local copy of the git repository with all its branches. In
 addition to these we have two branches locally that are never pushed to
@@ -53,14 +48,18 @@ the remote repository. They are named
 They reflect the statuses in the publication and preview servers,
 respectively.
 
+#### 4.2 Store them in database (eXist)
+
 If a user is about to preview or publish a branch X, we use a git diff
 to calculate the set of files that differ between the two. Then we do
 a git pull into the appropriate local branch and store the
-corresponding files into the database from where they are then indexed in SOLR.
+corresponding files into the database
 
-### 5. If failure in 3-4 above, messages should be passed to those who can do something about it
+#### 4.3 Request indexing service for index documents from database and store them in indexer
 
-Task should be stored somewhere for re-execution
+Retrieve indexobject and store them to index (Solr)
+
+### 5. If failure in 4.1-4.3 above, messages should be passed to those who can do something about it
 
 ### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
 
