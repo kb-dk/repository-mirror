@@ -30,9 +30,9 @@ is public. The staging service is a test site for the editorial users.
 
 ### 3. The user selects branch and induces pull operations
 
-Running asynchronously using [ActiveMQ](#4-activemq) Multiple jobs per
-repository should not be permitted. The system should ensure this is
-impossible.
+That job is filed by a web application using a asynchronously running
+[ActiveMQ](#4-activemq). Multiple jobs per repository should not be
+permitted. The system should ensure this is impossible.
 
 ### 4. Upon successful pull (3 above), the system queues loading and indexing of data
 
@@ -57,10 +57,18 @@ corresponding files into the database
 
 #### 4.3 Request indexing service for index documents from database and store them in indexer
 
-Retrieve indexobject and store them to index (Solr)
+Retrieve indexobjects from the database and store them to index (SOLR).
+See  [The -snippet server and its arguments](https://github.com/Det-Kongelige-Bibliotek/solr-and-snippets#the-snippet-server-and-its-arguments)
 
-### 5. If failure in 4.1-4.3 above, messages should be passed to those who can do something about it
+### 5. If failure in 4.1-4.3 above
 
-### 6. Upon successful loading in 4. above, the data become directly available in the environment selected in 2 above.
+Messages should be passed to those who can do something about it
 
-### 7. If failure, go to 4.
+### 6. Upon successful loading in 4. above
+
+Data become directly available in the environment selected in 2 above.
+
+### 7. If failure
+
+Suppose mailing the maintainers is the best bet.
+
