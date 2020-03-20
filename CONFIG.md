@@ -18,14 +18,20 @@
     <entry key="data.home">/home/text-service/</entry>
 
     <entry key="published.branch">installed_corpus</entry>
-
+    <entry key="previewed.branch">previewed_corpus</entry>
+	
+	<entry key="staging.index_name">text-retriever-core</entry>
+    <entry key="production.index_name">text-retriever-preview</entry>
+	
     <!-- These are RFC 6570 URI templates -->
-    
-    <entry key="indexing.template">http://{+solr_hostport}/solr/text-retriever-core/update</entry>
-    <entry key="commit.template">http://{+solr_hostport}/solr/text-retriever-core/update?commit=true</entry>
+	
+	<entry key="indexing.template">http://{+solr_hostport}/solr/{index_name}/update</entry>
+    <entry key="commit.template">http://{+solr_hostport}/solr/{index_name}/update{?commit}</entry>
 
     <entry key="collection.template">http://{+exist_hostport}/exist/rest/db/text-retriever/collection.xq{?repository}</entry>
     <entry key="solrizr.template">http://{+exist_hostport}/exist/rest/db/text-retriever/present.xq{?op,doc,c}</entry>
+	
+    <entry key="capabilitizr.template">http://{user}:{password}@{+exist_hostport}/exist/rest/db/text-retriever/capabilities_generator.xq{?op,doc,c}</entry>
     <entry key="file.template">http://{+exist_hostport}/exist/rest/db/text-retriever/{collection}/{+file}</entry>
 
     <!-- Snippet server -->

@@ -28,6 +28,8 @@ See also the text on [correlations and identifications](https://github.com/Det-K
 
 ## 2. Configuration
 
+We assume that you have retrieved or cloned these sources.
+
 Copy the file
 
 ```
