@@ -6,7 +6,7 @@ for repo in $REPOS ; do (
 
 	cd $repo
 	brnch=`git branch | grep installed_corpus|wc -l`
-	if [ $brnch -gt 0 ]; then
+	if [ $brnch -gt 1 ]; then
 	    echo $repo
 	else
 	    echo "branching $repo"
