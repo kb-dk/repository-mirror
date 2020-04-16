@@ -80,6 +80,10 @@ public class GitClient {
 		}
 	}
 
+        public void close() {
+	    git.close();
+	}
+    
 	private void init() {
 
 		String home   = consts.getConstants().getProperty("data.home");

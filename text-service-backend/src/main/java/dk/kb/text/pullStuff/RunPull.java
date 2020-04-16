@@ -66,6 +66,7 @@ public class RunPull {
 		// Finally we switch the published branch to match the current branch.
 		git.gitSwitchPublished();
 
+		git.close();
 		return op;
 	}
 
