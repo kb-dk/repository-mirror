@@ -91,7 +91,7 @@ public class GitClient {
 		try {
 			git = Git.open(gitFolder);
 		} catch(IOException repoProblem ) {
-			logger.error("IO prob: ", repoProblem);
+			logger.error("git IO prob: ", repoProblem);
 		}
 		if(git == null) {
 			throw new IllegalStateException("Could not instantiate the Git repo at: '" + gitFolder.getAbsolutePath()
@@ -313,7 +313,7 @@ public class GitClient {
 			Ref branchRef = co.call();
 			return "Checked out: " + branchRef.getName();
 		} catch (GitAPIException e) {
-			logger.error("git prob: ", e);
+			logger.error("git checkout prob: ", e);
 			throw new IllegalStateException("git checkout failed", e);
 		}
 	}
@@ -336,7 +336,7 @@ public class GitClient {
 			logger.info("fetching " + all_res);
 			return "git fetch succeeded";
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: ", gitProblem);
+			logger.error("git fetch prob: ", gitProblem);
 			return "git fetch failed";
 		}
 	}
@@ -361,7 +361,7 @@ public class GitClient {
 
 			return res.toString();
 		} catch (GitAPIException gitProblem) {
-			logger.error("git prob: " + gitProblem + " trying to pull from " + local_name, gitProblem);
+			logger.error("git pull prob: " + gitProblem + " trying to pull from " + local_name, gitProblem);
 			throw new IllegalStateException("git pull failed", gitProblem);
 		}
 	}
@@ -371,7 +371,7 @@ public class GitClient {
 			Ref res = git.reset().setRef(branch).setMode(ResetCommand.ResetType.HARD).call();
 			return res.toString();
 		}  catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: ", gitProblem);
+			logger.error("git reset prob: ", gitProblem);
 			return "git reset failed";
 		}
 	}
@@ -382,7 +382,7 @@ public class GitClient {
 			deleteBranch(published_branch);
 			createBranch(published_branch);
 		} catch (GitAPIException e) {
-			logger.info("git prob: ", e);
+			logger.info("git switch prob: ", e);
 			throw new IllegalStateException("Failed to switch branches.", e);
 		}
 	}
