@@ -20,10 +20,10 @@ public class FilePathHack {
 	private static Logger logger = Logger.getLogger(FilePathHack.class);
 
 	private String exist_db   = "target-db-should-be-initialized";
-	private String collection = null;
-	private String path       = null;
+	private String collection = "";
+	private String path       = "";
 
-	private String fixed_file = null;
+	private String fixed_file = "";
 
 	private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 
