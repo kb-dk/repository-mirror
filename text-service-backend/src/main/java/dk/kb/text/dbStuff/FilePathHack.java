@@ -55,7 +55,7 @@ public class FilePathHack {
 				return false;
 			}
 		} else {
-			return true;
+			return this.path.length() > 0;
 		}
 	}
 
