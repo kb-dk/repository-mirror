@@ -123,9 +123,13 @@
 		<legend>Branches</legend>
 		<select id="branch" name="branch">
 		  <jsp:scriptlet>
-		    dk.kb.text.GitWebClient git =  new dk.kb.text.GitWebClient(repository); 
-		    git.gitFetch();
-		    out.print(git.gitBranches());
+                    dk.kb.text.GitWebClient wgit =  new dk.kb.text.GitWebClient(repository); 
+		    try {
+			wgit.gitFetch();
+			out.print(wgit.gitBranches());
+		    } finally {
+			wgit.close();
+		    }
 		  </jsp:scriptlet>
 		</select>
 	      </fieldset>
