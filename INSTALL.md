@@ -102,6 +102,8 @@ You will need a some document projects to start with. Like
 * SKS_tei
 * trykkefrihedsskrifter
 
+Also, more often than not you need to remove and clone these projects anew when upgrading/updating the services.
+
 Create a directory called
 
 ```
