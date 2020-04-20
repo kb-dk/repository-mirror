@@ -44,28 +44,32 @@ public class RunPull {
 	public HashMap<String, String> performPull(Invocation invocation) throws IOException {
 		logger.info("Setting repository: " + invocation.getRepository());
 		GitClient git = new GitClient(invocation.getRepository());
+		HashMap<String, String> op = null;
+		try {
+		    String workBranch = getPublishedBranch(invocation);
 
-		String workBranch = getPublishedBranch(invocation);
+		    git.setPublishedBranch(workBranch);
+		    git.setBranch(invocation.getBranch());
 
-		git.setPublishedBranch(workBranch);
-		git.setBranch(invocation.getBranch());
+		    git.gitCheckOutPublished();
 
-		git.gitCheckOutPublished();
-
-		// OK, first we fetch. We'll basically get everything that has happened since last fetch.
+		    // OK, first we fetch. We'll basically get everything that has happened since last fetch.
 		
-		logger.info(git.gitFetch());
+		    logger.info(git.gitFetch());
 
-		// Now we checkout the desired branch and do a pull
+		    // Now we checkout the desired branch and do a pull
 
-		logger.info(git.gitCheckOut());
-		logger.info(git.gitPull());
+		    logger.info(git.gitCheckOut());
+		    logger.info(git.gitPull());
 
-		HashMap<String, String> op = git.gitLog();
+		    op = git.gitLog();
 
-		// Finally we switch the published branch to match the current branch.
-		git.gitSwitchPublished();
+		    // Finally we switch the published branch to match the current branch.
+		    git.gitSwitchPublished();
 
+		} finally {
+		    git.close();
+		}
 		return op;
 	}
 

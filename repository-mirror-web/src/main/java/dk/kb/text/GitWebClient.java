@@ -23,7 +23,7 @@ public class GitWebClient {
 	private static ConfigurableConstants consts = ConfigurableConstants.getInstance();
 	private static Logger logger = Logger.getLogger(GitWebClient.class);
 
-	private Git git = null;
+	private Git git_client = null;
 
 	private CredentialsProvider credentials = null;
 
@@ -42,21 +42,26 @@ public class GitWebClient {
 		String passwd = consts.getConstants().getProperty("git.password");
 
 		try {
-			git = Git.open( new F‌ile( home + "/" + repo + "/.git" ) );
+			git_client = Git.open( new F‌ile( home + "/" + repo + "/.git" ) );
 		} catch(java.io.IOException repoProblem ) {
-			logger.error("IO prob: " + repoProblem);
+			logger.error("git IO prob: " + repoProblem);
 		}
 		credentials = new UsernamePasswordCredentialsProvider(user,passwd);
 	}
 
+        public void close() {
+	    git_client.close();
+	    
+	}
+
 	public String gitLog() {
 		try {
-			LogCommand log = git.log();
+			LogCommand log = git_client.log();
 			//	    log.setCredentialsProvider(credentials);
 			java.lang.Iterable<RevCommit> log_arator = log.call();
 			return log_arator.iterator().next().toString();
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: " + gitProblem);
+			logger.error("git log prob: " + gitProblem);
 			return "git failed";
 		}
 	}
@@ -66,32 +71,32 @@ public class GitWebClient {
 
 	public String gitFetch() {
 		try {
-			FetchCommand fetch = git.fetch();
+			FetchCommand fetch = git_client.fetch();
 			fetch.setCredentialsProvider(credentials);
 			fetch.setRemoveDeletedRefs(true);
 			FetchResult res = fetch.call();
 			return res.toString();
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: " + gitProblem);
+			logger.error("git fetch prob: " + gitProblem);
 			return "git failed";
 		}
 	}
 
 	public String gitPull() {
 		try {
-			PullCommand pull = git.pull();
+			PullCommand pull = git_client.pull();
 			pull.setCredentialsProvider(credentials);
 			PullResult res   = pull.call();
 			return res.toString();
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: " + gitProblem);
+			logger.error("git pull prob: " + gitProblem);
 			return "git failed";
 		}
 	}
 
 	public String gitBranches() {
 		try {
-			ListBranchCommand branches = git.branchList();
+			ListBranchCommand branches = git_client.branchList();
 			//	    branches.setCredentialsProvider(credentials);
 			branches.setListMode(ListBranchCommand.ListMode.ALL);
 			java.util.List<Ref> res      = branches.call();
@@ -116,7 +121,7 @@ public class GitWebClient {
 			}
 			return blist;
 		} catch (org.eclipse.jgit.api.errors.GitAPIException gitProblem) {
-			logger.error("git prob: " + gitProblem);
+			logger.error("git branches prob: " + gitProblem);
 			return "git failed";
 		}
 	}
