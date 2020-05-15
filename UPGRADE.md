@@ -8,7 +8,7 @@
 4. recompile
 5. remove the local git repositories (usually in /home/text-service/) and clone them again (eg., using ./git-clone-corpus.sh) and then  run git-branch-corpus.sh [in the same directory](./INSTALL.md#data) to prepare them for use.
 6. copy the web application to the [servlet container](./INSTALL.md#web-ui)
-7. start (or restart) the text-service-backend service (the database_push & repository_pull daemons are now obsolete) [See INSTALL.md if going from two daemons to one](INSTALL.md#start-and-stop-services)
+7. start (or restart) the text-service-backend service (the database_push & repository_pull daemons are now obsolete) [See INSTALL.md if going from two daemons to one](INSTALL.md#start-and-stop-services). Restart the application server/the web application, such that it can connect to ActiveMQ with a fresh session.
 
 ## Only one service
 
