@@ -17,6 +17,6 @@ fi
 #ln -s $CONF repository-mirror-web/src/main/resources/config.xml
 
 
-cp $CONF text-service-backend/src/main/resources/config.xml
-cp $CONF text-service-backend/src/test/resources/config.xml
-cp $CONF repository-mirror-web/src/main/resources/config.xml
+cp -v $CONF text-service-backend/src/main/resources/config.xml
+cp -v $CONF text-service-backend/src/test/resources/config.xml
+cp -v $CONF repository-mirror-web/src/main/resources/config.xml

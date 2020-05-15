@@ -177,8 +177,8 @@ user. Run these
 
 ```
 cd repository-mirror
-chown -r tomcat ./text-service-backend/run_directory
-chown -r tomcat ./text-service-backend/target
+chown -R tomcat ./text-service-backend/run_directory
+chown -R tomcat ./text-service-backend/target
 ```
 
 containing the the jars
