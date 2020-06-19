@@ -1,0 +1,213 @@
+<?xml version="1.0" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.6a -->
+<!-- CreationDate: 2020-06-19 12:44:50 -->
+<!-- Magnification: 0.787 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="614pt" height="642pt"
+	viewBox="1830 573 12987 13569">
+<g fill="none">
+<!-- Line -->
+<defs>
+<rect x="6930" y="6975" width="7875" height="7155" id="p0"/>
+<pattern id="tile0" patternUnits="userSpaceOnUse"
+	x="0" y="0" width="268" height="67">
+<g stroke-width="7.5" stroke="#000000" fill="none">
+<path d="M -1,30 H 269"/>
+</g>
+</pattern>
+</defs>
+<use xlink:href="#p0" fill="#ffffff"/>
+<use xlink:href="#p0" fill="url(#tile0)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<rect x="4500" y="2655" width="7425" height="7110" rx="105" id="p1"/>
+<pattern id="tile1" patternUnits="userSpaceOnUse"
+	x="0" y="0" width="67" height="268">
+<g stroke-width="7.5" stroke="#000000" fill="none">
+<path d="M 30,-1 V 269"/>
+</g>
+</pattern>
+</defs>
+<use xlink:href="#p1" fill="#ffffff"/>
+<use xlink:href="#p1" fill="url(#tile1)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Ellipse -->
+<ellipse cx="10777" cy="6412" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3012" y="585" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="6215" y="2960" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2761" y="669" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5886" y="3070" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2511" y="752" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5557" y="3179" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2260" y="836" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5228" y="3289" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2093" y="919" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="5009" y="3454" width="1480" height="2521" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="1842" y="1003" width="1128" height="1922" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4680" y="3563" width="1480" height="2522" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp0">
+	<path clip-rule="evenodd" d="M 1830,573 H 14817 V 14142 H 1830 z
+		M 5279,2905 5273,2947 5231,2940 5354,3069 5364,3061z"/>
+</clipPath>
+</defs>
+<polyline points=" 4275,1575 5355,3060" clip-path="url(#cp0)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 5355,3060 -->
+<polygon points=" 5231,2940 5343,3044 5279,2905 5273,2947 5231,2940"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<polyline points=" 9855,6435 9855,4590 11700,4590 11700,6435" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="12285" y="10665" width="1755" height="2700" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<rect x="6930" y="6975" width="4995" height="2790" id="p2"/>
+<pattern id="tile2" patternUnits="userSpaceOnUse"
+	x="0" y="0" width="67" height="67">
+<g stroke-width="7.5" stroke="#000000" fill="none">
+<path d="M -1,30 H 68 M 30,-1 V 68"/>
+</g>
+</pattern>
+</defs>
+<use xlink:href="#p2" fill="#ffffff"/>
+<use xlink:href="#p2" fill="url(#tile2)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="2385" y="1504" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="132" text-anchor="middle">Repository</text>
+<!-- Text -->
+<text xml:space="preserve" x="4995" y="1800" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Pull</text>
+<!-- Text -->
+<text xml:space="preserve" x="4995" y="1530" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Clone</text>
+<!-- Text -->
+<text xml:space="preserve" x="10755" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Index</text>
+<!-- Text -->
+<text xml:space="preserve" x="10755" y="5445" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">SOLR</text>
+<!-- Text -->
+<text xml:space="preserve" x="5670" y="7695" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Update</text>
+<!-- Text -->
+<text xml:space="preserve" x="5355" y="4545" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Repository</text>
+<!-- Text -->
+<text xml:space="preserve" x="10755" y="7650" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Indexing</text>
+<!-- Text -->
+<text xml:space="preserve" x="9630" y="10215" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Text formatting</text>
+<!-- Text -->
+<text xml:space="preserve" x="13185" y="11295" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Ruby</text>
+<!-- Text -->
+<text xml:space="preserve" x="13185" y="11610" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">on</text>
+<!-- Text -->
+<text xml:space="preserve" x="13185" y="11925" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Rails</text>
+<!-- Text -->
+<text xml:space="preserve" x="13185" y="12555" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">(Blacklight)</text>
+<!-- Text -->
+<text xml:space="preserve" x="13185" y="12240" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">UI</text>
+<!-- Text -->
+<text xml:space="preserve" x="12330" y="2295" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">Backend functions</text>
+<!-- Text -->
+<text xml:space="preserve" x="6705" y="13635" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">Frontend functions</text>
+<!-- Ellipse -->
+<ellipse cx="10777" cy="4567" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Ellipse -->
+<ellipse cx="8212" cy="9247" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp1">
+	<path clip-rule="evenodd" d="M 1830,573 H 14817 V 14142 H 1830 z
+		M 10614,6849 10656,6849 10656,6891 10765,6750 10755,6740z"/>
+</clipPath>
+</defs>
+<polyline points=" 9315,8190 10755,6750" clip-path="url(#cp1)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 10755,6750 -->
+<polygon points=" 10656,6891 10741,6764 10614,6849 10656,6849 10656,6891"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<polyline points=" 7290,9270 7290,7425 9135,7425 9135,9270" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Ellipse -->
+<ellipse cx="8212" cy="7402" rx="922" ry="202" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="5393" y="4166" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Clone</text>
+<!-- Text -->
+<text xml:space="preserve" x="8190" y="8280" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">eXist</text>
+<!-- Text -->
+<text xml:space="preserve" x="8190" y="8055" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">Database</text>
+<!-- Line -->
+<defs>
+<clipPath id="cp2">
+	<path clip-rule="evenodd" d="M 1830,573 H 14817 V 14142 H 1830 z
+		M 7067,8087 7064,8129 7021,8126 7154,8245 7165,8236z"/>
+</clipPath>
+</defs>
+<polyline points=" 5445,6255 7155,8235" clip-path="url(#cp2)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 7155,8235 -->
+<polygon points=" 7021,8126 7142,8220 7067,8087 7064,8129 7021,8126"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp3">
+	<path clip-rule="evenodd" d="M 1830,573 H 14817 V 14142 H 1830 z
+		M 12039,11253 12043,11295 12001,11299 12151,11395 12160,11384z"/>
+</clipPath>
+</defs>
+<polyline points=" 9315,9000 12150,11385" clip-path="url(#cp3)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 12150,11385 -->
+<polygon points=" 12001,11299 12135,11372 12039,11253 12043,11295 12001,11299
+"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp4">
+	<path clip-rule="evenodd" d="M 1830,573 H 14817 V 14142 H 1830 z
+		M 13103,10316 13087,10356 13048,10339 13136,10494 13149,10489z"/>
+</clipPath>
+</defs>
+<polyline points=" 11610,6750 13140,10485" clip-path="url(#cp4)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 13140,10485 -->
+<polygon points=" 13048,10339 13132,10467 13103,10316 13087,10356 13048,10339
+"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8" fill="#000000"/>
+<!-- Text -->
+<text xml:space="preserve" x="13500" y="8955" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">and metadata</text>
+<!-- Text -->
+<text xml:space="preserve" x="13320" y="8685" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Search text</text>
+<!-- Text -->
+<text xml:space="preserve" x="10035" y="10530" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">and retrieval</text>
+</g>
+</svg>
